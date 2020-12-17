@@ -66,7 +66,7 @@
                 <form role="form" id="register-user-form">
                     <div class="form-group">
                         <label for="reg_salutation">Salutation</label>
-                        <select name="reg_salutation" class="form-control" data-bind="optionsCaption:'Choose:', options: salutations, optionsText: 'description', optionsValue: 'id'"></select>                                    
+                        <select name="reg_salutation" class="form-control" data-bind="optionsCaption:'Choose:', options: salutations, select2: {minimumResultsForSearch: -1}, optionsText: 'description', optionsValue: 'id'"></select>                                    
                     </div>
                     <div class="form-group">
                         <label for="reg_first_name">First Name*</label>
@@ -82,6 +82,12 @@
                     </div>
                     <div class="form-group email-div">
                         <label for="reg_email">Email*</label>
+						<!-- ko if: errors() != null && errors().username != null -->
+						<span class="text-error" data-bind="text: errors().username"></span>
+						<!-- /ko -->
+						<!-- ko if: errors() != null && errors().email != null -->
+						<span class="text-error" data-bind="text: errors().email"></span>
+						<!-- /ko -->
                         <input name="reg_email" type="email" class="form-control" id="registerInputEmail1">
                     </div>
                     <div class="form-group">
@@ -90,12 +96,12 @@
                     </div>
                     <div class="form-group">
                         <label for="reg_world_region">World Region</label>
-                        <select name="reg_world_region" class="form-control" data-bind="optionsCaption:'Choose:', options: worldRegions, optionsText: 'name', value: selectedWorldRegion"></select>
+                        <select name="reg_world_region" class="form-control" data-bind="optionsCaption:'Choose:', options: worldRegions, select2: {minimumResultsForSearch: -1}, optionsText: 'name', value: selectedWorldRegion"></select>
                     </div>                        
                     <!-- ko if: selectedWorldRegion() !== undefined -->
                     <div class="form-group">
                         <label for="reg_country">Country</label>
-                        <select name="reg_country" class="form-control" data-bind="optionsCaption:'Choose:', options: selectedWorldRegion().system_country, optionsText: 'name', value: selectedCountry"></select>
+                        <select name="reg_country" class="form-control" data-bind="optionsCaption:'Choose:', options: selectedWorldRegion().system_country, select2: {minimumResultsForSearch: -1}, optionsText: 'name', value: selectedCountry"></select>
                     </div>
                     <!-- /ko -->
                     <div class="form-group">
@@ -112,10 +118,22 @@
                     </div>
                     <div class="form-group">
                         <label for="reg_gender">Gender</label>
-                        <select name='reg_gender' class="form-control" data-bind="optionsCaption:'Choose:', options: genders, optionsText:'description', optionsValue:'id'" ></select>
+                        <select name='reg_gender' class="form-control" data-bind="optionsCaption:'Choose:', options: genders, select2: {minimumResultsForSearch: -1}, optionsText:'description', optionsValue:'id'" ></select>
                     </div>
                     <div class="form-group password-div">
                         <label for="reg_password">Password*</label>
+						<!-- ko if: errors() != null && errors().reg_password != null && errors().reg_password.minLength != null -->
+						<span class="text-error" data-bind="text: errors().reg_password.minLength" ></span>
+						<!-- /ko -->
+						<!-- ko if: errors() != null && errors().reg_password != null && errors().reg_password.maxLength != null -->
+						<span class="text-error" data-bind="text: errors().reg_password.maxLength" ></span>
+						<!-- /ko -->
+						<!-- ko if: errors() != null && errors().reg_password != null && errors().reg_confirm_password != null -->
+						<span class="text-error" data-bind="text: errors().reg_confirm_password" ></span>
+						<!-- /ko -->
+						<!-- ko if: errors() != null && errors().reg_password != null && errors().password != null -->
+						<span class="text-error" data-bind="text: errors().password" ></span>
+						<!-- /ko -->
                         <input name="reg_password" type="password" class="form-control" id="registerInputPassword">
                     </div>                                    
                     <div class="form-group confirm-password-div">

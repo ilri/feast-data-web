@@ -5,7 +5,7 @@ function koReportModel() {
      * REPORT TABLES
      */
 
-    self.selectedTable = ko.observable();
+    self.selectedTable = ko.observable('');
 
     self.pageOptions = [10, 25, 50, 100];
     self.selectedPageOption = ko.observable(10);
@@ -246,11 +246,17 @@ function koReportModel() {
             resultsLeft(data.results.count - 100);
         } else {
             report.data = ko.observableArray();
+            if (newTable.dbTableName != "project" && baseTableHeaders.indexOf('Uploaded At') == -1) {
+                baseTableHeaders.push('Uploaded At');
+            } else if (newTable.dbTableName == "project" && baseTableHeaders.indexOf('Uploaded At') > -1) {
+                baseTableHeaders.pop();
+            }
             report.headers = baseTableHeaders;
             report.name = newTable;
             totalResults(data.results.count);
             resultsLeft(data.results.count - 100);
         }
+        var currentUser = data.results.currentUser;
         var specificHeaders = [];
         for (var i = 0; i < data.results.data.length; i++) {
             var thisRow = data.results.data[i];
@@ -261,15 +267,25 @@ function koReportModel() {
             if (thisRow.user == null) {
                 userInfo = "N/A";
             } else {
-                userInfo = {
+                /*userInfo = {
                     action: 'usermodal',
                     id: thisRow.user.id,
                     name_first: thisRow.user.name_first,
                     name_last: thisRow.user.name_last,
                     contact_email: thisRow.user.contact_email
+                };*/
+                userInfo = {
+                    action: 'tooltip',
+                    key: 'focusGroup',
+                    text: thisRow.user.id,
+                    title: thisRow.user.name_first + ' ' + thisRow.user.name_last + ' (' + thisRow.user.contact_email + ')'
                 };
             }
-            var thisReportRow = [thisRow.id, userInfo, (thisRow.uploaded_at == null ? "N/A" : moment(thisRow.uploaded_at).format("L LT"))];
+            var thisReportRow = [thisRow.id, userInfo];
+            if (report.name.dbTableName != "project") {
+                thisReportRow.push(thisRow.uploaded_at == null ? "N/A" : moment(thisRow.uploaded_at).format("L LT"));
+            }
+            report.canRevise = false;
             switch (report.name.dbTableName) {
                 case "animal_category":
                     report.canKeepPrivate = false;
@@ -345,8 +361,28 @@ function koReportModel() {
                     report.canKeepPrivate = true;
                     report.canExclude = true;
                     report.canConsolidate = false;
+                    report.canRevise = true;
                     specificHeaders = newTable.tableHeaders;
-                    thisReportRow = thisReportRow.concat([keyCols.project, keyCols.site, thisRow.community, thisRow.venue_name, thisRow.meeting_date_time]);
+                    thisReportRow = thisReportRow.concat([keyCols.project, keyCols.site, thisRow.community]);
+					if(self.isAdmin || (userInfo != 'N/A' && userInfo.id == currentUser)) {
+						thisReportRow.push({action: 'text', key: 'venue_name', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.venue_name)});
+						thisReportRow.push({action: 'text', key: 'meeting_date_time', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.meeting_date_time)});
+						thisReportRow.push({action: 'text', key: 'gps_latitude_degrees', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.gps_latitude_degrees)});
+						thisReportRow.push({action: 'text', key: 'gps_latitude_minutes', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.gps_latitude_minutes)});
+						thisReportRow.push({action: 'text', key: 'gps_latitude_seconds', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.gps_latitude_seconds)});
+						thisReportRow.push({action: 'text', key: 'gps_longitude_degrees', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.gps_longitude_degrees)});
+						thisReportRow.push({action: 'text', key: 'gps_longitude_minutes', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.gps_longitude_minutes)});
+						thisReportRow.push({action: 'text', key: 'gps_longitude_seconds', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.gps_longitude_seconds)});
+					} else {
+						thisReportRow.push(thisRow.venue_name);
+						thisReportRow.push(thisRow.meeting_date_time);
+						thisReportRow.push(thisRow.gps_latitude_degrees);
+						thisReportRow.push(thisRow.gps_latitude_minutes);
+						thisReportRow.push(thisRow.gps_latitude_seconds);
+						thisReportRow.push(thisRow.gps_longitude_degrees);
+						thisReportRow.push(thisRow.gps_longitude_minutes);
+						thisReportRow.push(thisRow.gps_longitude_seconds);
+					}
                     break;
                 case "focus_group_monthly_statistics":
                     var keyCols = self.processKeyColumns(thisRow, false, true, true, true);
@@ -397,8 +433,11 @@ function koReportModel() {
                     report.canKeepPrivate = true;
                     report.canExclude = true;
                     report.canConsolidate = false;
+                    report.canRevise = true;
                     specificHeaders = newTable.tableHeaders;
-                    thisReportRow = thisReportRow.concat([thisRow.id, thisRow.title, thisRow.description, (thisRow.SystemCountry == null ? 'N/A' : thisRow.SystemCountry.name), thisRow.start_date]);
+                    (self.isAdmin || (userInfo != 'N/A' && userInfo.id == currentUser)) ? thisReportRow.push({action: 'text', key: 'title', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.title)}) : thisReportRow.push(thisRow.title);
+                    thisReportRow.push(thisRow.description);
+                    (self.isAdmin || (userInfo != 'N/A' && userInfo.id == currentUser)) ? thisReportRow.push({action: 'text', key: 'start_date', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.start_date)}) : thisReportRow.push(thisRow.start_date);
                     break;
                 case "labour_activity":
                     var keyCols = self.processKeyColumns(thisRow, false, true, true, true);
@@ -443,7 +482,7 @@ function koReportModel() {
                     specificHeaders = newTable.tableHeaders;
                     var currency = null;
                     if (thisRow.feed_currency == null) {
-                        currency = thisRow.respondent.focus_group.site.currency.name;
+                        currency = thisRow.respondent.focus_group_view.site_view.currency.name;
                     } else {
                         currency = thisRow.feed_currency.name;
                     }
@@ -462,7 +501,7 @@ function koReportModel() {
                     report.canExclude = true;
                     report.canConsolidate = false;
                     specificHeaders = newTable.tableHeaders;
-                    thisReportRow = thisReportRow.concat([keyCols.project, keyCols.site, keyCols.focusGroup, thisRow.unique_identifier, thisRow.gender.description, thisRow.landholding_category.description, thisRow.head_of_household_occupation, thisRow.diet_percent_grazing, thisRow.diet_percent_collected_fodder]);
+                    thisReportRow = thisReportRow.concat([keyCols.project, keyCols.site, keyCols.focusGroup, thisRow.gender.description, thisRow.landholding_category.description, thisRow.head_of_household_occupation, thisRow.diet_percent_grazing, thisRow.diet_percent_collected_fodder]);
                     break;
                 case "respondent_monthly_statistics":
                     var keyCols = self.processKeyColumns(thisRow, true, true, true, true);
@@ -484,8 +523,12 @@ function koReportModel() {
                     report.canKeepPrivate = true;
                     report.canExclude = true;
                     report.canConsolidate = false;
+                    report.canRevise = true;
                     specificHeaders = newTable.tableHeaders;
-                    thisReportRow = thisReportRow.concat([keyCols.project, thisRow.name, (thisRow.SystemCountry == null ? 'N/A' : thisRow.SystemCountry.name)]);
+                    thisReportRow.push(keyCols.project);
+                    (self.isAdmin || (userInfo != 'N/A' && userInfo.id == currentUser)) ? thisReportRow.push({action: 'text', key: 'name', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.name)}) : thisReportRow.push(thisRow.name);
+                    (self.isAdmin || (userInfo != 'N/A' && userInfo.id == currentUser)) ? thisReportRow.push({action: 'text', key: 'major_region', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.major_region)}) : thisReportRow.push(thisRow.major_region);
+                    thisReportRow.push(thisRow.system_country == null ? 'N/A' : thisRow.system_country.name);
                     break;
                 case "unit_area":
                     report.canKeepPrivate = false;
@@ -556,73 +599,89 @@ function koReportModel() {
         }
         if (hasR && hasF) {
             keyCols.focusGroup = {
+                action: 'tooltip',
+                key: 'focusGroup',
+                text: thisRow.respondent.focus_group_view.id,
+                title: thisRow.respondent.focus_group_view.venue_name
+            };
+            /*keyCols.focusGroup = {
                 action: 'respondentmodal',
                 key: 'focusGroup',
-                id: thisRow.respondent.focus_group.id,
-                community: thisRow.respondent.focus_group.community,
-                venue_name: thisRow.respondent.focus_group.venue_name,
-                meeting_date_time: moment(thisRow.respondent.focus_group.meeting_date_time).format("L LT")
-            };
+                id: thisRow.respondent.focus_group_view.id,
+                community: thisRow.respondent.focus_group_view.community,
+                venue_name: thisRow.respondent.focus_group_view.venue_name,
+                meeting_date_time: moment(thisRow.respondent.focus_group_view.meeting_date_time).format("L LT")
+            };*/
         } else if (hasF) {
             keyCols.focusGroup = {
+                action: 'tooltip',
+                key: 'focusGroup',
+                text: thisRow.focus_group_view.id,
+                title: thisRow.focus_group_view.venue_name
+            };
+            /*keyCols.focusGroup = {
                 action: 'respondentmodal',
                 key: 'focusGroup',
-                id: thisRow.focus_group.id,
-                community: thisRow.focus_group.community,
-                venue_name: thisRow.focus_group.venue_name,
-                meeting_date_time: moment(thisRow.focus_group.meeting_date_time).format("L LT")
-            };
+                id: thisRow.focus_group_view.id,
+                community: thisRow.focus_group_view.community,
+                venue_name: thisRow.focus_group_view.venue_name,
+                meeting_date_time: moment(thisRow.focus_group_view.meeting_date_time).format("L LT")
+            };*/
         }
         if (hasR && hasF && hasS) {
             keyCols.site = {
-                action: 'respondentmodal',
+                action: 'tooltip',
                 key: 'site',
-                id: thisRow.respondent.focus_group.site.id,
-                name: thisRow.respondent.focus_group.site.name
+                text: thisRow.respondent.focus_group_view.site_view.id,
+                title: thisRow.respondent.focus_group_view.site_view.name
             };
         } else if (hasF && hasS) {
             keyCols.site = {
-                action: 'respondentmodal',
+                action: 'tooltip',
                 key: 'site',
-                id: thisRow.focus_group.site.id,
-                name: thisRow.focus_group.site.name
+                text: thisRow.focus_group_view.site_view.id,
+                title: thisRow.focus_group_view.site_view.name
             };
         } else if (hasS) {
-            keyCols.site = {
-                action: 'respondentmodal',
-                key: 'site',
-                id: thisRow.site.id,
-                name: thisRow.site.name
-            };
+            if (thisRow.site_view) {
+                keyCols.site = {
+                    action: 'tooltip',
+                    key: 'site',
+                    text: thisRow.site_view.id,
+                    title: thisRow.site_view.name
+                };
+            }
         }
         if (hasR && hasF && hasS && hasP) {
             keyCols.project = {
-                action: 'respondentmodal',
+                action: 'tooltip',
                 key: 'project',
-                id: thisRow.respondent.focus_group.site.project.id,
-                title: thisRow.respondent.focus_group.site.project.title
+                text: thisRow.respondent.focus_group_view.site_view.project_view.id,
+                title: thisRow.respondent.focus_group_view.site_view.project_view.title
             };
         } else if (hasF && hasS && hasP) {
             keyCols.project = {
-                action: 'respondentmodal',
+                action: 'tooltip',
                 key: 'project',
-                id: thisRow.focus_group.site.project.id,
-                title: thisRow.focus_group.site.project.title
+                text: thisRow.focus_group_view.site_view.project_view.id,
+                title: thisRow.focus_group_view.site_view.project_view.title
             };
         } else if (hasS && hasP) {
-            keyCols.project = {
-                action: 'respondentmodal',
-                key: 'project',
-                id: thisRow.site.project.id,
-                title: thisRow.site.project.title
-            };
+            if (thisRow.site_view) {
+                keyCols.project = {
+                    action: 'tooltip',
+                    key: 'project',
+                    text: thisRow.site_view.project_view.id,
+                    title: thisRow.site_view.project_view.title
+                };
+            }
 
         } else if (hasP) {
             keyCols.project = {
-                action: 'respondentmodal',
+                action: 'tooltip',
                 key: 'project',
-                id: thisRow.project.id,
-                title: thisRow.project.title
+                text: thisRow.project_view.id,
+                title: thisRow.project_view.title
             };
         }
 
@@ -636,6 +695,10 @@ function koReportModel() {
         }
         if (self.currentReport().canExclude) {
             actions.push('Toggle Exclude');
+        }
+        if (self.currentReport().canRevise) {
+            actions.push('Revise Selected');
+            actions.push('Revert Selected');
         }
         if (self.currentReport().canConsolidate) {
             actions.push('Consolidate');
@@ -657,6 +720,20 @@ function koReportModel() {
         return selectedRows;
     });
 
+    self.applyChange = function(data, event) {
+        var selectRowColumn = 0;
+        if (self.selectedTable().dbTableName == "site") {
+            selectRowColumn = 9;
+        } else if (self.selectedTable().dbTableName == "project") {
+            selectRowColumn = 7;
+        } else if (self.selectedTable().dbTableName == "focus_group") {
+            selectRowColumn = 16;
+        }
+
+        if (selectRowColumn > 0) {
+            self.currentReport().data()[data.index][selectRowColumn].value(true);
+        }
+    };
     self.selectedAction = ko.observable(null);
     self.applyAction = function() {
         var data = {
@@ -702,6 +779,69 @@ function koReportModel() {
 
                 self.loadTableData(false, self.currentReport().name, null, self.lastConsolidateReportID, self.consolidateResultsLeft, self.totalConsolidateResults, self.consolidateReport, self.loadingConsolidationData);
                 $('#consolidation-modal').modal('show');
+                break;
+            case "Revise Selected":
+                var aliasData = {
+                    records: []
+                };
+                selectedRows.forEach(function(thisRow) {
+                    if (self.selectedTable().dbTableName == 'project') {
+                        aliasData.records.push({id: thisRow[0], title: thisRow[2].value(), start_date: thisRow[4].value()});
+                    } else if (self.selectedTable().dbTableName == 'site') {
+                        aliasData.records.push({id: thisRow[0], name: thisRow[4].value(), major_region: thisRow[5].value()});
+                    } else if (self.selectedTable().dbTableName == 'focus_group') {
+                        aliasData.records.push({id: thisRow[0], venue_name: thisRow[6].value(), meeting_date_time: thisRow[7].value(),
+                            gps_latitude_degrees: thisRow[8].value(), gps_latitude_minutes: thisRow[9].value(), gps_latitude_seconds: thisRow[10].value(),
+                            gps_longitude_degrees: thisRow[11].value(), gps_longitude_minutes: thisRow[12].value(), gps_longitude_seconds: thisRow[13].value()
+                        });
+                    }
+                });
+                postData('/api/user/data/' + self.selectedTable().dbTableName + '/alias', aliasData, function(result) {
+                    console.log(result);
+                });
+                break;
+            case "Revert Selected":
+                var aliasData = {
+                    records: []
+                };
+                selectedRows.forEach(function(thisRow) {
+                    if (self.selectedTable().dbTableName == 'project'
+                        || self.selectedTable().dbTableName == 'site'
+                        || self.selectedTable().dbTableName == 'focus_group'
+                    ) {
+                        aliasData.records.push({id: thisRow[0]});
+                    }
+                });
+                postData('/api/user/data/' + self.selectedTable().dbTableName + '/revert-alias', aliasData, function(result) {
+                    console.log(result);
+                    selectedRows.forEach(function(thisRow) {
+                        Object.keys(result.results).forEach(function(key){
+                            var value = result.results[key];
+                            if (key == thisRow[0] && value) {
+                                Object.keys(result.columns).forEach(function(column){
+                                    var columnName = result.columns[column];
+
+                                    if (self.selectedTable().dbTableName == 'focus_group') {
+                                        if (column == "venue_name") {
+                                            columnName = "Venue";
+                                        } else if (column ==  "meeting_date_time") {
+                                            columnName = "Meeting Date/Time";
+                                        } else if (column.indexOf("gps") != -1) {
+                                            columnName = columnName.replace("Gps ", "");
+                                        }
+                                    }  else if (self.selectedTable().dbTableName == 'project') {
+                                        if (column == "title") {
+                                            columnName = "Project " + columnName;
+                                        }
+                                    }
+
+                                    var pos = self.currentReport().headers.indexOf(columnName);
+                                    thisRow[pos].value(value[column]);
+                                });
+                            }
+                        });
+                    });
+                });
                 break;
             default:
                 return;
@@ -798,64 +938,70 @@ var tableFilters = [
     {tableName: 'Animal Type', dbTableName: 'animal_type', filters: ['User.id', 'AnimalType.uploaded_at', 'AnimalSpecies.description', 'AnimalCategory.description', 'AnimalType.description', 'AnimalSpecies.lactating', 'AnimalSpecies.dairy', 'AnimalType.weight_lower_limit', 'AnimalType.weight_upper_limit', 'AnimalType.replaced_by_id']},
     {tableName: 'Community Type', dbTableName: 'community_type', filters: ['User.id', 'CommunityType.uploaded_at', 'CommunityType.description', 'CommunityType.replaced_by_id']},
     {tableName: 'Core Context Attribute Score', dbTableName: 'core_context_attribute_score', filters: ['User.id', 'CoreContextAttributeScore.uploaded_at', 'CoreContextAttributeType.description', 'CoreContextAttribute.prompt', 'TechfitScale.number', 'TechfitAssessment.id']},
-    {tableName: 'Crop Cultivation', dbTableName: 'crop_cultivation', filters: ['User.id', 'CropCultivation.uploaded_at', 'Project.id', 'Site.id', 'FocusGroup.id', 'Respondent.id', 'CropType.name', 'CropCultivation.cultivated_land', 'UnitArea.name', 'CropCultivation.annual_yield', 'UnitMassWeight.name', 'CropCultivation.exclude']},
+    {tableName: 'Crop Cultivation', dbTableName: 'crop_cultivation', filters: ['User.id', 'CropCultivation.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'CropType.name', 'CropCultivation.cultivated_land', 'UnitArea.name', 'CropCultivation.annual_yield', 'UnitMassWeight.name', 'CropCultivation.exclude']},
     {tableName: 'Crop Type', dbTableName: 'crop_type', filters: ['User.id', 'CropType.uploaded_at', 'CropType.name', 'CropType.harvest_index', 'CropType.content_percent_dry_matter', 'CropType.content_metabolisable_energy', 'CropType.content_crude_protein', 'CropType.replaced_by_id']},
-    {tableName: 'Feed Source', dbTableName: 'feed_source', filters: ['User.id', 'FeedSource.uploaded_at', 'Site.id', 'FeedSource.description', 'FeedSource.replaced_by_id']},
-    {tableName: 'Feed Source Availability', dbTableName: 'feed_source_availability', filters: ['User.id', 'FeedSourceAvailability.uploaded_at', 'Project.id', 'Site.id', 'FocusGroup.id', 'Respondent.id', 'FeedSource.description', 'Month.name', 'FeedSourceAvailability.contribution']},
-    {tableName: 'Focus Group', dbTableName: 'focus_group', filters: ['User.id', 'FocusGroup.uploaded_at', 'Project.id', 'Site.id', 'FocusGroup.community', 'FocusGroup.venue_name', 'FocusGroup.monthly_meeting_date_time', 'FocusGroup.keep_private', 'FocusGroup.exclude']},
-    {tableName: 'Focus Group Monthly Statistics', dbTableName: 'focus_group_monthly_statistics', filters: ['User.id', 'FocusGroupMonthlyStatistics.uploaded_at', 'Project.id', 'Site.id', 'FocusGroup.id', 'Month.name', 'ScaleZeroFive.number', 'FocusGroupMonthlyStatistics.keep_private', 'FocusGroupMonthlyStatistics.exclude']},
-    {tableName: 'Fodder Crop Cultivation', dbTableName: 'fodder_crop_cultivation', filters: ['User.id', 'FodderCropCultivation.uploaded_at', 'Project.id', 'Site.id', 'FocusGroup.id', 'Respondent.id', 'FodderCropType.name', 'FodderCropCultivation.cultivated_land', 'UnitArea.name', 'FodderCropCultivation.keep_private', 'FodderCropCultivation.exclude']},
+    {tableName: 'Feed Source', dbTableName: 'feed_source', filters: ['User.id', 'FeedSource.uploaded_at', 'SiteView.id', 'FeedSource.description', 'FeedSource.replaced_by_id']},
+    {tableName: 'Feed Source Availability', dbTableName: 'feed_source_availability', filters: ['User.id', 'FeedSourceAvailability.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'FeedSource.description', 'Month.name', 'FeedSourceAvailability.contribution']},
+    {tableName: 'Focus Group', dbTableName: 'focus_group', filters: ['User.id', 'FocusGroupView.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.community', 'FocusGroupView.venue_name', 'FocusGroupView.meeting_date_time', 'FocusGroupView.gps_latitude_degrees', 'FocusGroupView.gps_latitude_minutes', 'FocusGroupView.gps_latitude_seconds', 'FocusGroupView.gps_longitude_degrees', 'FocusGroupView.gps_longitude_minutes', 'FocusGroupView.gps_longitude_seconds', 'FocusGroupView.keep_private', 'FocusGroupView.exclude']},
+    {tableName: 'Focus Group Monthly Statistics', dbTableName: 'focus_group_monthly_statistics', filters: ['User.id', 'FocusGroupMonthlyStatistics.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Month.name', 'ScaleZeroFive.number', 'FocusGroupMonthlyStatistics.keep_private', 'FocusGroupMonthlyStatistics.exclude']},
+    {tableName: 'Fodder Crop Cultivation', dbTableName: 'fodder_crop_cultivation', filters: ['User.id', 'FodderCropCultivation.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'FodderCropType.name', 'FodderCropCultivation.cultivated_land', 'UnitArea.name', 'FodderCropCultivation.keep_private', 'FodderCropCultivation.exclude']},
     {tableName: 'Fodder Crop Type', dbTableName: 'fodder_crop_type', filters: ['User.id', 'FodderCropType.uploaded_at', 'FodderCropType.name', 'FodderCropType.annual_dry_matter_per_hectare', 'FodderCropType.content_metabolisable_energy', 'FodderCropType.content_crude_protein', 'FodderCropType.replaced_by_id']},
-    {tableName: 'Income Activity', dbTableName: 'income_activity', filters: ['User.id', 'IncomeActivity.uploaded_at', 'Project.id', 'Site.id', 'FocusGroup.id', 'Respondent.id', 'IncomeActivityType.description', 'IncomeActivityCategory.description', 'IncomeActivity.percent_of_hh_income', 'IncomeActivity.keep_private', 'IncomeActivity.exclude']},
+    {tableName: 'Income Activity', dbTableName: 'income_activity', filters: ['User.id', 'IncomeActivity.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'IncomeActivityType.description', 'IncomeActivityCategory.description', 'IncomeActivity.percent_of_hh_income', 'IncomeActivity.keep_private', 'IncomeActivity.exclude']},
     {tableName: 'Income Activity Type', dbTableName: 'income_activity_type', filters: ['User.id', 'IncomeActivityType.uploaded_at', 'IncomeActivityType.description', 'IncomeActivityCategory.description', 'IncomeActivityType.keep_private', 'IncomeActivityType.exclude']},
     {tableName: 'Intervention', dbTableName: 'intervention', filters: ['User.id', 'Intervention.uploaded_at', 'Intervention.description']},
-    {tableName: 'Labour Activity', dbTableName: 'labour_activity', filters: ['User.id', 'LabourActivity.uploaded_at', 'Project.id', 'Site.id', 'FocusGroup.id', 'LabourActivity.description', 'LabourActivity.daily_rate_male', 'LabourActivity.daily_rate_female', 'LabourActivity.keep_private', 'LabourActivity.exclude']},
-    {tableName: 'Livestock Holding', dbTableName: 'livestock_holding', filters: ['User.id', 'LivestockHolding.uploaded_at', 'Project.id', 'Site.id', 'FocusGroup.id', 'Respondent.id', 'AnimalType.description', 'LivestockHolding.headcount', 'LivestockHolding.average_weight', 'LivestockHolding.keep_private', 'LivestockHolding.exclude']},
-    {tableName: 'Livestock Sale', dbTableName: 'livestock_sale', filters: ['User.id', 'LivestockSale.uploaded_at', 'Project.id', 'Site.id', 'FocusGroup.id', 'Respondent.id', 'AnimalSpecies.description', 'Gender.description', 'LivestockSale.number_sold', 'LivestockSale.approximate_weight', 'LivestockSale.keep_private', 'LivestockSale.exclude']},
+    {tableName: 'Labour Activity', dbTableName: 'labour_activity', filters: ['User.id', 'LabourActivity.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'LabourActivity.description', 'LabourActivity.daily_rate_male', 'LabourActivity.daily_rate_female', 'LabourActivity.keep_private', 'LabourActivity.exclude']},
+    {tableName: 'Livestock Holding', dbTableName: 'livestock_holding', filters: ['User.id', 'LivestockHolding.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'AnimalType.description', 'LivestockHolding.headcount', 'LivestockHolding.average_weight', 'LivestockHolding.keep_private', 'LivestockHolding.exclude']},
+    {tableName: 'Livestock Sale', dbTableName: 'livestock_sale', filters: ['User.id', 'LivestockSale.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'AnimalSpecies.description', 'Gender.description', 'LivestockSale.number_sold', 'LivestockSale.approximate_weight', 'LivestockSale.keep_private', 'LivestockSale.exclude']},
     {tableName: 'Livestock Sale Category', dbTableName: 'livestock_sale_category', filters: ['User.id', 'LivestockSaleCategory.uploaded_at', 'AnimalSpecies.description', 'Gender.description']},
-    {tableName: 'Purchased Feed', dbTableName: 'purchased_feed', filters: ['User.id', 'PurchasedFeed.uploaded_at', 'Project.id', 'Site.id', 'FocusGroup.id', 'Respondent.id', 'PurchasedFeedType.name', 'PurchasedFeed.quantity_purchased', 'UnitMassWeight.name', 'PurchasedFeed.purchases_per_year', 'PurchasedFeed.unit_price', 'Currency.name', 'PurchasedFeed.keep_private', 'PurchasedFeed.exclude']},
+    {tableName: 'Purchased Feed', dbTableName: 'purchased_feed', filters: ['User.id', 'PurchasedFeed.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'PurchasedFeedType.name', 'PurchasedFeed.quantity_purchased', 'UnitMassWeight.name', 'PurchasedFeed.purchases_per_year', 'PurchasedFeed.unit_price', 'Currency.name', 'PurchasedFeed.keep_private', 'PurchasedFeed.exclude']},
     {tableName: 'Purchased Feed Type', dbTableName: 'purchased_feed_type', filters: ['User.id', 'PurchasedFeedType.uploaded_at', 'PurchasedFeedType.name', 'PurchasedFeedType.percent_dry_matter', 'PurchasedFeedType.content_metabolisable_energy', 'PurchasedFeedType.content_crude_protein']},
-    {tableName: 'Project', dbTableName: 'project', filters: ['User.id', 'Project.uploaded_at', 'Project.id', 'Project.title', 'Project.description', 'SystemCountry.name', 'Project.start_date', 'Project.keep_private', 'Project.can_exclude']},
-    {tableName: 'Respondent', dbTableName: 'respondent', filters: ['User.id', 'Respondent.uploaded_at', 'Project.id', 'Site.id', 'FocusGroup.id', 'Respondent.unique_identifier', 'Gender.description', 'LandholdingCategory.description', 'Respondent.head_of_household_occupation', 'Respondent.diet_percent_grazing', 'Respondent.diet_percent_collected_fodder', 'Respondent.keep_private', 'Respondent.exclude']},
-    {tableName: 'Respondent Monthly Statistics', dbTableName: 'respondent_monthly_statistics', filters: ['User.id', 'RespondentMonthlyStatistics.uploaded_at', 'Project.id', 'Site.id', 'FocusGroup.id', 'Respondent.id', 'Month.name', 'RespondentMonthlyStatistics.milk_average_yield', 'RespondentMonthlyStatistics.milk_average_price_litre', 'RespondentMonthlyStatistics.milk_retained_for_household', 'RespondentMonthlyStatistics.market_price_cattle', 'RespondentMonthlyStatistics.market_price_sheep', 'RespondentMonthlyStatistics.market_price_goat', 'RepsondentMonthlyStatistics.keep_private']},
+    {tableName: 'Project', dbTableName: 'project', filters: ['User.id', 'ProjectView.title', 'ProjectView.description', 'ProjectView.start_date', 'ProjectView.keep_private', 'ProjectView.can_exclude']},
+    {tableName: 'Respondent', dbTableName: 'respondent', filters: ['User.id', 'Respondent.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Gender.description', 'LandholdingCategory.description', 'Respondent.head_of_household_occupation', 'Respondent.diet_percent_grazing', 'Respondent.diet_percent_collected_fodder', 'Respondent.keep_private', 'Respondent.exclude']},
+    {tableName: 'Respondent Monthly Statistics', dbTableName: 'respondent_monthly_statistics', filters: ['User.id', 'RespondentMonthlyStatistics.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'Month.name', 'RespondentMonthlyStatistics.milk_average_yield', 'RespondentMonthlyStatistics.milk_average_price_litre', 'RespondentMonthlyStatistics.milk_retained_for_household', 'RespondentMonthlyStatistics.market_price_cattle', 'RespondentMonthlyStatistics.market_price_sheep', 'RespondentMonthlyStatistics.market_price_goat', 'RepsondentMonthlyStatistics.keep_private']},
     {tableName: 'Season', dbTableName: 'season', filters: ['User.id', 'Season.uploaded_at', 'Season.name']},
-    {tableName: 'Site', dbTableName: 'site', filters: ['User.id', 'Site.uploaded_at', 'Project.id', 'Site.name', 'Country.name', 'Site.keep_private', 'Site.exclude']},
+    {tableName: 'Site', dbTableName: 'site', filters: ['User.id', 'SiteView.uploaded_at', 'ProjectView.id', 'SiteView.name', 'SiteView.major_region', 'Country.name', 'SiteView.keep_private', 'SiteView.exclude']},
     {tableName: 'Unit Area', dbTableName: 'unit_area', filters: ['User.id', 'UnitArea.uploaded_at', 'UnitArea.name', 'UnitArea.conversion_ha']},
     {tableName: 'Unit Mass/Weight', dbTableName: 'unit_mass_weight', filters: ['User.id', 'UnitMassWeight.uploaded_at', 'UnitMassWeight.name', 'UnitMassWeight.conversion_kg']},
 ];
 
-var baseTableHeaders = ['ID', 'U', 'Uploaded At'];
+var baseTableHeaders = ['ID', 'U'];
 
 var tableList = [
-    {tableName: 'Animal Category', dbTableName: 'animal_category', tableHeaders: ['Species', 'Category']},
-    {tableName: 'Animal Species', dbTableName: 'animal_species', tableHeaders: ['Species']},
-    {tableName: 'Animal Type', dbTableName: 'animal_type', tableHeaders: ['Species', 'Category', 'Type', 'Lactating', 'Dairy', 'Lower Weight Limit', 'Upper Weight Limit']},
-    {tableName: 'Community Type', dbTableName: 'community_type', tableHeaders: ['Type']},
-    {tableName: 'Core Context Attribute Score', dbTableName: 'core_context_attribute_score', tableHeaders: ['Core Context Attribute Type', 'Prompt', 'Techfit Scale Number', 'Techfit Assessment ID']},
-    {tableName: 'Crop Cultivation', dbTableName: 'crop_cultivation', tableHeaders: ['P', 'S', 'F', 'R', 'Crop Type', 'Cultivated Area', 'Area Unit', 'Annual Yield', 'Mass/Weight Unit']},
-    {tableName: 'Crop Type', dbTableName: 'crop_type', tableHeaders: ['Type', 'Harvest Index', '% Dry Matter', 'Metabolisable Energy Content', 'Crude Protein Content']},
-    {tableName: 'Feed Source', dbTableName: 'feed_source', tableHeaders: ['Site ID', 'Description']},
-    {tableName: 'Feed Source Availability', dbTableName: 'feed_source_availability', tableHeaders: ['P', 'S', 'F', 'R', 'Feed Source', 'Month', 'Contribution']},
-    {tableName: 'Focus Group', dbTableName: 'focus_group', tableHeaders: ['P', 'S', 'Community', 'Venue', 'Meeting Date/Time']},
-    {tableName: 'Focus Group Monthly Statistics', dbTableName: 'focus_group_monthly_statistics', tableHeaders: ['P', 'S', 'F', 'Month', 'Scale (0-5)']},
-    {tableName: 'Fodder Crop Cultivation', dbTableName: 'fodder_crop_cultivation', tableHeaders: ['P', 'S', 'F', 'R', 'Fodder Crop Type', 'Cultivated Area', 'Area Unit']},
-    {tableName: 'Fodder Crop Type', dbTableName: 'fodder_crop_type', tableHeaders: ['Type', 'Annual Dry Matter / Hectare', 'Metabolisable Energy Content', 'Crude Protein Content']},
-    {tableName: 'Income Activity', dbTableName: 'income_activity', tableHeaders: ['P', 'S', 'F', 'R', 'Type', 'Category', '% of Household Income']},
-    {tableName: 'Income Activity Type', dbTableName: 'income_activity_type', tableHeaders: ['Type', 'Category']},
-    {tableName: 'Intervention', dbTableName: 'intervention', tableHeaders: ['Description']},
-    {tableName: 'Labour Activity', dbTableName: 'labour_activity', tableHeaders: ['P', 'S', 'F', 'Description', 'Daily Rate - Male', 'Daily Rate - Female']},
-    {tableName: 'Livestock Holding', dbTableName: 'livestock_holding', tableHeaders: ['P', 'S', 'F', 'R', 'Animal Type', 'Headcount', 'Average Weight']},
-    {tableName: 'Livestock Sale', dbTableName: 'livestock_sale', tableHeaders: ['P', 'S', 'F', 'R', 'Species', 'Gender', 'Number Sold', 'Approximate Weight']},
-    {tableName: 'Livestock Sale Category', dbTableName: 'livestock_sale_category', tableHeaders: ['Species', 'Gender']},
-    {tableName: 'Purchased Feed', dbTableName: 'purchased_feed', tableHeaders: ['P', 'S', 'F', 'R', 'Type', 'Quantity Purchased', 'Weight/Mass Unit', 'Purchases / Year', 'Unit Price', 'Currency']},
-    {tableName: 'Purchased Feed Type', dbTableName: 'purchased_feed_type', tableHeaders: ['Type', '% Dry Matter', 'Metabolisable Energy Content', 'Crude Protein Content']},
-    {tableName: 'Project', dbTableName: 'project', tableHeaders: ['P', 'Project Title', 'Project Description', 'Country Name', 'Start Date']},
-    {tableName: 'Respondent', dbTableName: 'respondent', tableHeaders: ['P', 'S', 'F', 'Unique ID', 'Gender', 'Landholding Category', 'Head of Household Occupation', 'Diet % Grazing', 'Diet % Collected Fodder']},
-    {tableName: 'Respondent Monthly Statistics', dbTableName: 'respondent_monthly_statistics', tableHeaders: ['P', 'S', 'F', 'R', 'Month', 'Milk - Avg. Yield', 'Milk - Avg. Price / Litre', 'Milk - Retained For Household Use', 'Market Price - Cattle', 'Market Price - Sheep', 'Market Price - Goat']},
-    {tableName: 'Season', dbTableName: 'season', tableHeaders: ['Name']},
-    {tableName: 'Site', dbTableName: 'site', tableHeaders: ['P', 'Name', 'Country']},
-    {tableName: 'Unit Area', dbTableName: 'unit_area', tableHeaders: ['Name', 'Conversion - ha']},
-    {tableName: 'Unit Mass/Weight', dbTableName: 'unit_mass_weight', tableHeaders: ['Name', 'Conversion - kg']},
+    {label: 'Core Group', tables: [
+        {tableName: 'Project', dbTableName: 'project', tableHeaders: ['Project Title', 'Project Description', 'Start Date']},
+        {tableName: 'Site', dbTableName: 'site', tableHeaders: ['P', 'Name', 'Major Region', 'Country']},
+        {tableName: 'Focus Group', dbTableName: 'focus_group', tableHeaders: ['P', 'S', 'Community', 'Venue', 'Meeting Date/Time', 'Latitude Degrees', 'Latitude Minutes', 'Latitude Seconds', 'Longitude Degrees', 'Longitude Minutes', 'Longitude Seconds']}
+    ]},
+    {label: 'Feast Assessment', tables: [
+		{tableName: 'Core Context Attribute Score', dbTableName: 'core_context_attribute_score', tableHeaders: ['Core Context Attribute Type', 'Prompt', 'Techfit Scale Number', 'Techfit Assessment ID']},
+        {tableName: 'Crop Cultivation', dbTableName: 'crop_cultivation', tableHeaders: ['P', 'S', 'F', 'R', 'Crop Type', 'Cultivated Area', 'Area Unit', 'Annual Yield', 'Mass/Weight Unit']},
+        {tableName: 'Fodder Crop Cultivation', dbTableName: 'fodder_crop_cultivation', tableHeaders: ['P', 'S', 'F', 'R', 'Fodder Crop Type', 'Cultivated Area', 'Area Unit']},
+        {tableName: 'Feed Source Availability', dbTableName: 'feed_source_availability', tableHeaders: ['P', 'S', 'F', 'R', 'Feed Source', 'Month', 'Contribution']},
+        {tableName: 'Livestock Holding', dbTableName: 'livestock_holding', tableHeaders: ['P', 'S', 'F', 'R', 'Animal Type', 'Headcount', 'Average Weight']},
+		{tableName: 'Purchased Feed', dbTableName: 'purchased_feed', tableHeaders: ['P', 'S', 'F', 'R', 'Type', 'Quantity Purchased', 'Weight/Mass Unit', 'Purchases / Year', 'Unit Price', 'Currency']},
+		{tableName: 'Respondent', dbTableName: 'respondent', tableHeaders: ['P', 'S', 'F', 'Gender', 'Landholding Category', 'Head of Household Occupation', 'Diet % Grazing', 'Diet % Collected Fodder']},
+    ]},
+    {label: 'Lookup', tables: [
+        {tableName: 'Animal Category', dbTableName: 'animal_category', tableHeaders: ['Species', 'Category']},
+        {tableName: 'Animal Species', dbTableName: 'animal_species', tableHeaders: ['Species']},
+        {tableName: 'Animal Type', dbTableName: 'animal_type', tableHeaders: ['Species', 'Category', 'Type', 'Lactating', 'Dairy', 'Lower Weight Limit', 'Upper Weight Limit']},
+        {tableName: 'Community Type', dbTableName: 'community_type', tableHeaders: ['Type']},
+        {tableName: 'Crop Type', dbTableName: 'crop_type', tableHeaders: ['Type', 'Harvest Index', '% Dry Matter', 'Metabolisable Energy Content', 'Crude Protein Content']},
+        {tableName: 'Feed Source', dbTableName: 'feed_source', tableHeaders: ['Site ID', 'Description']},
+        {tableName: 'Focus Group Monthly Statistics', dbTableName: 'focus_group_monthly_statistics', tableHeaders: ['P', 'S', 'F', 'Month', 'Scale (0-5)']},
+        {tableName: 'Fodder Crop Type', dbTableName: 'fodder_crop_type', tableHeaders: ['Type', 'Annual Dry Matter / Hectare', 'Metabolisable Energy Content', 'Crude Protein Content']},
+        {tableName: 'Income Activity', dbTableName: 'income_activity', tableHeaders: ['P', 'S', 'F', 'R', 'Type', 'Category', '% of Household Income']},
+        {tableName: 'Income Activity Type', dbTableName: 'income_activity_type', tableHeaders: ['Type', 'Category']},
+        {tableName: 'Intervention', dbTableName: 'intervention', tableHeaders: ['Description']},
+        {tableName: 'Labour Activity', dbTableName: 'labour_activity', tableHeaders: ['P', 'S', 'F', 'Description', 'Daily Rate - Male', 'Daily Rate - Female']},
+        {tableName: 'Livestock Sale', dbTableName: 'livestock_sale', tableHeaders: ['P', 'S', 'F', 'R', 'Species', 'Gender', 'Number Sold', 'Approximate Weight']},
+        {tableName: 'Livestock Sale Category', dbTableName: 'livestock_sale_category', tableHeaders: ['Species', 'Gender']},
+        {tableName: 'Purchased Feed Type', dbTableName: 'purchased_feed_type', tableHeaders: ['Type', '% Dry Matter', 'Metabolisable Energy Content', 'Crude Protein Content']},
+        {tableName: 'Respondent Monthly Statistics', dbTableName: 'respondent_monthly_statistics', tableHeaders: ['P', 'S', 'F', 'R', 'Month', 'Milk - Avg. Yield', 'Milk - Avg. Price / Litre', 'Milk - Retained For Household Use', 'Market Price - Cattle', 'Market Price - Sheep', 'Market Price - Goat']},
+        {tableName: 'Season', dbTableName: 'season', tableHeaders: ['Name']},
+        {tableName: 'Unit Area', dbTableName: 'unit_area', tableHeaders: ['Name', 'Conversion - ha']},
+        {tableName: 'Unit Mass/Weight', dbTableName: 'unit_mass_weight', tableHeaders: ['Name', 'Conversion - kg']},
+    ]}
 ];
 
 /**

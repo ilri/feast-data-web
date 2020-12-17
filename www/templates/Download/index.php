@@ -10,7 +10,7 @@
 </div>
 
 <div class="actual-content">
-    <div class="container">
+    <div class="container <?= (isset($currentEntity['switch_shiny_download']) && isset($currentEntity['shiny_download']) && $currentEntity['switch_shiny_download'] == 1) ? 'shiny' : '' ?>">
         <div class="upload-tabs">
             <ul class="nav nav-tabs" role="tablist">
                 <?php if ($authedUser) { ?>
@@ -20,8 +20,20 @@
                 <li role="presentation"><a href="#feast-tool" aria-controls="feast-tool" role="tab" data-toggle="tab">Documentation</a></li>
             </ul>
         </div>
-        <div class='row tab-content inner-tab-content' style='display:none' data-bind='visible:true'>
+        <div class='row tab-content inner-tab-content' style='display:none;' data-bind='visible:true'>
             <?php if ($authedUser) { ?>
+            <?php if (isset($currentEntity['switch_shiny_download']) && isset($currentEntity['shiny_download']) && $currentEntity['switch_shiny_download'] == 1) { ?>
+                <div role ='tabpanel' class='tab-pane active col-md-8' id='download-pane'>
+                    <div class='page-prompt row'>
+                        <h2 class='col-md-12'>DOWNLOAD > DOWNLOAD DATA SETS</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 iframe-container">
+                            <iframe  frameborder="0" scrolling="no" src="<?php echo $currentEntity['shiny_download']; ?>" ></iframe>
+                        </div>
+                    </div>
+                </div>
+            <?php } else { ?>
                 <div role ='tabpanel' class='tab-pane active col-md-8' id='download-pane'>
                     <div class='page-prompt row'>
                         <h2 class='col-md-12'>DOWNLOAD > DOWNLOAD DATA SETS</h2>
@@ -31,7 +43,7 @@
                     <div class="download-filter row">
                         <div class="col-md-12">
                             <h4>CSV Data Exports</h4>                        
-                            <label style="vertical-align:top">Filter By:</label><select data-bind="value: filterType">
+                            <label style="vertical-align:top">Filter By:</label><select data-bind="value: filterType, select2: {minimumResultsForSearch: -1}">
                                 <option value="none">&lt;No Filter&gt;</option>
                                 <option value="region">World Region</option>
                                 <option value="project">Project</option>
@@ -40,21 +52,21 @@
                                 <div class="row">                                
                                     <!-- ko if: filterType() == "region" -->
                                     <div class="filter-block pull-left col-md-4">
-                                        <label style="vertical-align:top">World Region:</label><select multiple="true" size="5" data-bind="options: worldRegions, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedWorldRegion"></select>
+                                        <label style="vertical-align:top">World Region:</label><select multiple="true" size="5" data-bind="options: worldRegions, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedWorldRegion"></select>
                                     </div>
                                     <div class="filter-block pull-left col-md-4">
-                                        <label style="vertical-align:top">Country:</label><select multiple="true" size="5" data-bind="options: countries, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedCountry"></select>
+                                        <label style="vertical-align:top">Country:</label><select multiple="true" size="5" data-bind="options: countries, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedCountry"></select>
                                     </div>
                                     <div class="filter-block pull-left col-md-4">
-                                        <label style="vertical-align:top">Site:</label><select multiple="true" size="5" data-bind="options: sites, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedSite"></select>
+                                        <label style="vertical-align:top">Site:</label><select multiple="true" size="5" data-bind="options: sites, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedSite"></select>
                                     </div>
                                     <!-- /ko -->                    
                                     <!-- ko if: filterType() == "project" -->                                
                                     <div class="filter-block pull-left col-md-6">
-                                        <label style="vertical-align:top">Project:</label><select multiple="true" size="5" data-bind="options: projects, optionsText: 'title', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedProject"></select>
+                                        <label style="vertical-align:top">Project:</label><select multiple="true" size="5" data-bind="options: projects, select2: {minimumResultsForSearch: -1}, optionsText: 'title', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedProject"></select>
                                     </div>                                
                                     <div class="filter-block pull-left col-md-6">
-                                        <label style="vertical-align:top">Site:</label><select multiple="true" size="5" data-bind="options: sites, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedSite"></select>
+                                        <label style="vertical-align:top">Site:</label><select multiple="true" size="5" data-bind="options: sites, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedSite"></select>
                                     </div>
                                     <!-- /ko -->
                                     <p class="help-block" style="clear: both">Hold CTRL while clicking to select more than one option.</p>                            
@@ -76,7 +88,7 @@
                         </div>
                     </div>
                 </div>
-            <?php } ?>
+            <?php } } ?>
             <div role ='tabpanel' class='tab-pane <?= $authedUser ? '' : 'active' ?> col-md-8' id='directory-pane'>
                 <div class='page-prompt row'>
                     <h2 class='col-md-12'>DOWNLOAD > DIRECTORY</h2>
@@ -86,7 +98,7 @@
                     <?php } ?>
                 </div>
                 <div class='filter-row col-md-12'>
-                    <label style="vertical-align:top">Filter By:</label><select data-bind="value: filterType">
+                    <label style="vertical-align:top">Filter By:</label><select data-bind="value: filterType, select2: {minimumResultsForSearch: -1}">
                         <option value="none">&lt;No Filter&gt;</option>
                         <option value="region">World Region</option>
                         <option value="project">Project</option>
@@ -95,15 +107,15 @@
                         <div class="row">                                
                             <!-- ko if: filterType() == "region" -->
                             <div class="filter-block pull-left col-md-4">
-                                <label style="vertical-align:top">World Region:</label><select multiple="true" size="5" data-bind="options: worldRegions, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedWorldRegion"></select>
+                                <label style="vertical-align:top">World Region:</label><select multiple="true" size="5" data-bind="options: worldRegions, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedWorldRegion"></select>
                             </div>
                             <div class="filter-block pull-left col-md-4">
-                                <label style="vertical-align:top">Country:</label><select multiple="true" size="5" data-bind="options: countries, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedCountry"></select>
+                                <label style="vertical-align:top">Country:</label><select multiple="true" size="5" data-bind="options: countries, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedCountry"></select>
                             </div>
                             <!-- /ko -->                    
                             <!-- ko if: filterType() == "project" -->                                
                             <div class="filter-block pull-left col-md-6">
-                                <label style="vertical-align:top">Project:</label><select multiple="true" size="5" data-bind="options: projects, optionsText: 'title', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedProject"></select>
+                                <label style="vertical-align:top">Project:</label><select multiple="true" size="5" data-bind="options: projects, select2: {minimumResultsForSearch: -1}, optionsText: 'title', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedProject"></select>
                             </div>
                             <!-- /ko -->
                             <p class="help-block" style="clear: both">Hold CTRL while clicking to select more than one option.</p>                            
@@ -121,7 +133,7 @@
                     <tbody data-bind='foreach: sites'>
                         <tr>
                             <td data-bind='text: name'></td>
-                            <td data-bind='text: project.title'></td>
+                            <td data-bind='text: project_view.title'></td>
                             <td data-bind='text: system_country.name'></td>
                         </tr>
                     </tbody>

@@ -53,7 +53,7 @@ class TokenComponent extends Component
      */
     public function newToken($user_id, $token_type)
     {
-        $token = $this->tokens->newEntity();
+        $token = $this->tokens->newEmptyEntity();
         $token->token = $this->randomToken(32);
         $token->user_id = $user_id;
         $token->token_type_id = $token_type;

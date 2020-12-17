@@ -30,7 +30,7 @@
                     <div class="dropzone-previews"></div>
                     <div class="fallback" id='file-upload-fallback'>
                         <input name="file" type="file" />
-                    </div>                                    
+                    </div>
                 </form>
                 <!-- ko if: $root.isSending() == false -->
                 <button type="button" class="btn btn-default file-upload-button" data-bind="visible: $root.showUploadButton, click: $root.doFileUpload">Upload File</button>
@@ -45,6 +45,9 @@
                     <p class="help-block">Why only 1 year? Read more about ILRI/CGIAR's <a target='_blank' href='http://www.cgiar.org/resources/open/'>Open Data Policy</a></p>
                     <!-- ko if: $root.uploadError -->
                     <p class='text-warning'>There was a problem uploading or processing your data. Try again, or contact an administrator for assistance.</p>
+                    <!-- /ko -->
+                    <!-- ko if: $root.uploadError && $root.uploadError() != true && $root.uploadError() != false -->
+                    <div class="message error" data-bind="text: $root.uploadError"></div>
                     <!-- /ko -->
                 </div>                
                 <!-- /ko -->
@@ -64,8 +67,14 @@
                     </ul>
                 </div>
                 <div class='col-md-12'>
-                    <select data-bind="options: tableList, optionsText: function(item) {return item.tableName + (isCustomizableTable(item) ? '*' : '') ;}, optionsCaption:'Choose a Table:', value: selectedTable"></select>
-                </div>                
+                    <!--<select data-bind="options: tableFilter, optionsText: function(item) {return item.tableName + (isCustomizableTable(item) ? '*' : '') ;}, optionsCaption:'Choose a Table:', value: selectedTable"></select>-->
+                    <select data-bind="foreach: tableList, value: selectedTable">
+                        <option data-bind="visible: $index() < 1, text: 'Choose a Table:', value: ''"></option>
+                        <optgroup data-bind="attr: {label: label}, foreach: tables">
+                            <option data-bind="text: $data.tableName, value: $data"></option>
+                        </optgroup>
+                    </select>
+                </div>
                 <!-- ko if: loadingData -->
                 <div class='col-md-12 load-spinner'>
                     <i class="fa fa-spinner fa-spin"></i>
@@ -74,14 +83,14 @@
                 <!-- ko if: currentReport -->
                 <div class='col-md-6'>
                     <p class='result-count'><span class='result-count-number' data-bind='text:totalResults'></span> Results</p>
-                    <button data-bind='click: toggleSearch'>Search/Filter</button>                
-                    <!-- ko if: reportMode() === 'search' -->         
-                    <div class='search-div'>                    
+                    <button data-bind='click: toggleSearch'>Search/Filter</button>
+                    <!-- ko if: reportMode() === 'search' -->
+                    <div class='search-div'>
                         <div data-bind='foreach: filters'>
                             <p><span data-bind='text: column'></span>: <span data-bind='text: value'></span> <button type='button' data-bind='click: $root.removeFilter'>[x]</button></p>
                         </div>
                         <div class="col-md-12">
-                            <select data-bind="options: currentReport().headers, optionsCaption:'Choose a Column:', value: newFilterColumn"></select>
+                            <select data-bind="options: currentReport().headers, select2: {minimumResultsForSearch: -1}, optionsCaption:'Choose a Column:', value: newFilterColumn"></select>
                             <input type='input' data-bind='value: newFilterValue' />
                             <button type="button" data-bind='click: addFilter'>Add</button>
                         </div>
@@ -93,7 +102,7 @@
                 </div>
                 <div class='col-md-6'>
                     <p><em>Bulk Actions</em><p>
-                        <select data-bind='options: bulkActions, optionsCaption: "Choose Action", value: selectedAction'></select>
+                        <select data-bind='options: bulkActions, select2: {minimumResultsForSearch: -1}, optionsCaption: "Choose Action", value: selectedAction'></select>
                         <button data-bind='click: applyAction, enable: (selectedAction() != null)'>Submit</button>
                 </div>
                 <table class='table'>
@@ -115,6 +124,12 @@
                             <!-- /ko -->                                                    
                             <!-- ko if: $data != null && $data.action != null && $data.action == 'checkbox' -->
                             <td><input type='checkbox' data-bind='checked: $data.value, attr: { disabled: $data.key != "selectRow"}' /></td>
+                            <!-- /ko -->
+                            <!-- ko if: $data != null && $data.action != null && $data.action == 'text' -->
+                            <td><input type='text' data-bind='event: {change: $root.applyChange.bind()}, value: $data.value, id: $data.key+"_"+$data.rowID' /></td>
+                            <!-- /ko -->
+                            <!-- ko if: $data != null && $data.action != null && $data.action == 'tooltip' -->
+                            <td><a href="javascript:void;" data-bind='tooltip: {title: $data.title}, text: $data.text' /></a></td>
                             <!-- /ko -->
                             <!-- ko if: $data == null || ($data != null && $data.action == null) -->
                             <td data-bind='text: reportField'></td>
@@ -214,7 +229,7 @@
                         <div data-bind='foreach: consolidateFilters'>
                             <p><span data-bind='text: column'></span>: <span data-bind='text: value'></span> <button type='button' data-bind='click: $root.removeConsolidateFilter'>[x]</button></p>
                         </div>
-                        <select data-bind="options: consolidateReport().headers, optionsCaption:'Choose a Column:', value: newConsolidateFilterColumn"></select>
+                        <select data-bind="options: consolidateReport().headers, select2: {minimumResultsForSearch: -1}, optionsCaption:'Choose a Column:', value: newConsolidateFilterColumn"></select>
                         <input type='input' data-bind='value: newConsolidateFilterValue' />
                         <button data-bind='click: addConsolidateFilter'>Add</button>
                     </div>
@@ -357,7 +372,8 @@
     </div>
 </div>
 
-<?php $this->Html->script('dropzone.js', array('block' => 'script')) ?>
+<?php $this->Html->script('dropzone.js?v=1', array('block' => 'script')) ?>
 <?php $this->Html->script('upload_strings.js', array('block' => 'script')) ?>
-<?php $this->Html->script('report_common.js', array('block' => 'script')) ?>
-<?php $this->Html->script('upload.js', array('block' => 'script')) ?>
+<?php $this->Html->script('report_common.js?v=3.4', array('block' => 'script')) ?>
+<?php $this->Html->script('upload.js?v=1.1', array('block' => 'script')) ?>
+<?php $this->Html->script('knockstrap.min.js', array('block' => 'script')) ?>

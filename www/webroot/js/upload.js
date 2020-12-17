@@ -8,7 +8,7 @@ function requestFailed(jqXHR, textStatus, errorThrown, errorObservable) {
         window.location.replace("/timeout");
     } else {
         // TODO: Clean these up and make them readable.
-        errorObservable(systemErrorString);
+        errorObservable(stringSystemError);
     }
 }
 
@@ -50,13 +50,16 @@ function koUploadModel() {
                     self.showUploadButton(true);
                 });
                 this.on("removedfile", function(file, response) {
+                    console.log(response)
                     self.showUploadButton(false);
                 });
                 this.on("error", function(file, response) {
+                    console.log(response)
                     self.isSending(false);
-                    self.uploadError('true');
+                    self.uploadError(true);
                 });
                 this.on("success", function(file, response) {
+                    console.log(response)
                     self.isSending(false);
                     // Submit activity attempt for this upload if it was successful.
                     if (response.error == null) {
@@ -68,7 +71,7 @@ function koUploadModel() {
                         self.showUploadButton(false);
                         self.getPrivateProjects();
                     } else {
-                        self.uploadError(true);
+                        self.uploadError(response.error);
                     }
                 });
                 this.on("maxfilesexceeded", function(file) {

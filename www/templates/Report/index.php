@@ -10,8 +10,18 @@
 </div>
 
 <div class="actual-content">
-    <div class="container-fluid report-page-container">
+    <div class="container-fluid report-page-container <?= (isset($currentEntity['switch_shiny_visualize']) && isset($currentEntity['shiny_visualize']) && $currentEntity['switch_shiny_visualize'] == 1) ? 'shiny' : '' ?>">
         <div class='row tab-content inner-tab-content'>
+            <?php if (isset($currentEntity['switch_shiny_visualize']) && isset($currentEntity['shiny_visualize']) && $currentEntity['switch_shiny_visualize'] == 1) { ?>
+            <div class='page-prompt col-md-12'>
+                <h2 class='col-md-12'>REPORTS</h2>
+            </div>
+            <div class="body-part">
+                <div class='col-md-12 iframe-container'>
+                    <iframe  frameborder="0" scrolling="no" src="<?php echo $currentEntity['shiny_visualize']; ?>" ></iframe>
+                </div>
+            </div>
+            <?php } else { ?>
             <div class='page-prompt col-md-12'>
                 <h2 class='col-md-12'>REPORTS</h2>
                 <p class='col-md-12 video-link'><i class="fa fa-play-circle-o"></i> <a target="_blank" href="/help#report-help">Watch a tutorial video</a></p>
@@ -22,11 +32,11 @@
                     <div id='report-top-controls' class='report-controls col-md-6'>
                         <h3>Report</h3>
                         <div class="report-type">
-                            Report: <select data-bind="options: chartTypes, value: selectedChartType"></select>
+                            Report: <select data-bind="options: chartTypes, select2: {minimumResultsForSearch: -1}, value: selectedChartType"></select>
                             <button id='add-report-btn' class='button btn-default' data-bind='click: addReport'>Add Second Report</button>
                         </div>
                         <div class="report-groupings" data-bind="if: selectedChartType() != 'Rainfall'">
-                            Group By: <select data-bind="options: availableGroupings, optionsText: 'name', optionsValue: 'value', value: selectedGrouping"></select>
+                            Group By: <select data-bind="options: availableGroupings, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'value', value: selectedGrouping"></select>
                         </div>
                         <div class="report-filters">
                             <?php if ($authedUser) { ?>
@@ -36,14 +46,14 @@
                                 </label>
                             </div>
                             <?php } ?>
-                            Gender: <select data-bind="options: genders, optionsText: 'name', optionsValue: 'value', optionsCaption: 'All', value: selectedGender"></select>
-                            Project: <select data-bind="options: projects, optionsText: 'title', optionsValue: 'id', optionsCaption: 'All', value: selectedProject"></select>
+                            Gender: <select data-bind="options: genders, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'value', optionsCaption: 'All', value: selectedGender"></select>
+                            Project: <select data-bind="options: projects, select2: {minimumResultsForSearch: -1}, optionsText: 'title', optionsValue: 'id', optionsCaption: 'All', value: selectedProject"></select>
                             <!-- ko if: selectedProject() != null -->
-                            Site: <select data-bind="options: sites, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', value: selectedSite"></select>
+                            Site: <select data-bind="options: sites, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', value: selectedSite"></select>
                             <!-- /ko -->
-                            World Region: <select data-bind="options: worldRegions, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', value: selectedWorldRegion"></select>
+                            World Region: <select data-bind="options: worldRegions, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', value: selectedWorldRegion"></select>
                             <!-- ko if: selectedWorldRegion() != null -->
-                            Country: <select data-bind="options: countries, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', value: selectedCountry"></select>
+                            Country: <select data-bind="options: countries, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', value: selectedCountry"></select>
                             <!-- /ko -->
                             <div class='no-data-warning' data-bind='visible: noData'>
                                 <p>No data is available for your selected filters.</p>
@@ -57,10 +67,10 @@
                     <div id='report-bottom-controls' class='report-controls col-md-6' style='display:none'>
                         <h3>Bottom Report</h3>
                         <div class="report-type">
-                            Report: <select data-bind="options: chartTypes, value: selectedChartType"></select>
+                            Report: <select data-bind="options: chartTypes, select2: {minimumResultsForSearch: -1}, value: selectedChartType"></select>
                         </div>
                         <div class="report-groupings" data-bind="if: selectedChartType() != 'Rainfall'">
-                            Group By: <select data-bind="options: availableGroupings, optionsText: 'name', optionsValue: 'value', value: selectedGrouping"></select>
+                            Group By: <select data-bind="options: availableGroupings, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'value', value: selectedGrouping"></select>
                         </div>
                         <div class="report-filters">
                             <?php if ($authedUser) { ?>
@@ -70,14 +80,14 @@
                                 </label>
                             </div>
                             <?php } ?>
-                            Gender: <select data-bind="options: genders, optionsText: 'name', optionsValue: 'value', optionsCaption: 'All', value: selectedGender"></select>
-                            Project: <select data-bind="options: projects, optionsText: 'title', optionsValue: 'id', optionsCaption: 'All', value: selectedProject"></select>
+                            Gender: <select data-bind="options: genders, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'value', optionsCaption: 'All', value: selectedGender"></select>
+                            Project: <select data-bind="options: projects, select2: {minimumResultsForSearch: -1}, optionsText: 'title', optionsValue: 'id', optionsCaption: 'All', value: selectedProject"></select>
                             <!-- ko if: selectedProject() != null -->
-                            Site: <select data-bind="options: sites, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', value: selectedSite"></select>
+                            Site: <select data-bind="options: sites, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', value: selectedSite"></select>
                             <!-- /ko -->
-                            World Region: <select data-bind="options: worldRegions, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', value: selectedWorldRegion"></select>
+                            World Region: <select data-bind="options: worldRegions, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', value: selectedWorldRegion"></select>
                             <!-- ko if: selectedWorldRegion() != null -->
-                            Country: <select data-bind="options: countries, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', value: selectedCountry"></select>
+                            Country: <select data-bind="options: countries, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', value: selectedCountry"></select>
                             <!-- /ko -->
                             <div class='no-data-warning' data-bind='visible: noData'>
                                 <p>No data is available for your selected filters.</p>
@@ -96,6 +106,7 @@
                     </div>
                 </div>
             </div>
+            <?php } ?>
         </div>
     </div>
 </div>

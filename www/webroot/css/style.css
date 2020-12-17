@@ -1157,7 +1157,7 @@ div.feed-content img {
 	padding-left: 30px;
 }
 
-div.message.error {
+div.message.error, .dz-error-message {
 	color: #ee0000;
 	font-weight: 600;
 	padding: 6px 0;
@@ -1385,4 +1385,46 @@ div.resource-list-wrapper {
 
 #upload-help-contents, #exclude-help-contents, #consolidate-help-contents, #download-help-contents, #report-help-contents, #general-help-contents, #usage-help-contents {
     margin-bottom: 12px;
+}
+
+.text-error {
+	color: #bb3a3a;
+}
+
+.select2-container {
+    width: auto !important;
+    min-width: 100px;
+}
+
+.select2-selection--multiple {
+    min-width: 200px;
+}
+
+.shiny.container, .shiny.container-fluid {
+    max-width: none;
+    width: auto;
+}
+
+.shiny.container .inner-tab-content, .shiny.container-fluid .inner-tab-content {
+    margin: 0 -15px;
+}
+
+.shiny.container iframe, .shiny.container-fluid iframe {
+    height: 830px;
+    overflow:hidden;
+    width: 100%;
+}
+
+.shiny.container-fluid iframe {
+    height: 1095px;
+}
+
+@media screen and (max-width: 827px) {
+  .shiny.container iframe {
+    height: 885px;
+  }
+}
+
+.iframe-container {
+  background:url(../img/loader.gif) top center no-repeat;
 }

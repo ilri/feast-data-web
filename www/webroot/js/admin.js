@@ -168,6 +168,8 @@ function koAdminModel() {
 
         self.getSettings();
 
+        self.getlogs();
+
         // Get dropdown data.
         getSystemArray("/api/system/salutation/all", function(data) {
             self.salutations(data.salutation);
@@ -393,7 +395,19 @@ function koAdminModel() {
         self.getUserData(true, null, function() {
             // Optional callback
         });
-    };
+     };
+
+        self.clearLogs = function(logs) {
+            if (!confirm("Are you sure you want to clear this log file?")) {
+            return;
+           }
+
+           clearLog(logs, function() {
+            self.getlogs();
+          });
+          
+        };
+
 
     self.canUpload = ko.observable(true);
     self.resources = ko.observableArray();
@@ -532,6 +546,14 @@ function koAdminModel() {
         });
     }
 
+    self.logs = ko.observableArray();
+    self.getlogs = function() {
+           getData('/api/setting/listlogs', function(data) {
+              //alert(JSON.stringify(data.logs.length));
+              self.logs(data.logs);
+        });
+    }
+
     self.addSetting = function() {
         $('#setting-detail-modal').modal('show');
         var newSetting = {
@@ -562,6 +584,22 @@ function koAdminModel() {
         });
     };
 }
+
+
+function clearLog(logs, callback) {
+    $.ajax({
+        type: "POST",
+        data: {},
+        url: '/api/setting/' + logs.logName + '/clearLogs',
+        dataType: "json"
+    }).done(function(data) {
+        callback(data);
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        requestFailed(jqXHR, textStatus, errorThrown, adminModel.lastError);
+    });
+}
+
+
 
 function saveSetting(setting, callback) {
     var url = null;

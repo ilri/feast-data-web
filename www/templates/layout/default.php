@@ -15,8 +15,8 @@
          * styles for now rather than including both stylesheets which would be
          * mostly redundant.
          */
-        
-        echo $this->Html->css('/css/style.css');
+        echo $this->Html->css('/css/select2.min.css');
+        echo $this->Html->css('/css/style.css?v=1.5');
         echo $this->Html->meta('icon','/img/favicon.ico');
         ?>
         <?= $this->fetch('meta') ?>
@@ -128,6 +128,8 @@
         </div>    
         <?= $this->Html->script('knockout-3.3.0.js') ?>
         <?= $this->Html->script('jquery-2.1.4.min.js') ?>
+        <?= $this->Html->script('select2.min.js'); ?>
+        <?= $this->Html->script('knockout-select2.js'); ?>
         <?= $this->Html->script('bootstrap.min.js') ?>
         <?= $this->Html->script('moment-with-locales.min.js') ?>
         <?= $this->Html->script('main.js') ?>
