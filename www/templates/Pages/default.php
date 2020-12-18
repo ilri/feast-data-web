@@ -9,7 +9,7 @@
         <?= $this->Html->css('bootstrap.min.css') ?>
         <?= $this->Html->css('font-awesome.min.css') ?>  
      <!--    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVZxvbF6TGfzB_zSuaXRo8rdPW-gGb9kc&callback=initMap&libraries=&v=weekly" defer></script>   -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=GOOGLE_KEY&callback=initMap&libraries=&v=weekly" defer></script>   -->
         <?php
         /*
          * TODO: There's currenty no separation in the stylesheet between "CORE"
