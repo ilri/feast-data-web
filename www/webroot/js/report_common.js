@@ -362,6 +362,7 @@ function koReportModel() {
                     report.canExclude = true;
                     report.canConsolidate = false;
                     report.canRevise = true;
+                    report.addMapIcon = true;
                     specificHeaders = newTable.tableHeaders;
                     thisReportRow = thisReportRow.concat([keyCols.project, keyCols.site, thisRow.community]);
 					if(self.isAdmin || (userInfo != 'N/A' && userInfo.id == currentUser)) {
@@ -524,6 +525,7 @@ function koReportModel() {
                     report.canExclude = true;
                     report.canConsolidate = false;
                     report.canRevise = true;
+                    report.addMapIcon = true;
                     specificHeaders = newTable.tableHeaders;
                     thisReportRow.push(keyCols.project);
                     (self.isAdmin || (userInfo != 'N/A' && userInfo.id == currentUser)) ? thisReportRow.push({action: 'text', key: 'name', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.name)}) : thisReportRow.push(thisRow.name);
@@ -547,6 +549,10 @@ function koReportModel() {
                 default:
             }
 
+            if (report.addMapIcon) {
+                thisReportRow.push({action: 'mapmodal', key: report.name.dbTableName, value: thisRow.id});
+            }
+
             if (report.canKeepPrivate) {
                 thisReportRow.push({action: 'checkbox', key: 'private', value: ko.observable(thisRow.keep_private)});
             }
@@ -564,6 +570,10 @@ function koReportModel() {
 
         if (!showMore) {
             report.headers = report.headers.concat(specificHeaders);
+
+            if (report.addMapIcon) {
+                report.headers.push("Map");
+            }
 
             if (report.canKeepPrivate) {
                 report.headers.push("Private");
@@ -713,7 +723,10 @@ function koReportModel() {
         }
         for (var i = 0; i < self.currentReport().data().length; i++) {
             var thisRow = self.currentReport().data()[i];
-            if (thisRow[thisRow.length - 1].value() == true) {
+
+            var selectIndex = thisRow.length - 1;
+
+            if (thisRow[selectIndex].value() == true) {
                 selectedRows.push(thisRow);
             }
         }
@@ -898,6 +911,11 @@ function koReportModel() {
             }
         }
         self.replacedByRow(replacingRow);
+    };
+
+    self.mapId = ko.observable(null);
+    self.showMapModal = function(rowInfo) {
+        self.mapId(rowInfo.value);
     };
 
     /*** MODEL HOUSEKEEPING **/

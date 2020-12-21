@@ -153,6 +153,9 @@ $this->assign('title', 'Administration | ' . h($currentEntity['portal_title']));
                             <!-- ko if: $data == null || ($data != null && $data.action == null) -->
                             <td data-bind='text: reportField'></td>
                             <!-- /ko -->
+                            <!-- ko if: $data != null && $data.action != null && $data.action == 'mapmodal' -->
+                            <td><a class="modal-anchor" data-toggle="modal" data-target="#map-modal" data-bind='click: $root.showMapModal.bind(reportRow)'><i class="fa fa-map-marker fa-2x"></i></a></td>
+                            <!-- /ko -->
                         </tr>
                     </tbody>
                 </table>
@@ -605,6 +608,6 @@ $this->assign('title', 'Administration | ' . h($currentEntity['portal_title']));
 
 <?php $this->Html->script('dropzone.js', array('block' => 'script')) ?>
 <?php $this->Html->script('admin_strings.js', array('block' => 'script')) ?>
-<?php $this->Html->script('report_common.js?v=3.4', array('block' => 'script')) ?>
+<?php $this->Html->script('report_common.js?v=3.5', array('block' => 'script')) ?>
 <?php $this->Html->script('admin.js', array('block' => 'script')) ?>
 <?php $this->Html->script('knockstrap.min.js', array('block' => 'script')) ?>

@@ -134,6 +134,9 @@
                             <!-- ko if: $data == null || ($data != null && $data.action == null) -->
                             <td data-bind='text: reportField'></td>
                             <!-- /ko -->
+                            <!-- ko if: $data != null && $data.action != null && $data.action == 'mapmodal' -->
+                            <td><a class="modal-anchor" data-toggle="modal" data-target="#map-modal" data-bind='click: $root.showMapModal.bind(reportRow)'><i class="fa fa-map-marker fa-2x"></i></a></td>
+                            <!-- /ko -->
                         </tr>
                     </tbody>
                 </table>
@@ -372,8 +375,35 @@
     </div>
 </div>
 
+<div class='modal fade' id="map-modal" tabindex='-1' role='dialog' aria-labeled-by='map_model_label' aria-hidden='true'>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content container shiny">            
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h2 class="modal-title">Spatial Data</h2>
+            </div>
+            <!-- ko if: mapId() != null && selectedTable -->
+                <div class="row">
+                    <div class="col-md-12 iframe-container">
+                        <!-- ko if: selectedTable().dbTableName == 'site' -->
+                        <iframe  frameborder="0" scrolling="no" data-bind="attr: {src: '<?php echo $currentEntity["spatial_site_url"]; ?>' + mapId()}" ></iframe>
+                        <!-- /ko -->
+                        <!-- ko if: selectedTable().dbTableName == 'focus_group' -->
+                        <iframe  frameborder="0" scrolling="no" data-bind="attr: {src: '<?php echo $currentEntity["spatial_focus_group_url"]; ?>' + mapId()}" ></iframe>
+                        <!-- /ko -->
+                    </div>
+                </div>
+            <!-- /ko -->
+  
+            <div class="modal-footer">
+                <button class="btn btn-default" id="user-detail-finish-btn" data-dismiss='modal'>Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php $this->Html->script('dropzone.js?v=1', array('block' => 'script')) ?>
 <?php $this->Html->script('upload_strings.js', array('block' => 'script')) ?>
-<?php $this->Html->script('report_common.js?v=3.4', array('block' => 'script')) ?>
+<?php $this->Html->script('report_common.js?v=3.5', array('block' => 'script')) ?>
 <?php $this->Html->script('upload.js?v=1.1', array('block' => 'script')) ?>
 <?php $this->Html->script('knockstrap.min.js', array('block' => 'script')) ?>

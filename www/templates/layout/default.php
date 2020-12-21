@@ -9,7 +9,7 @@
         <?= $this->Html->css('bootstrap.min.css') ?>
         <?= $this->Html->css('font-awesome.min.css') ?>  
      <!--    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVZxvbF6TGfzB_zSuaXRo8rdPW-gGb9kc&callback=initMap&libraries=&v=weekly" defer></script>   -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=GOOGLE_KEY&callback=initMap&libraries=&v=weekly" defer></script>   -->
         <?php
         /*
          * TODO: There's currenty no separation in the stylesheet between "CORE"
@@ -18,7 +18,7 @@
          * mostly redundant.
          */
         echo $this->Html->css('/css/select2.min.css');
-        echo $this->Html->css('/css/style.css?v=2');
+        echo $this->Html->css('/css/style.css?v=2.1');
         echo $this->Html->meta('icon','/img/favicon.ico');
         ?>
         <?= $this->fetch('meta') ?>
@@ -60,7 +60,7 @@
         <!--Start wrapper -->
         <div class="wrapper">
             <!-- Start Header -->
-            <nav class="navbar navbar-default">
+            <nav class="navbar navbar-default navbar-toggleable-xs fixed-top">
                 <div class="container">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
@@ -80,24 +80,24 @@
                             <li>
                                 <a href="/profile"><?= $authedUser['name_first']?></a>
                             </li>
-                            <li class="v-line"></li>
+                             <li class="v-line hidden-xs"></li> 
                             <li>
                                 <a href="/user/logout">Logout</a>
                             </li>
-                            <li class="v-line"></li>
+                            <!-- <li class="v-line"></li> -->
                             <?php } else { ?>
 
                         
-                            <li class="v-line"></li>
+                           <!--  <li class="v-line"></li> -->
                             <li>
                                 <a href="/about"><strong>About Feast</strong></a>
                             </li>
-                            <li class="v-line"></li>
+                            <li class="v-line hidden-xs"></li>
                             <li>
                                 <a href="/news"><strong>News</strong></a>
                             </li>
                             
-                            <li class="v-line"></li>
+                            <li class="v-line hidden-xs"></li>
                             <?php } ?>
                            <!--  <li><a class="help-link" href="/help" target="_blank">Help</a></li> -->
                         </ul>
@@ -150,6 +150,13 @@
         <?= $this->Html->script('main.js') ?>
         <?= $this->fetch('script') ?>
         <script type='text/javascript'>
+
+        $(document).ready(function(){
+             $(".navbar-toggle").click(function() {
+                $("#navbar").addClass("navbar-card");
+              });
+        });
+    
             moment.locale(navigator.languages? navigator.languages[0] : (navigator.language || navigator.userLanguage));
         </script>
         <?php if (!empty($currentEntity['google_analytics_code'])) { ?>

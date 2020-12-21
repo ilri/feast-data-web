@@ -44,7 +44,8 @@ color: white;
 				<h1> <a href="./"><img class='logo-image' src="/img/brand.png"></a></h1>
 			</div>
 		</div>
-		<div class="col-md-4 col-md-offset-4 home-signin ">
+        
+            <div class="col-md-4 col-md-offset-1 home-signin ">
                 <div class="col-md-12">
                     <div class="panel panel-default card">
                         <div class="panel-heading ">
@@ -67,7 +68,7 @@ color: white;
                                 <div class='forgot-password-block'><p class="need-registration">Forgot your password? <a href="/user/resetPassword">Click Here</a></p></div>
 
                                  <div class='register-block'><p class="need-registration">Don't have an account yet?</p>
-                                 	<button type="button" class="btn btn-sm btn-default pull-right" data-toggle="modal" data-target="#register-modal">Register</button>
+                                    <button type="button" class="btn btn-sm btn-default pull-right" data-toggle="modal" data-target="#register-modal">Register</button>
                                  </div>
                                 
                             </div>                            
@@ -75,9 +76,55 @@ color: white;
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-6  home-counter ">
+                <div class="col-md-12">
+                    <div class="panel panel-default card">
+                        <div class="panel-heading ">
+                            <p class='panel-title'>DB Stats</p>
+                        </div>
+                        <div class="panel-body">
+                               <div class="row row-2">
+                <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0 text-center">
+                    <div class="counter" data-aos="fade-up" data-aos-delay="100">
+                        <strong class="d-block number" data-number="<?= $stat->countries; ?>">0</strong><br>
+                        <span class="d-block caption"> Countries</span>
+                    </div> 
+                </div>  
+
+              <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0 text-center">
+                    <div class="counter" data-aos="fade-up" data-aos-delay="100">
+                        <strong class="d-block number" data-number="<?= $stat->sites; ?>">0</strong><br>
+                        <span class="d-block caption">Sites</span>
+                    </div> 
+                </div>  
+
+                <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0 text-center">
+                    <div class="counter" data-aos="fade-up" data-aos-delay="10">
+                        <strong class="d-block number" data-number="<?= $stat->focus_groups; ?>">0</strong><br>
+                        <span class="d-block caption">Focus groups</span>
+                    </div> 
+                </div>  
+
+                <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0 text-center">
+                    <div class="counter" data-aos="fade-up" data-aos-delay="100">
+                        <strong class="d-block number" data-number="<?= $stat->fodder_cultivated; ?>">0</strong><br>
+                        <span class="d-block caption">Fodder Hectares</span>
+                    </div> 
+                </div>  
+
+                             
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+
+
 	     
 </section>
-<div class="untree_co-section-2 count-numbers">
+<!-- <div class="untree_co-section-2 count-numbers">
 <div class="container">
 <div class="row">
 		<div class="col-lg-12 mx-auto">
@@ -114,7 +161,7 @@ color: white;
 		</div>
 	</div>
 </div>
-</div>
+</div> -->
 <div class='modal fade' id="register-modal" tabindex='-1' role='dialog' aria-labeled-by='register_model_label' aria-hidden='true'>
     <div class="modal-dialog">
         <div class="modal-content">            

@@ -9,11 +9,8 @@
 composer.lock
 /tmp.bak/*
 /cmstest/*
-/dbi/*
 /New folder/*
-feastdaemon/*
 resources/*
-spatialdata/*
 phpinfo.php
 
 # OS generated files #
