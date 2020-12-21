@@ -1450,8 +1450,8 @@ div.resource-list-wrapper {
     background: #fff;
 }
 
-.shiny.container.modal-content .iframe-container {
-    margin-bottom: -62px;
+.modal.fade.in {
+    z-index: 10000;
 }
 
 .main {
