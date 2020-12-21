@@ -100,7 +100,14 @@ class PagesController extends AppController
     {
     }
 
-     public function aboutfeast()
+    public function aboutfeast()
+    {
+    }
+
+    public function loginfeast()
+    {
+    } 
+    public function registerfeast()
     {
     }
 }

@@ -63,6 +63,12 @@
             <nav class="navbar navbar-default">
                 <div class="container">
                     <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
                         <a href="http://ilri.org/feast" target="_blank" class="navbar-brand">                    
                             <img src="/img/sonata_logo.png" alt="sonata_logo.png" />
                         </a>
@@ -90,6 +96,7 @@
                             <li>
                                 <a href="/news"><strong>News</strong></a>
                             </li>
+                            
                             <li class="v-line"></li>
                             <?php } ?>
                            <!--  <li><a class="help-link" href="/help" target="_blank">Help</a></li> -->
