@@ -368,21 +368,9 @@ function koReportModel() {
 					if(self.isAdmin || (userInfo != 'N/A' && userInfo.id == currentUser)) {
 						thisReportRow.push({action: 'text', key: 'venue_name', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.venue_name)});
 						thisReportRow.push({action: 'text', key: 'meeting_date_time', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.meeting_date_time)});
-						thisReportRow.push({action: 'text', key: 'gps_latitude_degrees', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.gps_latitude_degrees)});
-						thisReportRow.push({action: 'text', key: 'gps_latitude_minutes', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.gps_latitude_minutes)});
-						thisReportRow.push({action: 'text', key: 'gps_latitude_seconds', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.gps_latitude_seconds)});
-						thisReportRow.push({action: 'text', key: 'gps_longitude_degrees', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.gps_longitude_degrees)});
-						thisReportRow.push({action: 'text', key: 'gps_longitude_minutes', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.gps_longitude_minutes)});
-						thisReportRow.push({action: 'text', key: 'gps_longitude_seconds', 'index': i, rowID: thisRow.id, value: ko.observable(thisRow.gps_longitude_seconds)});
 					} else {
 						thisReportRow.push(thisRow.venue_name);
 						thisReportRow.push(thisRow.meeting_date_time);
-						thisReportRow.push(thisRow.gps_latitude_degrees);
-						thisReportRow.push(thisRow.gps_latitude_minutes);
-						thisReportRow.push(thisRow.gps_latitude_seconds);
-						thisReportRow.push(thisRow.gps_longitude_degrees);
-						thisReportRow.push(thisRow.gps_longitude_minutes);
-						thisReportRow.push(thisRow.gps_longitude_seconds);
 					}
                     break;
                 case "focus_group_monthly_statistics":
@@ -736,11 +724,11 @@ function koReportModel() {
     self.applyChange = function(data, event) {
         var selectRowColumn = 0;
         if (self.selectedTable().dbTableName == "site") {
-            selectRowColumn = 9;
+            selectRowColumn = 10;
         } else if (self.selectedTable().dbTableName == "project") {
             selectRowColumn = 7;
         } else if (self.selectedTable().dbTableName == "focus_group") {
-            selectRowColumn = 16;
+            selectRowColumn = 11;
         }
 
         if (selectRowColumn > 0) {
@@ -803,10 +791,7 @@ function koReportModel() {
                     } else if (self.selectedTable().dbTableName == 'site') {
                         aliasData.records.push({id: thisRow[0], name: thisRow[4].value(), major_region: thisRow[5].value()});
                     } else if (self.selectedTable().dbTableName == 'focus_group') {
-                        aliasData.records.push({id: thisRow[0], venue_name: thisRow[6].value(), meeting_date_time: thisRow[7].value(),
-                            gps_latitude_degrees: thisRow[8].value(), gps_latitude_minutes: thisRow[9].value(), gps_latitude_seconds: thisRow[10].value(),
-                            gps_longitude_degrees: thisRow[11].value(), gps_longitude_minutes: thisRow[12].value(), gps_longitude_seconds: thisRow[13].value()
-                        });
+                        aliasData.records.push({id: thisRow[0], venue_name: thisRow[6].value(), meeting_date_time: thisRow[7].value()});
                     }
                 });
                 postData('/api/user/data/' + self.selectedTable().dbTableName + '/alias', aliasData, function(result) {
@@ -960,7 +945,7 @@ var tableFilters = [
     {tableName: 'Crop Type', dbTableName: 'crop_type', filters: ['User.id', 'CropType.uploaded_at', 'CropType.name', 'CropType.harvest_index', 'CropType.content_percent_dry_matter', 'CropType.content_metabolisable_energy', 'CropType.content_crude_protein', 'CropType.replaced_by_id']},
     {tableName: 'Feed Source', dbTableName: 'feed_source', filters: ['User.id', 'FeedSource.uploaded_at', 'SiteView.id', 'FeedSource.description', 'FeedSource.replaced_by_id']},
     {tableName: 'Feed Source Availability', dbTableName: 'feed_source_availability', filters: ['User.id', 'FeedSourceAvailability.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'FeedSource.description', 'Month.name', 'FeedSourceAvailability.contribution']},
-    {tableName: 'Focus Group', dbTableName: 'focus_group', filters: ['User.id', 'FocusGroupView.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.community', 'FocusGroupView.venue_name', 'FocusGroupView.meeting_date_time', 'FocusGroupView.gps_latitude_degrees', 'FocusGroupView.gps_latitude_minutes', 'FocusGroupView.gps_latitude_seconds', 'FocusGroupView.gps_longitude_degrees', 'FocusGroupView.gps_longitude_minutes', 'FocusGroupView.gps_longitude_seconds', 'FocusGroupView.keep_private', 'FocusGroupView.exclude']},
+    {tableName: 'Focus Group', dbTableName: 'focus_group', filters: ['User.id', 'FocusGroupView.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.community', 'FocusGroupView.venue_name', 'FocusGroupView.meeting_date_time', 'FocusGroupView.keep_private', 'FocusGroupView.exclude']},
     {tableName: 'Focus Group Monthly Statistics', dbTableName: 'focus_group_monthly_statistics', filters: ['User.id', 'FocusGroupMonthlyStatistics.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Month.name', 'ScaleZeroFive.number', 'FocusGroupMonthlyStatistics.keep_private', 'FocusGroupMonthlyStatistics.exclude']},
     {tableName: 'Fodder Crop Cultivation', dbTableName: 'fodder_crop_cultivation', filters: ['User.id', 'FodderCropCultivation.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'FodderCropType.name', 'FodderCropCultivation.cultivated_land', 'UnitArea.name', 'FodderCropCultivation.keep_private', 'FodderCropCultivation.exclude']},
     {tableName: 'Fodder Crop Type', dbTableName: 'fodder_crop_type', filters: ['User.id', 'FodderCropType.uploaded_at', 'FodderCropType.name', 'FodderCropType.annual_dry_matter_per_hectare', 'FodderCropType.content_metabolisable_energy', 'FodderCropType.content_crude_protein', 'FodderCropType.replaced_by_id']},
@@ -988,7 +973,7 @@ var tableList = [
     {label: 'Core Group', tables: [
         {tableName: 'Project', dbTableName: 'project', tableHeaders: ['Project Title', 'Project Description', 'Start Date']},
         {tableName: 'Site', dbTableName: 'site', tableHeaders: ['P', 'Name', 'Major Region', 'Country']},
-        {tableName: 'Focus Group', dbTableName: 'focus_group', tableHeaders: ['P', 'S', 'Community', 'Venue', 'Meeting Date/Time', 'Latitude Degrees', 'Latitude Minutes', 'Latitude Seconds', 'Longitude Degrees', 'Longitude Minutes', 'Longitude Seconds']}
+        {tableName: 'Focus Group', dbTableName: 'focus_group', tableHeaders: ['P', 'S', 'Community', 'Venue', 'Meeting Date/Time']}
     ]},
     {label: 'Feast Assessment', tables: [
 		{tableName: 'Core Context Attribute Score', dbTableName: 'core_context_attribute_score', tableHeaders: ['Core Context Attribute Type', 'Prompt', 'Techfit Scale Number', 'Techfit Assessment ID']},

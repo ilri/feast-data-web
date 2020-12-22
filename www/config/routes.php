@@ -55,6 +55,7 @@ $routes->scope('/api', function (RouteBuilder $builder) {
     $builder->connect('/user/data/:table/consolidate', ['controller' => 'Data', 'action' => 'consolidateUserData', '_method' => 'POST']);
     $builder->connect('/user/data/:table/exclude', ['controller' => 'Data', 'action' => 'excludeUserData', '_method' => 'POST']);
     $builder->connect('/user/data/:table/alias', ['controller' => 'Data', 'action' => 'updateAliasValue', '_method' => 'POST']);
+    $builder->connect('/user/data/:table/revert-alias', ['controller' => 'Data', 'action' => 'revertAlias', '_method' => 'POST']);
     
     $builder->connect('/directory/:table', ['controller' => 'Data', 'action' => 'getDirectoryData', '_method' => 'GET']);
     
@@ -113,7 +114,7 @@ $routes->scope('/', function (RouteBuilder $builder) {
      * to use (in this case, src/Template/Pages/home.ctp)...
      */
     $builder->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
-    //$builder->connect('/', ['controller' => 'Pages', 'action' => 'display', 'homenew']);
+   // $builder->connect('/', ['controller' => 'Pages', 'action' => 'display', 'homenew']);
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
      */
@@ -129,6 +130,9 @@ $routes->scope('/', function (RouteBuilder $builder) {
 
     $builder->connect('/about/', ['controller' => 'Pages', 'action' => 'aboutfeast']);
     $builder->connect('/news/', ['controller' => 'Pages', 'action' => 'feastnews']);
+    $builder->connect('/signin/', ['controller' => 'Pages', 'action' => 'loginfeast']);
+    $builder->connect('/signup/', ['controller' => 'Pages', 'action' => 'registerfeast']);
+
 
     /**
      * Connect catchall routes for all controllers.
