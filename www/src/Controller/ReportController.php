@@ -35,7 +35,9 @@ class ReportController extends AppController
      */
     public function beforeFilter(EventInterface $event)
     {
-        $this->Auth->allow(['index', 'getReportResults']);
+        if (isset($this->currentEntity['allow_report']) && $this->currentEntity['allow_report']) {
+            $this->Auth->allow(['index', 'getReportResults']);
+        }
         // Public everything by default.
     }
     public function initialize(): void
