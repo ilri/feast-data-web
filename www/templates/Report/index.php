@@ -14,7 +14,7 @@
         <div class='row tab-content inner-tab-content'>
             <?php if (isset($currentEntity['switch_shiny_visualize']) && isset($currentEntity['shiny_visualize']) && $currentEntity['switch_shiny_visualize'] == 1) { ?>
             <div class='page-prompt col-md-12'>
-                <h2 class='col-md-12'>REPORTS</h2>
+                <h2 class='col-md-12'>Visualisations</h2>
             </div>
             <div class="body-part">
                 <div class='col-md-12 iframe-container'>
