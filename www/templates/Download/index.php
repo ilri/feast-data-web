@@ -42,7 +42,7 @@
                     </div>
                     <div class="download-filter row">
                         <div class="col-md-12">
-                            <h4>CSV Data Exports</h4>                        
+                            <h4>Data Exports</h4>                        
                             <label style="vertical-align:top">Filter By:</label>
                             <select name="filter_type" data-bind="value: filterType, select2: {minimumResultsForSearch: -1}">
                                 <option value="none">&lt;No Filter&gt;</option>
@@ -70,17 +70,17 @@
                                         <label style="vertical-align:top">Site:</label><select name="site_project" multiple="true" size="5" data-bind="options: sites, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedSite"></select>
                                     </div>
                                     <!-- /ko -->
-                                    <p class="help-block" style="clear: both">Select filters above</p>
+                                    <p class="help-block" style="clear: both;margin-bottom: 5px;margin-left: 15px;">Select filters above</p>
                                 </div>
                             </div>
-                            <label style="vertical-align:top">Data Type:</label>
+                            <label style="vertical-align:top;margin-top: 10px;">Data Type:</label>
                             <select name="data_type" data-bind="value: dataType, select2: {minimumResultsForSearch: -1}">
                                 <option value="rdata">RDATA</option>
                                 <option value="csv">CSV</option>
                                 <option value="xlsx">Excel</option>
                             </select>
-                            <label><input name="mine_only" type="checkbox" data-bind="checked: mineOnly, click: $root.mineOnlyChange" />&nbsp;&nbsp;My Data</label>
-                            <a target='_blank' class="btn btn-success" data-bind="attr: {href: getData}">Download</a>
+                            <label style="margin-top: 15px;"><input name="mine_only" type="checkbox" data-bind="checked: mineOnly, click: $root.mineOnlyChange" />&nbsp;&nbsp;My Data Only</label>
+                            <a target='_blank' class="btn btn-success" style="margin-top: 10px;" data-bind="attr: {href: getData}">Download</a>
                             <!--<ul style="clear: both">
                                 <li><a target='_blank' data-bind="attr: {href: getAllCSV}"><span data-bind="if: filterType() != 'none'">Filtered</span><span data-bind="if: filterType() == 'none'">All</span> Public Data (CSV)</a></li>
                                 <li><a target='_blank' data-bind="attr: {href: getMyCSV}">My Data (CSV)</a></li>
