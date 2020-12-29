@@ -43,7 +43,8 @@
                     <div class="download-filter row">
                         <div class="col-md-12">
                             <h4>CSV Data Exports</h4>                        
-                            <label style="vertical-align:top">Filter By:</label><select data-bind="value: filterType, select2: {minimumResultsForSearch: -1}">
+                            <label style="vertical-align:top">Filter By:</label>
+                            <select name="filter_type" data-bind="value: filterType, select2: {minimumResultsForSearch: -1}">
                                 <option value="none">&lt;No Filter&gt;</option>
                                 <option value="region">World Region</option>
                                 <option value="project">Project</option>
@@ -52,32 +53,41 @@
                                 <div class="row">                                
                                     <!-- ko if: filterType() == "region" -->
                                     <div class="filter-block pull-left col-md-4">
-                                        <label style="vertical-align:top">World Region:</label><select multiple="true" size="5" data-bind="options: worldRegions, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedWorldRegion"></select>
+                                        <label style="vertical-align:top">World Region:</label><select name="world_region" multiple="true" size="5" data-bind="options: worldRegions, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedWorldRegion"></select>
                                     </div>
                                     <div class="filter-block pull-left col-md-4">
-                                        <label style="vertical-align:top">Country:</label><select multiple="true" size="5" data-bind="options: countries, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedCountry"></select>
+                                        <label style="vertical-align:top">Country:</label><select name="country" multiple="true" size="5" data-bind="options: countries, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedCountry"></select>
                                     </div>
                                     <div class="filter-block pull-left col-md-4">
-                                        <label style="vertical-align:top">Site:</label><select multiple="true" size="5" data-bind="options: sites, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedSite"></select>
-                                    </div>
-                                    <!-- /ko -->                    
-                                    <!-- ko if: filterType() == "project" -->                                
-                                    <div class="filter-block pull-left col-md-6">
-                                        <label style="vertical-align:top">Project:</label><select multiple="true" size="5" data-bind="options: projects, select2: {minimumResultsForSearch: -1}, optionsText: 'title', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedProject"></select>
-                                    </div>                                
-                                    <div class="filter-block pull-left col-md-6">
-                                        <label style="vertical-align:top">Site:</label><select multiple="true" size="5" data-bind="options: sites, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedSite"></select>
+                                        <label style="vertical-align:top">Site:</label><select name="site" multiple="true" size="5" data-bind="options: sites, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedSite"></select>
                                     </div>
                                     <!-- /ko -->
-                                    <p class="help-block" style="clear: both">Hold CTRL while clicking to select more than one option.</p>                            
+                                    <!-- ko if: filterType() == "project" -->
+                                    <div class="filter-block pull-left col-md-6">
+                                        <label style="vertical-align:top">Project:</label><select name="project" multiple="true" size="5" data-bind="options: projects, select2: {minimumResultsForSearch: -1}, optionsText: 'title', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedProject"></select>
+                                    </div>
+                                    <div class="filter-block pull-left col-md-6">
+                                        <label style="vertical-align:top">Site:</label><select name="site_project" multiple="true" size="5" data-bind="options: sites, select2: {minimumResultsForSearch: -1}, optionsText: 'name', optionsValue: 'id', optionsCaption: 'All', selectedOptions: selectedSite"></select>
+                                    </div>
+                                    <!-- /ko -->
+                                    <p class="help-block" style="clear: both">Select filters above</p>
                                 </div>
                             </div>
-                            <ul style="clear: both">
+                            <label style="vertical-align:top">Data Type:</label>
+                            <select name="data_type" data-bind="value: dataType, select2: {minimumResultsForSearch: -1}">
+                                <option value="rdata">RDATA</option>
+                                <option value="csv">CSV</option>
+                                <option value="xlsx">Excel</option>
+                            </select>
+                            <label><input name="mine_only" type="checkbox" data-bind="checked: mineOnly, click: $root.mineOnlyChange" />&nbsp;&nbsp;My Data</label>
+                            <a target='_blank' class="btn btn-success" data-bind="attr: {href: getData}">Download</a>
+                            <!--<ul style="clear: both">
                                 <li><a target='_blank' data-bind="attr: {href: getAllCSV}"><span data-bind="if: filterType() != 'none'">Filtered</span><span data-bind="if: filterType() == 'none'">All</span> Public Data (CSV)</a></li>
                                 <li><a target='_blank' data-bind="attr: {href: getMyCSV}">My Data (CSV)</a></li>
-                            </ul>
+                            </ul>-->
                         </div>
                     </div>
+                    <?php if ($isAdmin) { ?>
                     <br/>
                     <div class="row">
                         <div class="col-md-12">
@@ -87,6 +97,7 @@
                             </ul>
                         </div>
                     </div>
+                    <?php } ?>
                 </div>
             <?php } } ?>
             <div role ='tabpanel' class='tab-pane <?= $authedUser ? '' : 'active' ?> col-md-8' id='directory-pane'>
@@ -165,4 +176,4 @@
 </div><!-- end .actual-content -->
 <?php $this->Html->script('dropzone.js', array('block' => 'script')) ?>
 <?php $this->Html->script('download_strings.js', array('block' => 'script')) ?>
-<?php $this->Html->script('download.js', array('block' => 'script')) ?>
+<?php $this->Html->script('download.js?v=1', array('block' => 'script')) ?>

@@ -88,6 +88,7 @@ $routes->scope('/api', function (RouteBuilder $builder) {
     $builder->connect('/file/export/all/csv', ['controller' => 'Download', 'action' => 'exportAllCSV', '_method' => 'GET']);
     $builder->connect('/file/export/users/csv', ['controller' => 'Download', 'action' => 'exportUserCSV', '_method' => 'GET']);
     $builder->connect('/file/export/key/csv/:exportType', ['controller' => 'Download', 'action' => 'exportAllKeyCSV', '_method' => 'GET']);
+    $builder->connect('/file/export/data', ['controller' => 'Download', 'action' => 'exportData', '_method' => 'GET']);
     
     $builder->setExtensions(['json']);
     $builder->resources('User');

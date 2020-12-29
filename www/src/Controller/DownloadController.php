@@ -38,7 +38,7 @@ class DownloadController extends AppController
      */
     public function beforeFilter(EventInterface $event)
     {
-        $this->Auth->allow('index');
+        //$this->Auth->allow('index');
         // Public index only by default
     }
     public $users;
@@ -49,13 +49,22 @@ class DownloadController extends AppController
         $this->loadComponent('Upload');
         $this->connection = ConnectionManager::get('default');
         $this->tmpPath = Configure::read('TempFilePath');
+        $this->rScriptPath = Configure::read('RScriptPath');
     }
     public function index()
     {
         // Get the course catalog skeleton.
+        $isAdmin = ComSystem::isAdmin($this->Auth->user());
+        $this->set(compact('isAdmin'));
     }
     public function exportAllSQL()
     {
+        $isAdmin = ComSystem::isAdmin($this->Auth->user());
+        if (!$isAdmin) {
+            $this->RequestHandler->renderAs($this, 'json');
+            $this->set('error', "You don't have permission to do this.");
+            return $this->set('_serialize', ['results']);
+        }
         // Export entire database as SQLite DB
         $user = $this->connection->config()['username'];
         $pass = $this->connection->config()['password'];
@@ -103,7 +112,7 @@ class DownloadController extends AppController
             unlink($exportFile);
         }
 
-	$response = $this->response;
+        $response = $this->response;
         $response->setTypeMap('db', ['application/x-sqlite3', 'application/octet-stream']);
         $response = $response->withType('db');
         $response = $response->withFile($outputFile, ['download' => true]);
@@ -136,7 +145,7 @@ class DownloadController extends AppController
             $this->prepend($result[0]['headers'] . "\n", $exportFile);
 	}
 
-	$response = $this->response;
+        $response = $this->response;
         $response->setTypeMap('vcf', ['application/zip', 'application/octet-stream']);
         $response = $response->withType('zip');
         $response = $response->withFile($this->zipExports(''), ['download' => true]);
@@ -182,12 +191,68 @@ class DownloadController extends AppController
             $this->connection->execute($exportQuery);
             $this->prepend($headers . "\n", $exportFile);
         }
-	$this->getAttributions();
+        $this->getAttributions();
 
-	$response = $this->response;
+        $response = $this->response;
         $response->setTypeMap('vcf', ['application/zip', 'application/octet-stream']);
         $response = $response->withType('zip');
         $response = $response->withFile($this->zipExports('view'), ['download' => true]);
+        return $response;
+    }
+    public function exportUserCSV()
+    {
+        $isAdmin = ComSystem::isAdmin($this->Auth->user());
+        if (!$isAdmin) {
+            $this->RequestHandler->renderAs($this, 'json');
+            $this->set('error', "You don't have permission to do this.");
+            return $this->set('_serialize', ['results']);
+        }
+        $exportFile = $this->tmpPath . 'feast/' . $this->Auth->user()['id'] . "-all-users.csv";
+        $this->unlinkUserCSV();
+        $table = 'user';
+        $exportQuery = "SELECT id,contact_email, name_first, name_middle, name_last INTO OUTFILE '{$exportFile}'\n                FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"'\n                LINES TERMINATED BY '\n'\n                FROM {$table}";
+        $this->connection->execute($exportQuery);
+        $this->prepend('id,contact_email,name_first,name_middle,name_last' . "\n", $exportFile);
+
+        $response = $this->response;
+        $response->setTypeMap('csv', ['text/csv']);
+        $response = $response->withType('csv');
+        $response = $response->withFile($exportFile, ['download' => true]);
+        return $response;
+    }
+    public function exportData()
+    {
+        $isAdmin = ComSystem::isAdmin($this->Auth->user());
+        if (!$isAdmin) {
+            $this->RequestHandler->renderAs($this, 'json');
+            $this->set('error', "You don't have permission to do this.");
+            return $this->set('_serialize', ['results']);
+        }
+
+        $types = [
+            'rdata' => ['rdata', ["application/x-rdata"], 'RDATA'],
+            'csv' => ['vcf', ['application/zip', 'application/octet-stream'], 'zip'],
+            'xlsx' => ['xlsx', ["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"], 'xlsx']
+        ];
+        $type = $this->request->getQueryParams()['d'];
+        $typeMap = $types[$type];
+        $extension = $typeMap[2];
+        $mineOnly = filter_var($this->request->getQueryParams()['m'], FILTER_VALIDATE_BOOLEAN);
+
+        $exportFile = $this->tmpPath . '/feast/rdatadownload/FEAST' . ($mineOnly ? "sub_".$this->Auth->user()['id'] : "data") . "." . $extension;
+        $u = $mineOnly ? $this->Auth->user()['id'] : "100000";
+        $w = isset($this->request->getQueryParams()['w']) ? $this->sanitizeMultiFilter($this->request->getQueryParams()['w']) : "";
+        $p = isset($this->request->getQueryParams()['p']) ? $this->sanitizeMultiFilter($this->request->getQueryParams()['p']) : "";
+        $c = isset($this->request->getQueryParams()['c']) ? $this->sanitizeMultiFilter($this->request->getQueryParams()['c']) : "";
+        $s = isset($this->request->getQueryParams()['s']) ? $this->sanitizeMultiFilter($this->request->getQueryParams()['s']) : "";
+
+        shell_exec("Rscript " . $this->rScriptPath . "downloadFiltered.R " . $type . " '[$u]' '[$w]' '[$p]'  '[$c]' '[$s]'");
+
+        $response = $this->response;
+        $response->setTypeMap($typeMap[0], $typeMap[1]);
+        $response = $response->withType($type);
+        $response = $response->withFile($exportFile, ['download' => true]);
+        $this->unlinkData($exportFile);
         return $response;
     }
     private function zipExports($prefix)
@@ -219,33 +284,18 @@ class DownloadController extends AppController
         }
         return $filePath;
     }
+    private function unlinkData($exportFile)
+    {
+        if (file_exists($exportFile)) {
+            unlink($exportFile);
+        }
+    }
     private function unlinkUserCSV()
     {
         $exportFile = $this->tmpPath . 'feast/' . $this->Auth->user()['id'] . "-all-users.csv";
         if (file_exists($exportFile)) {
             unlink($exportFile);
         }
-    }
-    public function exportUserCSV()
-    {
-        $isAdmin = ComSystem::isAdmin($this->Auth->user());
-        if (!$isAdmin) {
-            $this->RequestHandler->renderAs($this, 'json');
-            $this->set('error', "You don't have permission to do this.");
-            return $this->set('_serialize', ['results']);
-        }
-        $exportFile = $this->tmpPath . 'feast/' . $this->Auth->user()['id'] . "-all-users.csv";
-        $this->unlinkUserCSV();
-        $table = 'user';
-        $exportQuery = "SELECT id,contact_email, name_first, name_middle, name_last INTO OUTFILE '{$exportFile}'\n                FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"'\n                LINES TERMINATED BY '\n'\n                FROM {$table}";
-        $this->connection->execute($exportQuery);
-        $this->prepend('id,contact_email,name_first,name_middle,name_last' . "\n", $exportFile);
-
-	$response = $this->response;
-        $response->setTypeMap('csv', ['text/csv']);
-        $response = $response->withType('csv');
-        $response = $response->withFile($exportFile, ['download' => true]);
-        return $response;
     }
     private function prepend($string, $filename)
     {
@@ -313,7 +363,7 @@ class DownloadController extends AppController
         }
         // Figure out earliest focus group date for each site
         $siteDates = [];
-	foreach ($results as $thisResult) {
+        foreach ($results as $thisResult) {
             if (!isset($thisResult->site)) { continue; }
             $lastCreateDate = array_key_exists($thisResult->site->id, $siteDates) ? $siteDates[$thisResult->site->id] : new \DateTime($thisResult->created_at);
             $thisCreateDate = new \DateTime($thisResult->created_at);
@@ -322,7 +372,7 @@ class DownloadController extends AppController
             }
         }
         $attributions = [];
-	foreach ($results as $thisResult) {
+        foreach ($results as $thisResult) {
             if (!isset($thisResult->site)) { continue; }
             $creatorName = $thisResult->user->name_first . ' ' . ($thisResult->user->name_middle != null && $thisResult->user->name_middle != '' ? $thisResult->user->name_middle . ' ' : '') . $thisResult->user->name_last;
 	    $creatorName .= $thisResult->user->affiliation != null && $thisResult->user->affiliation != '' ? ' of ' . $thisResult->user->affiliation : '';

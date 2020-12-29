@@ -322,4 +322,23 @@ return [
     'Session' => [
         'defaults' => 'php',
     ],
+
+    'AmazonSES' => [
+        'aws_access_key_id' => '',
+        'aws_secret_access_key' => '',
+        'aws_region' => '',
+    ],
+
+    'AmazonS3' => [
+        'aws_access_key_id' => '',
+        'aws_secret_access_key' => '',
+        'aws_region' => '',
+        'resource_bucket' => '',
+        'upload_bucket' => '',
+        'signature' => 'v4'
+    ],
+
+    'TempFilePath' => "/var/www/html/tmp/",
+
+    'RScriptPath' => '/var/www/html/webroot/rscripts/'
 ];
