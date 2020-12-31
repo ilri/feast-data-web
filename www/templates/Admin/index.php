@@ -18,6 +18,7 @@ $this->assign('title', 'Administration | ' . h($currentEntity['portal_title']));
                 <li role="presentation" class="active"><a href="#manage-users" aria-controls="manage-users" role="tab" data-toggle="tab">Users</a></li>
                 <li role="presentation"><a href="#manage-data" aria-controls="manage-data" role="tab" data-toggle="tab">Data</a></li>
                 <li role="presentation"><a href="#manage-resources" aria-controls="manage-resources" role="tab" data-toggle="tab">Resources</a></li>
+                <li role="presentation"><a href="#manage-analytics" aria-controls="manage-analytics" role="tab" data-toggle="tab">Analytics</a></li>
                 <li role="presentation"><a href="#manage-settings" aria-controls="manage-settings" role="tab" data-toggle="tab">Settings</a></li>
             </ul>
         </div>
@@ -186,6 +187,14 @@ $this->assign('title', 'Administration | ' . h($currentEntity['portal_title']));
                         </tr>
                     </tbody>
                 </table>                
+            </div>
+            <div role ='tabpanel' class='tab-pane col-md-8' id='manage-analytics'>
+                <h2 class="modal-title">Analytics</h2>
+                <div class="row">
+                    <div class="col-md-12 iframe-container">
+                        <iframe  frameborder="0" scrolling="no" src="https://feastdata.ilri.org/report.html" ></iframe>
+                    </div>
+                </div>
             </div>
             <div role ='tabpanel' class='tab-pane col-md-8' id='manage-settings'>                
                 <div class="row">

@@ -1,6 +1,6 @@
      <?php
        $cords = array();
-       $cords = $rst->geo_json != "" ? json_decode($rst->geo_json,true) : array();
+       $cords = $rst->loc_json != "" ? json_decode($rst->loc_json,true) : array();
 
   $venueName = $rst->focus_group_venue_name != "" ? $rst->focus_group_venue_name : $rst->site_name;
   $arg =array_filter($cords);

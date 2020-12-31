@@ -108,6 +108,7 @@ class SitesController extends AppController
       $fgCordinates = TableRegistry::get('focus_group');
       $rstdata = $fgCordinates->find('all', [ 'conditions' => ['id' => $fgID]])->first();
 
+      $rstdata->loc_json = null;
       $rstdata->geo_json = null;
       $fgCordinates->save($rstdata);
       /*$fgCordinates = TableRegistry::get('spatial_data_focus_group');
@@ -126,7 +127,24 @@ class SitesController extends AppController
       $fgCordinates = TableRegistry::get('focus_group');
       $rstdata = $fgCordinates->find('all', [ 'conditions' => ['id' => $fgID]])->first();
 
-      $rstdata->geo_json = $pathstr;
+      $rstdata->loc_json = $pathstr;
+      if ($rstdata->loc_json) {
+        $coordinates = [];
+        $list = json_decode($rstdata->loc_json);
+        foreach ($list as $val) {
+            $coordinates[] = array_values(get_object_vars($val));
+        }
+        $rstdata->geo_json = json_encode([
+            "type" => "Feature",
+            "geometry" => [
+                "type" => "Polygon",
+                "coordinates" => [$coordinates],
+                "properties" => ["id" => $rstdata->id]
+            ]
+        ]);
+      } else {
+        $rstdata->geo_json = null;
+      }
       $fgCordinates->save($rstdata);
       /* $fgCordinates = TableRegistry::get('spatial_data_focus_group');
       $fgCordinates->deleteAll(['id_focus_group'=>$fgID]);

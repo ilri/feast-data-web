@@ -16,6 +16,8 @@ use Cake\Log\Log;
 use Cake\ORM\TableRegistry;
 use App\Controller\Component\UploadComponent as ComUpload;
 use App\Controller\Component\SystemComponent as ComSystem;
+use Cake\Filesystem\File;
+
 /**
  * 
  * Controller for downloader views
@@ -239,14 +241,19 @@ class DownloadController extends AppController
         $extension = $typeMap[2];
         $mineOnly = filter_var($this->request->getQueryParams()['m'], FILTER_VALIDATE_BOOLEAN);
 
-        $exportFile = $this->tmpPath . '/feast/rdatadownload/FEAST' . ($mineOnly ? "sub_".$this->Auth->user()['id'] : "data") . "." . $extension;
-        $u = $mineOnly ? $this->Auth->user()['id'] : "100000";
+        $uId = $this->Auth->user()['id'];
+        $u = $mineOnly ? $uId : "";
         $w = isset($this->request->getQueryParams()['w']) ? $this->sanitizeMultiFilter($this->request->getQueryParams()['w']) : "";
         $p = isset($this->request->getQueryParams()['p']) ? $this->sanitizeMultiFilter($this->request->getQueryParams()['p']) : "";
         $c = isset($this->request->getQueryParams()['c']) ? $this->sanitizeMultiFilter($this->request->getQueryParams()['c']) : "";
         $s = isset($this->request->getQueryParams()['s']) ? $this->sanitizeMultiFilter($this->request->getQueryParams()['s']) : "";
+        $exportFile = $this->tmpPath . '/feast/rdatadownload/FEAST' . (empty($u.$w.$p.$c.$s) ? "data" : "_sub_".$this->Auth->user()['id']) . "." . $extension;
 
-        shell_exec("Rscript " . $this->rScriptPath . "downloadFiltered.R " . $type . " '[$u]' '[$w]' '[$p]'  '[$c]' '[$s]'");
+        shell_exec("Rscript " . $this->rScriptPath . "downloadFiltered.R " . $type . " '[$u]' '[$w]' '[$p]' '[$c]' '[$s]' '[$uId]'");
+
+        if (!file_exists($exportFile)) {
+            $file = new File($exportFile, true, 0777);
+        }
 
         $response = $this->response;
         $response->setTypeMap($typeMap[0], $typeMap[1]);

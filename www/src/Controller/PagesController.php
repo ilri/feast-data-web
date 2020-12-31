@@ -61,7 +61,7 @@ class PagesController extends AppController
             return $this->redirect($this->Auth->redirectUrl());
         }
         $path = func_get_args();
-        $count = count($path);
+        $count = isset($path);
         if (!$count) {
             return $this->redirect('/');
         }
