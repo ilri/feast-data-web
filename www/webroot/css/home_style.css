@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css?family=Numans');
+.container{
+
+align-content: center;
+}
+
+.card{
+
+margin-top: auto;
+margin-bottom: auto;
+background-color: rgba(0,0,0,0.5) !important;
+}
+
+
+.card-header h3{
+color: white;
+}
+
+.login_btn{
+color: black;
+background-color: #FFC312;
+width: 100px;
+}
+
+.panel {
+color: white;
+}
+
+.panel a{
+margin-left: 4px;
+color: white;
+} 
+  .content-w3ls {
+    max-width: 500px;
+    margin: 6em auto;
+}
+.counter1 {
+    font-weight: 900;
+    font-size: 2rem;
+}
+.select2-container {
+    width: 100% !important;
+    white-space:normal!important;
+}
+
+.select2-selection--multiple {
+     width: 100% !important;
+}

@@ -1,47 +1,7 @@
 <?php $this->assign('title', 'FEAST | '.h($currentEntity['portal_title'])); ?>
-  <style type="text/css">
-    /* Made with love by Mutiullah Samim*/
-@import url('https://fonts.googleapis.com/css?family=Numans');
-.container{
 
-align-content: center;
-}
+<?php echo $this->Html->css("home_style.css", array("inline"=>false)); ?>
 
-.card{
-
-margin-top: auto;
-margin-bottom: auto;
-background-color: rgba(0,0,0,0.5) !important;
-}
-
-
-.card-header h3{
-color: white;
-}
-
-.login_btn{
-color: black;
-background-color: #FFC312;
-width: 100px;
-}
-
-.panel {
-color: white;
-}
-
-.panel a{
-margin-left: 4px;
-color: white;
-} 
-  .content-w3ls {
-    max-width: 500px;
-    margin: 6em auto;
-}
-.counter {
-    font-weight: 900;
-    font-size: 4rem;
-}
-</style>
 <section class="main">
 	    <div class="bottom-grid">
 			<div class="logo">
@@ -49,7 +9,7 @@ color: white;
 			</div>
 		</div>
         
-            <div class="col-md-4 col-md-offset-1 home-signin ">
+            <div class="col-md-4 col-md-offset-4 home-signin ">
                 <div class="col-md-12">
                     <div class="panel panel-default card">
                         <div class="panel-heading ">
@@ -81,30 +41,30 @@ color: white;
                 </div>
             </div>
 
-            <div class="col-md-6  home-counter ">
+            <div class="col-md-4 col-md-offset-4 home-counter ">
                 <div class="col-md-12">
                     <div class="panel panel-default card">
                         
                         <div class="panel-body">
             <div class="row row-2">
                 <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0 text-center">
-                    <div class="counter"><?= $stat->countries; ?><br></div> 
+                    <div class="counter1"><?= number_format($stat->countries, 0); ?><br></div> 
                     <span class="d-block caption"> Countries</span>   
                 </div>  
 
               <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0 text-center">
-                    <div class="counter" > <?= $stat->sites; ?><br></div> 
+                    <div class="counter1" > <?= number_format($stat->sites, 0); ?><br></div> 
                     <span class="d-block caption">Sites</span>
                 </div>  
 
                 <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0 text-center">
-                    <div class="counter"><?= $stat->focus_groups; ?><br> </div> 
+                    <div class="counter1"><?= number_format($stat->focus_groups, 0); ?><br> </div> 
                      <span class="d-block caption">Focus groups</span>
                 </div>  
 
                 <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0 text-center">
-                    <div class="counter" > <?= $stat->fodder_cultivated; ?><br></div> 
-                    <span class="d-block caption">Fodder Ha</span>
+                    <div class="counter1" > <?= number_format($stat->fodder_cultivated, 0); ?><br></div> 
+                    <span class="d-block caption">Fodder ha</span>
                 </div>  
 
                              

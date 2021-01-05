@@ -18,7 +18,7 @@
          * mostly redundant.
          */
         echo $this->Html->css('/css/select2.min.css');
-        echo $this->Html->css('/css/style.css?v=2.2');
+        echo $this->Html->css('/css/style.css?v=2.3');
         echo $this->Html->meta('icon','/img/favicon.ico');
         ?>
         <?= $this->fetch('meta') ?>
@@ -98,7 +98,12 @@
                             </li>
                             
                             <li class="v-line hidden-xs"></li>
-                            <?php } ?>
+                            <?php if (isset($currentEntity['allow_report']) && $currentEntity['allow_report']) { ?>
+                            <li>
+                                <a href="/report"><strong>Visualisations</strong></a>
+                            </li>
+                            <li class="v-line hidden-xs"></li>
+                            <?php } } ?>
                            <!--  <li><a class="help-link" href="/help" target="_blank">Help</a></li> -->
                         </ul>
                     </div>

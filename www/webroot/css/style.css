@@ -1402,12 +1402,13 @@ div.resource-list-wrapper {
 }
 
 .select2-container {
-    width: 100% !important;
-    white-space:normal!important;
+    width: auto !important;
+    min-width: 100px;
+    white-space: normal!important;
 }
 
 .select2-selection--multiple {
-     width: 100% !important;
+     min-width: 200px;
 }
 
 .select2-choices{
@@ -1513,7 +1514,7 @@ div.resource-list-wrapper {
    }
 
    .home-counter{
-    margin-top: 50px;
+    margin-top: 0px;
    }
 
   .untree_co-section-2 .row-2 {
@@ -1526,4 +1527,20 @@ div.resource-list-wrapper {
   .untree_co-section-2 .row-overlap {
     margin-bottom: 0;
   } 
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #fff;
+}
+
+.navbar-default .navbar-toggle {
+  border-color: #fff;
+}
+
+.navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover {
+    background-color: #409d2d;
+}
+
+.navbar-collapse.in {
+    position: relative;
 }
