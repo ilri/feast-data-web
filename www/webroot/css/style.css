@@ -124,7 +124,7 @@ ul {
     margin:0;
 }
 ul > li  {
-    display:inline-block;
+    /*display:inline-block;*/
     list-style:none;
     vertical-align:top;
 }
@@ -1402,12 +1402,18 @@ div.resource-list-wrapper {
 }
 
 .select2-container {
-    width: auto !important;
-    min-width: 100px;
+    width: 100% !important;
+    white-space:normal!important;
 }
 
 .select2-selection--multiple {
-    min-width: 200px;
+     width: 100% !important;
+}
+
+.select2-choices{
+  /*  display:block;*/
+    max-width: 250px;   //  <--- set the max width you want
+    //width: 250px;              or just force the width
 }
 
 .shiny.container, .shiny.container-fluid {
@@ -1455,7 +1461,7 @@ div.resource-list-wrapper {
 }
 
 .main {
-    background: url(/img/bg3.jpg) no-repeat center;
+    background: url(/img/bg4.jpg) no-repeat center;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -1494,17 +1500,20 @@ div.resource-list-wrapper {
      }
    .counter .number {
     font-size: 3rem;
-   /*color: #009400;*/
+    
     color:#fff;
   }
   .counter .caption {
     color: #F0F1F2;
-     font-size: 2rem;
-     font-weight: 2;
+     
+     font-family: "Oxygen", Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.6;
    }
 
-   .home-counter,.home-signin{
-    margin-top: 10px;
+   .home-counter{
+    margin-top: 50px;
    }
 
   .untree_co-section-2 .row-2 {

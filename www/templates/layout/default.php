@@ -146,6 +146,7 @@
         <?= $this->Html->script('moment-with-locales.min.js') ?>
         <?= $this->Html->script('jquery.animateNumber.min.js') ?>
         <?= $this->Html->script('jquery.waypoints.min.js') ?>
+        <?= $this->Html->script('jquery.counterup.min.js') ?>
         <?= $this->Html->script('aos.js') ?>
         <?= $this->Html->script('main.js') ?>
         <?= $this->fetch('script') ?>
@@ -155,6 +156,12 @@
              $(".navbar-toggle").click(function() {
                 $("#navbar").addClass("navbar-card");
               });
+
+              $('.counter').counterUp({
+                 delay: 10,
+                 time: 1000,
+                offset: '100%'
+             });
         });
     
             moment.locale(navigator.languages? navigator.languages[0] : (navigator.language || navigator.userLanguage));

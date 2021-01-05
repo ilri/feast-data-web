@@ -11,6 +11,7 @@
      else
      {
       $center = array("lat"=>floatval($rst->site_lat),"lng"=>floatval($rst->site_lng));
+      $cords[] = array("lng"=>floatval($rst->site_lng),"lat"=>floatval($rst->site_lat));
      }
     
 

@@ -4,6 +4,9 @@ library(dplyr)
 library(stringr)
 library(jsonlite)
 library(openxlsx)
+if(length(grep("exactextractr",installed.packages())) >0 & length(grep("geojsonsf",installed.packages())) >0){
+	library(exactextractr)
+}
 
 setwd("/var/www/html/webroot/rscripts/")
 
@@ -29,14 +32,15 @@ if(!dir.exists(file.path("/var/www/html/tmp/feast/rdatadownload/csv"))) {
 persistDIR <- "/var/www/html/tmp/feast/rdatadownload"
 csvDIR <- "/var/www/html/tmp/feast/rdatadownload/csv"
 
-pool <- dbPool(
-  drv      = RMySQL::MySQL(),
-  dbname   = "feast_web",
-  host     = "localhost",
-  username = "root", 
-  password = "Feast19@254",
-  port     = 3306
-)
+source('/var/www/html/webroot/rscripts/feastCred.R')
+#pool <- dbPool(
+#  drv      = RMySQL::MySQL(),
+#  dbname   = "feast_web",
+#  host     = "localhost",
+#  username = "root", 
+#  password = "",
+#  port     = 3306
+#)
 
 
 #Data preparation
@@ -94,7 +98,7 @@ if(file.exists(paste0(persistDIR, "/NewDataCheck.rds"))) {newDataCheck <- readRD
 ##Update rdata file if needed
 if(file.exists(paste0(persistDIR, "/FEASTdatCache.RDATA")) & identical(newDataCheck$project_title, data.frame(tbl(pool, "export_project_site"))$project_title) & 
 identical(newDataCheck$site_name, data.frame(tbl(pool, "export_project_site"))$site_name) & 
-identical(newDataCheck$site_lat, data.frame(tbl(pool, "export_project_site"))$site_lat) & !exists("export_project_site")){ #load data only if the file exists and the objects haven't already been imported due to data update
+identical(newDataCheck$sp_site_lastup, data.frame(tbl(pool, "export_project_site"))$sp_site_lastup) & identical(newDataCheck$sp_fg_lastup, data.frame(tbl(pool, "export_project_site"))$sp_fg_lastup) & !exists("export_project_site")){ #load data only if the file exists and the objects haven't already been imported due to data update
 
   load(paste0(persistDIR, "/FEASTdatCache.RDATA"))
   ##Prepare data for export and visualisation by putting in a new environment with less verbose table names
@@ -151,6 +155,11 @@ identical(newDataCheck$site_lat, data.frame(tbl(pool, "export_project_site"))$si
 		assign(tablesExport[i], select(eval(parse(text = tablesExport[i])), -exclDate, -excluded, -export_time, -private))
 
   }
+  
+    ##Add spatial data to project_site and focus_group
+	if(length(grep("exactextractr",installed.packages())) >0 & length(grep("geojsonsf",installed.packages())) >0){
+		
+	}
   
 	export_focus_group$site_country <- trimws(export_focus_group$site_country)
 	export_focus_group$farmSizeU1prop <- ifelse(export_focus_group$focus_group_threshold_small_farm_ha <= 1 & export_focus_group$focus_group_threshold_large_farm_ha <=1, rowSums(export_focus_group[, c("focus_group_percent_households_small", "focus_group_percent_households_medium")], na.rm = T), 

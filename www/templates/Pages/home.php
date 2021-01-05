@@ -37,6 +37,10 @@ color: white;
     max-width: 500px;
     margin: 6em auto;
 }
+.counter {
+    font-weight: 900;
+    font-size: 4rem;
+}
 </style>
 <section class="main">
 	    <div class="bottom-grid">
@@ -80,37 +84,27 @@ color: white;
             <div class="col-md-6  home-counter ">
                 <div class="col-md-12">
                     <div class="panel panel-default card">
-                        <div class="panel-heading ">
-                            <p class='panel-title'>DB Stats</p>
-                        </div>
+                        
                         <div class="panel-body">
-                               <div class="row row-2">
+            <div class="row row-2">
                 <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0 text-center">
-                    <div class="counter" data-aos="fade-up" data-aos-delay="100">
-                        <strong class="d-block number" data-number="<?= $stat->countries; ?>">0</strong><br>
-                        <span class="d-block caption"> Countries</span>
-                    </div> 
+                    <div class="counter"><?= $stat->countries; ?><br></div> 
+                    <span class="d-block caption"> Countries</span>   
                 </div>  
 
               <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0 text-center">
-                    <div class="counter" data-aos="fade-up" data-aos-delay="100">
-                        <strong class="d-block number" data-number="<?= $stat->sites; ?>">0</strong><br>
-                        <span class="d-block caption">Sites</span>
-                    </div> 
+                    <div class="counter" > <?= $stat->sites; ?><br></div> 
+                    <span class="d-block caption">Sites</span>
                 </div>  
 
                 <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0 text-center">
-                    <div class="counter" data-aos="fade-up" data-aos-delay="10">
-                        <strong class="d-block number" data-number="<?= $stat->focus_groups; ?>">0</strong><br>
-                        <span class="d-block caption">Focus groups</span>
-                    </div> 
+                    <div class="counter"><?= $stat->focus_groups; ?><br> </div> 
+                     <span class="d-block caption">Focus groups</span>
                 </div>  
 
                 <div class="col-6 col-sm-6 col-md-6 col-lg-3 mb-4 mb-lg-0 text-center">
-                    <div class="counter" data-aos="fade-up" data-aos-delay="100">
-                        <strong class="d-block number" data-number="<?= $stat->fodder_cultivated; ?>">0</strong><br>
-                        <span class="d-block caption">Fodder Hectares</span>
-                    </div> 
+                    <div class="counter" > <?= $stat->fodder_cultivated; ?><br></div> 
+                    <span class="d-block caption">Fodder Ha</span>
                 </div>  
 
                              
@@ -162,7 +156,7 @@ color: white;
 	</div>
 </div>
 </div> -->
-<div class='modal fade' id="register-modal" tabindex='-1' role='dialog' aria-labeled-by='register_model_label' aria-hidden='true'>
+<div class='modal fade' id="register-modal" tabindex='1' role='dialog' aria-labeled-by='register_model_label' aria-hidden='true'>
     <div class="modal-dialog">
         <div class="modal-content">            
             <!-- ko if: showRegisterForm -->
@@ -305,11 +299,12 @@ color: white;
 
 
 <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'UA-23581568-13');
-    </script>
+    jQuery(document).ready(function( $ ) {
+        $('.counter').counterUp({
+            delay: 10,
+            time: 1000
+        });
+    });
+</script>
 
 
