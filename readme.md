@@ -19,6 +19,6 @@ This repository hosts the PHP code and database structure for the [FEAST Global 
 - PHP 7.2
 - CakePHP 4.1.1
 - Composer 1.6.5
-- Maria DB 10.1.34
+- Maria DB 10.2
 - Apache 2.4.41
 
