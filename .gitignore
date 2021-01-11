@@ -2,6 +2,9 @@
 ##########################
 /config/app_local.php
 /config/app.php
+/spatialdata/config/app.php
+/spatialdata/config/app_local.php
+/spatialdata/config/.env
 /config/.env
 /logs/*
 /tmp/*
