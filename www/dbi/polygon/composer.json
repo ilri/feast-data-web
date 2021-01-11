@@ -1,0 +1,5 @@
+{
+    "require": {
+        "jware/geophp": "^1.0"
+    }
+}

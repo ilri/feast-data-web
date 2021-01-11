@@ -1,8 +1,13 @@
 <?php $this->assign('title', 'Dashboard | ' . h($currentEntity['portal_title'])); ?>
-
+<style type="text/css">
+    #news img {
+  max-width: 100%;
+  height: auto;
+}
+</style>
 <div class='container inner-navbar'>
     <div class="logo col-md-3">
-        <a href='/'><img class='logo-image' src="/img/brand.png"></a>
+        <a href=''><img class='logo-image' src="/img/brand.png"></a>
     </div>
     <div class="outer-tab-panel col-md-9">
         <?php echo $this->element('primary_nav', ["active" => ""]); // Include primary navbar element ?>
@@ -19,13 +24,16 @@
                     <p>To begin, choose one of the following:</p>
                 </div>
                 <ul class="dash-link-list">
-                    <li><a href="/uploads">Upload and Manage your FEAST Data</a></li>
-                    <li><a href="/downloads">Download aggregated data sets</a></li>
-                    <li><a href="/reports">View Reports</a></li>
-                    <li><a href="/help">View Help and Tutorials</a></li>
+                    <li><a href="uploads">Upload and Manage your FEAST Data</a></li>
+                    <li><a href="downloads">Download aggregated data sets</a></li>
+                    <li><a href="reports">View Reports</a></li>
+                    <li><a href="help">View Help and Tutorials</a></li>
                 </ul>
             </div>
-            <div class="col-md-4">
+            
+        </div>
+        <div class="row tab-content inner-tab-content">
+            <div class="col-md-10" id="news">
                 <h2>News</h2>
                 <?php echo $this->element('feed', ["active" => ""]); // Include RSS feed element ?>
             </div>

@@ -32,6 +32,7 @@ function koUserAccessModel() {
     
     self.showRegisterForm = ko.observable(true);
     self.showRegisterSuccess = ko.observable(false);
+	self.errors = ko.observable();
     
     self.initialize = function() {
         // Get dropdown data.
@@ -74,7 +75,9 @@ function koUserAccessModel() {
                     self.showRegisterSuccess(true);
                 }
             } else {
+                console.log(result);
                 if (result.errors) {
+					self.errors(result.errors);
                     self.lastRegistrationError(stringRegFailed);
                 }
             }
@@ -92,7 +95,8 @@ function registerUser(user, callback) {
     }).done(function(data) {
         callback(data);
     }).fail(function(jqXHR, textStatus, errorThrown) {
-        userAccessModel.lastRegistrationError(stringRegFailed);
+        console.log(jqXHR.responseJSON);
+        userAccessModel.lastRegistrationError(jqXHR.responseJSON.message);
     });
 }
 

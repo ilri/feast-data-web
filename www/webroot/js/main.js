@@ -1,4 +1,13 @@
 'uses strict';
+AOS.init({
+    duration: 800,
+    easing: 'slide',
+    once: true
+});
+
+$(function(){
+   
+});
 
 $.fn.serializeObject = function()
 {

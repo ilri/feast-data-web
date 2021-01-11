@@ -12,6 +12,7 @@ class FocusGroupTable extends Table
         $this->belongsTo('CommunityType', ['foreignKey' => 'id_community_type']);
         $this->belongsTo('UnitArea', ['foreignKey' => 'id_unit_area']);
         $this->belongsTo('User', ['foreignKey' => 'id_user']);
+        $this->belongsTo('Gender', ['foreignKey' => 'id_gender']);
         $this->hasMany('Season', ['foreignKey' => 'id_focus_group']);
         $this->hasMany('FocusGroupMonthlyStatistics', ['foreignKey' => 'id_focus_group']);
         $this->hasMany('TechfitAssessmentTable', ['foreignKey' => 'id_focus_group']);

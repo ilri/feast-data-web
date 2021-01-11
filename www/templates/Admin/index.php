@@ -1,4 +1,6 @@
-<?php $this->assign('title', 'Administration | ' . h($currentEntity['portal_title'])); ?>
+<?php 
+$this->assign('title', 'Administration | ' . h($currentEntity['portal_title']));    
+?>
 
 <div class='container inner-navbar'>
     <div class="logo col-md-3">
@@ -10,12 +12,13 @@
 </div>
 
 <div class="actual-content">
-    <div class="container-fluid">
+    <div class="container-fluid shiny">
         <div class="upload-tabs">
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#manage-users" aria-controls="manage-users" role="tab" data-toggle="tab">Users</a></li>
                 <li role="presentation"><a href="#manage-data" aria-controls="manage-data" role="tab" data-toggle="tab">Data</a></li>
                 <li role="presentation"><a href="#manage-resources" aria-controls="manage-resources" role="tab" data-toggle="tab">Resources</a></li>
+                <li role="presentation"><a href="#manage-analytics" onclick="document.getElementById('analytics-iframe').src='https://feastdata.ilri.org/report.html';" aria-controls="manage-analytics" role="tab" data-toggle="tab">Analytics</a></li>
                 <li role="presentation"><a href="#manage-settings" aria-controls="manage-settings" role="tab" data-toggle="tab">Settings</a></li>
             </ul>
         </div>
@@ -29,7 +32,7 @@
                         <div data-bind='foreach: userFilters'>
                             <p><span data-bind='text: column'></span>: <span data-bind='text: value'></span> <button type='button' data-bind='click: $root.removeUserFilter'>[x]</button></p>
                         </div>
-                        <select data-bind="value: newUserFilterColumn">
+                        <select data-bind="value: newUserFilterColumn, select2: {minimumResultsForSearch: -1}">
                             <option value='name'>Name</option>
                             <option value='email'>Email</option>
                             <option value='status'>Status</option>
@@ -39,10 +42,10 @@
                         <input type='input' data-bind='value: newUserFilterValue' />
                         <!-- /ko -->
                         <!-- ko if: newUserFilterColumn() == 'status' -->
-                        <select name='status_change' data-bind="options: $root.userStatusOptions, optionsText: 'title', optionsValue: 'status_id', value: newUserFilterValue"></select>
+                        <select name='status_change' data-bind="options: $root.userStatusOptions, select2: {minimumResultsForSearch: -1}, optionsText: 'title', optionsValue: 'status_id', value: newUserFilterValue"></select>
                         <!-- /ko -->
                         <!-- ko if: newUserFilterColumn() == 'role' -->
-                        <select name='status_change' data-bind="options: $root.userStatusOptions, optionsText: 'title', optionsValue: 'status_id', value: newUserFilterValue"></select>
+                        <select name='status_change' data-bind="options: $root.userStatusOptions, select2: {minimumResultsForSearch: -1}, optionsText: 'title', optionsValue: 'status_id', value: newUserFilterValue"></select>
                         <!-- /ko -->
                         <button data-bind='click: addUserFilter'>Add</button>
                     </div>
@@ -70,10 +73,10 @@
                             <td data-bind='text:contact_email'></td>
                             <td data-bind='text: created_at == null ? "N/A" : moment(created_at).format("L LT")'></td>
                             <td>
-                                <select name='status_change' class="form-control" data-bind="click: function(){}, clickBubble: false, event: {change: $root.changeUserStatus}, options: $root.userStatusOptions, optionsText: 'title', optionsValue: 'status_id', value: approvalStatus"></select>
+                                <select name='status_change' class="form-control" data-bind="click: function(){}, clickBubble: false, event: {change: $root.changeUserStatus}, options: $root.userStatusOptions, optionsText: 'title', select2: {minimumResultsForSearch: -1}, optionsValue: 'status_id', value: approvalStatus"></select>
                             </td>
                             <td>
-                                <select name='role_change' class="form-control" data-bind="click: function(){}, clickBubble: false, event: {change: $root.changeUserRole}, options: $root.userRoleOptions, optionsText: 'title', optionsValue: 'role_id', value: roleStatus"></select>
+                                <select name='role_change' class="form-control" data-bind="click: function(){}, clickBubble: false, event: {change: $root.changeUserRole}, options: $root.userRoleOptions, select2: {minimumResultsForSearch: -1}, optionsText: 'title', optionsValue: 'role_id', value: roleStatus"></select>
                             </td>
                         </tr>
                     </tbody>
@@ -85,7 +88,12 @@
             </div><!-- end #manageUsers -->
             <div role ='tabpanel' class='tab-pane col-md-12' id='manage-data'>
                 <div class='col-md-12'>
-                    <select data-bind="options: tableList, optionsText:'tableName', optionsCaption:'Choose a Table:', value: selectedTable"></select>
+                    <select data-bind="foreach: tableList, value: selectedTable">
+                        <option data-bind="visible: $index() < 1, text: 'Choose a Table:', value: ''"></option>
+                        <optgroup data-bind="attr: {label: label}, foreach: tables">
+                            <option data-bind="text: $data.tableName, value: $data"></option>
+                        </optgroup>
+                    </select>
                 </div>
                 <!-- ko if: loadingData -->
                 <div class='col-md-12 load-spinner'>
@@ -102,7 +110,7 @@
                             <p><span data-bind='text: column'></span>: <span data-bind='text: value'></span> <button type='button' data-bind='click: $root.removeFilter'>[x]</button></p>
                         </div>
                         <div class="col-md-12">
-                            <select data-bind="options: availableFilters, optionsCaption:'Choose a Column:', value: newFilterColumn"></select>
+                            <select data-bind="options: availableFilters, select2: {minimumResultsForSearch: -1}, optionsCaption:'Choose a Column:', value: newFilterColumn"></select>
                             <input type='input' data-bind='value: newFilterValue' />
                             <button data-bind='click: addFilter'>Add</button>
                         </div>
@@ -114,7 +122,7 @@
                 </div>
                 <div class='col-md-6'>
                     <p><em>Bulk Actions</em><p>
-                        <select data-bind='options: bulkActions, optionsCaption: "Choose Action", value: selectedAction'></select>
+                        <select data-bind='options: bulkActions, select2: {minimumResultsForSearch: -1}, optionsCaption: "Choose Action", value: selectedAction'></select>
                         <button data-bind='click: applyAction, enable: (selectedAction() != null)'>Submit</button>
                 </div>
                 <table class='table'>
@@ -137,8 +145,17 @@
                             <!-- ko if: $data != null && $data.action != null && $data.action == 'checkbox' -->
                             <td><input type='checkbox' data-bind='checked: $data.value, attr: { disabled: $data.key != "selectRow"}' /></td>
                             <!-- /ko -->
+                            <!-- ko if: $data != null && $data.action != null && $data.action == 'text' -->
+                            <td><input type='text' data-bind='event: {change: $root.applyChange.bind()}, value: $data.value, id: $data.key+"_"+$data.rowID' /></td>
+                            <!-- /ko -->
+                            <!-- ko if: $data != null && $data.action != null && $data.action == 'tooltip' -->
+                            <td><a href="javascript:void;" data-bind='tooltip: {title: $data.title}, text: $data.text' /></a></td>
+                            <!-- /ko -->
                             <!-- ko if: $data == null || ($data != null && $data.action == null) -->
                             <td data-bind='text: reportField'></td>
+                            <!-- /ko -->
+                            <!-- ko if: $data != null && $data.action != null && $data.action == 'mapmodal' -->
+                            <td><a class="modal-anchor" data-toggle="modal" data-target="#map-modal" data-bind='click: $root.showMapModal.bind(reportRow)'><i class="fa fa-map-marker fa-2x"></i></a></td>
                             <!-- /ko -->
                         </tr>
                     </tbody>
@@ -171,8 +188,43 @@
                     </tbody>
                 </table>                
             </div>
+            <div role ='tabpanel' class='tab-pane col-md-8' id='manage-analytics'>
+                <h2 class="modal-title">Analytics</h2>
+                <div class="row">
+                    <div class="col-md-12 iframe-container">
+                        <iframe  frameborder="0" scrolling="no" id="analytics-iframe" src="" ></iframe>
+                    </div>
+                </div>
+            </div>
             <div role ='tabpanel' class='tab-pane col-md-8' id='manage-settings'>                
-                <button data-bind='click: addSetting'>Add Setting</button>
+                <div class="row">
+                     
+                    <h2>System Logs</h2>
+                   <table class='table'>
+                    <thead>
+                        <tr>
+                            <td>File Name</td>
+                            <td>File Size</td>
+                            <td>Actions</td>
+                        </tr>
+                    </thead>
+                     <tbody data-bind='foreach: logs'>
+                        <tr>
+                            <td data-bind='text:fileName'></td>
+                            <td data-bind='text:fileSize'></td>
+                            <td>
+                           
+                            <button data-bind='click: $root.clearLogs'>Clear Logs</button>
+                            <a data-bind="attr: { href: linkUrl},text: linkText">Download Log</a>
+                        
+                         </td>
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="row">
+                    <h2>System Variables</h2>
+                    <button data-bind='click: addSetting'>Add Setting</button>
                 <table class='table'>
                     <thead>
                         <tr>
@@ -189,6 +241,7 @@
                         </tr>
                     </tbody>
                 </table>
+                </div>
             </div>
             <div class="col-md-4">
             </div>
@@ -331,7 +384,7 @@
                             <div data-bind='foreach: consolidateFilters'>
                                 <p><span data-bind='text: column'></span>: <span data-bind='text: value'></span> <button type='button' data-bind='click: $root.removeConsolidateFilter'>[x]</button></p>
                             </div>
-                            <select data-bind="options: availableConsolidateFilters, optionsCaption:'Choose a Column:', value: newConsolidateFilterColumn"></select>
+                            <select data-bind="options: availableConsolidateFilters, select2: {minimumResultsForSearch: -1}, optionsCaption:'Choose a Column:', value: newConsolidateFilterColumn"></select>
                             <input type='input' data-bind='value: newConsolidateFilterValue' />
                             <button data-bind='click: addConsolidateFilter'>Add</button>
                         </div>
@@ -486,7 +539,7 @@
                 <form role="form" id="edit-user-form" data-bind="with: editingUser">
                     <div class="form-group">
                         <label for="user_edit_salutation">Salutation</label>
-                        <select name="user_edit_salutation" class="form-control" data-bind="optionsCaption:'Choose:', options: $root.salutations, optionsText: 'description', optionsValue: 'id', value: name_salutation_id"></select>                                    
+                        <select name="user_edit_salutation" class="form-control" data-bind="optionsCaption:'Choose:', options: $root.salutations, select2: {minimumResultsForSearch: -1}, optionsText: 'description', optionsValue: 'id', value: name_salutation_id"></select>                                    
                     </div>
                     <div class="form-group">
                         <label for="user_edit_first_name">First Name*</label>
@@ -510,12 +563,12 @@
                     </div>
                     <div class="form-group">
                         <label for="user_edit_world_region">World Region</label>
-                        <select name="user_edit_world_region" class="form-control" data-bind="optionsCaption:'Choose:', options: $root.worldRegions, optionsText: 'name', value: $root.selectedWorldRegion"></select>
+                        <select name="user_edit_world_region" class="form-control" data-bind="optionsCaption:'Choose:', options: $root.worldRegions, select2: {minimumResultsForSearch: -1}, optionsText: 'name', value: $root.selectedWorldRegion"></select>
                     </div>                        
                     <!-- ko if: $root.selectedWorldRegion() !== undefined -->
                     <div class="form-group">
                         <label for="user_edit_country">Country</label>
-                        <select name="user_edit_country" class="form-control" data-bind="optionsCaption:'Choose:', options: $root.selectedWorldRegion().system_country, optionsText: 'name', value: $root.selectedCountry"></select>
+                        <select name="user_edit_country" class="form-control" data-bind="optionsCaption:'Choose:', options: $root.selectedWorldRegion().system_country, select2: {minimumResultsForSearch: -1}, optionsText: 'name', value: $root.selectedCountry"></select>
                     </div>
                     <!-- /ko -->
                     <div class="form-group">
@@ -528,7 +581,7 @@
                     </div>
                     <div class="form-group">
                         <label for="user_edit_gender">Gender</label>
-                        <select name='user_edit_gender' class="form-control" data-bind="optionsCaption:'Choose:', options: $root.genders, optionsText:'description', optionsValue:'id', value: gender_id" ></select>
+                        <select name='user_edit_gender' class="form-control" data-bind="optionsCaption:'Choose:', options: $root.genders, select2: {minimumResultsForSearch: -1}, optionsText:'description', optionsValue:'id', value: gender_id" ></select>
                     </div>
                     <div class="form-group password-div">
                         <label for="user_edit_password">Password*</label>
@@ -562,7 +615,35 @@
     </div>
 </div>
 
+<div class='modal fade' id="map-modal" tabindex='-1' role='dialog' aria-labeled-by='map_model_label' aria-hidden='true'>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content container shiny">            
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h2 class="modal-title">Spatial Data</h2>
+            </div>
+            <!-- ko if: mapId() != null && selectedTable -->
+                <div class="row">
+                    <div class="col-md-12 iframe-container">
+                        <!-- ko if: selectedTable().dbTableName == 'site' -->
+                        <iframe  frameborder="0" scrolling="no" data-bind="attr: {src: '<?php echo $currentEntity["spatial_site_url"]; ?>' + mapId()}" ></iframe>
+                        <!-- /ko -->
+                        <!-- ko if: selectedTable().dbTableName == 'focus_group' -->
+                        <iframe  frameborder="0" scrolling="no" data-bind="attr: {src: '<?php echo $currentEntity["spatial_focus_group_url"]; ?>' + mapId()}" ></iframe>
+                        <!-- /ko -->
+                    </div>
+                </div>
+            <!-- /ko -->
+  
+            <div class="modal-footer">
+                <button class="btn btn-default" id="user-detail-finish-btn" data-dismiss='modal'>Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php $this->Html->script('dropzone.js', array('block' => 'script')) ?>
 <?php $this->Html->script('admin_strings.js', array('block' => 'script')) ?>
-<?php $this->Html->script('report_common.js', array('block' => 'script')) ?>
+<?php $this->Html->script('report_common.js?v=3.6', array('block' => 'script')) ?>
 <?php $this->Html->script('admin.js', array('block' => 'script')) ?>
+<?php $this->Html->script('knockstrap.min.js', array('block' => 'script')) ?>
