@@ -19,7 +19,7 @@
                 <form role="form" id="edit-user-form" data-bind="with: user">
                     <div class="form-group">
                         <label for="user_edit_salutation">Salutation</label>
-                        <select name="user_edit_salutation" class="form-control" data-bind="optionsCaption:'Choose:', options: $root.salutations, optionsText: 'description', optionsValue: 'id', value: name_salutation_id"></select>                                    
+                        <select name="user_edit_salutation" class="form-control" data-bind="optionsCaption:'Choose:', options: $root.salutations, select2: {minimumResultsForSearch: -1}, optionsText: 'description', optionsValue: 'id', value: name_salutation_id"></select>                                    
                     </div>
                     <div class="form-group">
                         <label for="user_edit_first_name">First Name*</label>
@@ -43,12 +43,12 @@
                     </div>
                     <div class="form-group">
                         <label for="user_edit_world_region">World Region</label>
-                        <select name="user_edit_world_region" class="form-control" data-bind="optionsCaption:'Choose:', options: $root.worldRegions, optionsText: 'name', value: $root.selectedWorldRegion"></select>
+                        <select name="user_edit_world_region" class="form-control" data-bind="optionsCaption:'Choose:', options: $root.worldRegions, select2: {minimumResultsForSearch: -1}, optionsText: 'name', value: $root.selectedWorldRegion"></select>
                     </div>                        
                     <!-- ko if: $root.selectedWorldRegion() !== undefined -->
                     <div class="form-group">
                         <label for="user_edit_country">Country</label>
-                        <select name="user_edit_country" class="form-control" data-bind="optionsCaption:'Choose:', options: $root.selectedWorldRegion().system_country, optionsText: 'name', value: $root.selectedCountry"></select>
+                        <select name="user_edit_country" class="form-control" data-bind="optionsCaption:'Choose:', options: $root.selectedWorldRegion().system_country, select2: {minimumResultsForSearch: -1}, optionsText: 'name', value: $root.selectedCountry"></select>
                     </div>
                     <!-- /ko -->
                     <div class="form-group">
@@ -67,7 +67,7 @@
                     -->
                     <div class="form-group">
                         <label for="user_edit_gender">Gender</label>
-                        <select name='user_edit_gender' class="form-control" data-bind="optionsCaption:'Choose:', options: $root.genders, optionsText:'description', optionsValue:'id', value: gender_id" ></select>
+                        <select name='user_edit_gender' class="form-control" data-bind="optionsCaption:'Choose:', options: $root.genders, select2: {minimumResultsForSearch: -1}, optionsText:'description', optionsValue:'id', value: gender_id" ></select>
                     </div>
                     <div class="form-group password-div">
                         <label for="user_edit_password">Password*</label>

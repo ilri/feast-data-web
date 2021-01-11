@@ -10,7 +10,7 @@ class RespondentTable extends Table
         $this->setTable('respondent');
         $this->setEntityClass('App\Model\Entity\Respondent');
         $this->belongsTo('User', ['foreignKey' => 'id_user']);
-        $this->belongsTo('FocusGroup', ['foreignKey' => 'id_focus_group']);
+        $this->belongsTo('FocusGroupView', ['foreignKey' => 'id_focus_group']);
         $this->belongsTo('Gender', ['foreignKey' => 'id_gender']);
         $this->belongsTo('GenderHeadOfHousehold', ['className' => 'Gender', 'foreignKey' => 'id_gender_head_of_household']);
         $this->belongsTo('CommunityType', ['foreignKey' => 'id_community_type']);

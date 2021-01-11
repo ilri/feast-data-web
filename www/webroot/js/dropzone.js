@@ -1369,6 +1369,8 @@
       for (_i = 0, _len = files.length; _i < _len; _i++) {
         file = files[_i];
         file.status = Dropzone.ERROR;
+        console.log(message);
+        message = typeof message === 'object' && message !== null && message.message ? message.message : message;
         this.emit("error", file, message, xhr);
         this.emit("complete", file);
       }

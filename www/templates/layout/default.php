@@ -7,7 +7,9 @@
         
 
         <?= $this->Html->css('bootstrap.min.css') ?>
-        <?= $this->Html->css('font-awesome.min.css') ?>    
+        <?= $this->Html->css('font-awesome.min.css') ?>  
+     <!--    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=GOOGLE_KEY&callback=initMap&libraries=&v=weekly" defer></script>   -->
         <?php
         /*
          * TODO: There's currenty no separation in the stylesheet between "CORE"
@@ -15,8 +17,8 @@
          * styles for now rather than including both stylesheets which would be
          * mostly redundant.
          */
-        
-        echo $this->Html->css('/css/style.css');
+        echo $this->Html->css('/css/select2.min.css');
+        echo $this->Html->css('/css/style.css?v=2.4');
         echo $this->Html->meta('icon','/img/favicon.ico');
         ?>
         <?= $this->fetch('meta') ?>
@@ -58,10 +60,16 @@
         <!--Start wrapper -->
         <div class="wrapper">
             <!-- Start Header -->
-            <nav class="navbar navbar-default">
+            <nav class="navbar navbar-default navbar-toggleable-xs fixed-top">
                 <div class="container">
                     <div class="navbar-header">
-                        <a href="http://ilri.org/" target="_blank" class="navbar-brand">                    
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a href="http://ilri.org/feast" target="_blank" class="navbar-brand">                    
                             <img src="/img/sonata_logo.png" alt="sonata_logo.png" />
                         </a>
                     </div>
@@ -72,22 +80,31 @@
                             <li>
                                 <a href="/profile"><?= $authedUser['name_first']?></a>
                             </li>
-                            <li class="v-line"></li>
+                             <li class="v-line hidden-xs"></li> 
                             <li>
                                 <a href="/user/logout">Logout</a>
                             </li>
-                            <li class="v-line"></li>
+                            <!-- <li class="v-line"></li> -->
                             <?php } else { ?>
+
+                        
+                           <!--  <li class="v-line"></li> -->
                             <li>
-                                <a href='/'>Sign In / Register</a>
+                                <a href="/about"><strong>About Feast</strong></a>
                             </li>
-                            <li class="v-line"></li>
+                            <li class="v-line hidden-xs"></li>
                             <li>
-                                <a href='http://www.ilri.org/feast' target='_blank'>Visit the <strong>FEAST</strong> Home Page</a
+                                <a href="/news"><strong>News</strong></a>
                             </li>
-                            <li class="v-line"></li>
-                            <?php } ?>
-                            <li><a class="help-link" href="/help" target="_blank">Help</a></li>
+                            
+                            <li class="v-line hidden-xs"></li>
+                            <?php if (isset($currentEntity['allow_report']) && $currentEntity['allow_report']) { ?>
+                            <li>
+                                <a href="/report"><strong>Visualisations</strong></a>
+                            </li>
+                            <li class="v-line hidden-xs"></li>
+                            <?php } } ?>
+                           <!--  <li><a class="help-link" href="/help" target="_blank">Help</a></li> -->
                         </ul>
                     </div>
                 </div>
@@ -128,11 +145,30 @@
         </div>    
         <?= $this->Html->script('knockout-3.3.0.js') ?>
         <?= $this->Html->script('jquery-2.1.4.min.js') ?>
+        <?= $this->Html->script('select2.min.js'); ?>
+        <?= $this->Html->script('knockout-select2.js'); ?>
         <?= $this->Html->script('bootstrap.min.js') ?>
         <?= $this->Html->script('moment-with-locales.min.js') ?>
+        <?= $this->Html->script('jquery.animateNumber.min.js') ?>
+        <?= $this->Html->script('jquery.waypoints.min.js') ?>
+        <?= $this->Html->script('jquery.counterup.min.js') ?>
+        <?= $this->Html->script('aos.js') ?>
         <?= $this->Html->script('main.js') ?>
         <?= $this->fetch('script') ?>
         <script type='text/javascript'>
+
+        $(document).ready(function(){
+             $(".navbar-toggle").click(function() {
+                $("#navbar").addClass("navbar-card");
+              });
+
+              $('.counter').counterUp({
+                 delay: 10,
+                 time: 1000,
+                offset: '100%'
+             });
+        });
+    
             moment.locale(navigator.languages? navigator.languages[0] : (navigator.language || navigator.userLanguage));
         </script>
         <?php if (!empty($currentEntity['google_analytics_code'])) { ?>

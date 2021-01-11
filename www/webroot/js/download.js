@@ -27,6 +27,12 @@ function koDownloadModel() {
 
     self.filterType = ko.observable("none");
 
+    self.shiny = ko.observable(null);
+
+    self.dataType = ko.observable("rdata");
+
+    self.mineOnly = ko.observable(false);
+
     self.selectedProject = ko.observableArray();
     self.selectedSite = ko.observableArray();
     self.selectedWorldRegion = ko.observableArray();
@@ -41,6 +47,20 @@ function koDownloadModel() {
         self.selectedProject(null);
         self.selectedSite(null);
         self.selectedCountry(null);
+    });
+
+    self.selectedDataType = ko.computed(function() {
+        if (document.getElementById('shiny') && document.getElementById('shiny').value == 1) {
+            self.dataType = ko.observable("csv");
+        }
+        return self.dataType();
+    });
+
+    self.selectedMineOnly = ko.computed(function() {
+        if (document.getElementById('shiny') && document.getElementById('shiny').value == 1) {
+            self.mineOnly = ko.observable(true);
+        }
+        return self.mineOnly();
     });
 
     self.noSelectedOptions = function(array) {
@@ -226,6 +246,16 @@ function koDownloadModel() {
             query.push('s=' + self.selectedSite());
         }
 
+        if (self.selectedDataType() != null) {
+            hasQuery = true;
+            query.push('d=' + self.selectedDataType());
+        }
+
+        if (self.selectedMineOnly() != null) {
+            hasQuery = true;
+            query.push('m=' + self.selectedMineOnly());
+        }
+
         if (hasQuery) {
             return "?" + query.join("&");
         } else {
@@ -246,6 +276,11 @@ function koDownloadModel() {
 
     self.getAllSQL = ko.computed(function() {
         var URL = '/api/file/export/all/sqlite';
+        return URL + self.getQuery();
+    });
+
+    self.getData = ko.computed(function() {
+        var URL = '/api/file/export/data';
         return URL + self.getQuery();
     });
 

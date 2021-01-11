@@ -25,7 +25,7 @@
                         <a role="button" data-toggle="collapse" href="#general-help-contents" aria-expanded="false" aria-controls="general-help-contents">BROWSING THE REPOSITORY AND CREATING AN ACCOUNT
                     </div>
                     <div id="general-help-contents" class="collapse">
-                        <iframe src="http://player.vimeo.com/video/181713239" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        <iframe src="https://player.vimeo.com/video/181713239" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                         <p>Welcome to this tutorial on navigating the FEAST Global Data Repository website.</p>
                         <p>This website provides a central repository of data related to the livestock feed resources of smallholder farming communities, collected by users of the International Livestock Research Institute’s FEAST Data Application.</p>
                         <p>There are several areas that visitors to the site may explore without having to register for an account, including the home page, which includes a news feed with stories related to ILRI and the FEAST program, the &ldquo;Downloads&rdquo; page where visitors may see a list of data collection projects, organized by world region and country, and the &ldquo;Reports&rdquo; page, where visitors may view charts and graphs generated from the repository data.</p>
@@ -40,7 +40,7 @@
                         <a role="button" data-toggle="collapse" href="#download-help-contents" aria-expanded="false" aria-controls="download-help-contents">DOWNLOADING DATA</a>
                     </div>
                     <div id="download-help-contents" class="collapse">
-                        <iframe src="http://player.vimeo.com/video/181713336" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        <iframe src="https://player.vimeo.com/video/181713336" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                         <p>To download the repository data for analysis in your preferred software - such as Excel - you first need to register for an account.</p>
                         <p>After signing in with your username and password, navigate to the &ldquo;Download Data Sets&rdquo; tab on the &ldquo;Download&rdquo; page.</p>
                         <p>From here you have three options.</p>
@@ -59,7 +59,7 @@
                         <a role="button" data-toggle="collapse" href="#upload-help-contents" aria-expanded="false" aria-controls="upload-help-contents">UPLOADING DATA</a>
                     </div>
                     <div id="upload-help-contents" class="collapse">
-                        <iframe src="http://player.vimeo.com/video/181713394" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        <iframe src="https://player.vimeo.com/video/181713394" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                         <p>To upload data exported from the FEAST Data Application, sign into your account then navigate to the &ldquo;Upload&rdquo; tab on the &ldquo;My Data&rdquo; page.</p>
                         <p>From here, either click on the gray box labeled &ldquo;Click or drag a file here to upload&rdquo; then select your ZLIB file exported from the FEAST Data Application, or else drag a ZLIB file from your desktop and drop it into the box.</p>
                         <p>If you do not know how to export a data file from the FEAST Data Application, refer to the user manual included with the application or visit the ILRI Learning Portal, accessible via a link on the &ldquo;Help and Tutorials&rdquo; page, to access e-learning modules and tutorials on the FEAST Data App.</p>
@@ -76,7 +76,7 @@
                         <a role="button" data-toggle="collapse" href="#exclude-help-contents" aria-expanded="false" aria-controls="exclude-help-contents">DATA CLEANUP: EXCLUDING RECORDS</a>
                     </div>
                     <div id="exclude-help-contents" class="collapse">
-                        <iframe src="http://player.vimeo.com/video/181713470" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        <iframe src="https://player.vimeo.com/video/181713470" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                         <p>After you upload data, there might be records that you wish to exclude from the database for one reason or another.  Perhaps you are not fully confident in the integrity of the data or feel the data might be misleading to people who do not know the full context of the project.</p>
                         <p>If this is the case, you can exclude records by navigating to the &ldquo;Manage My Data&rdquo; tab on the &ldquo;My Data&rdquo; page.</p>
                         <p>Using the drop-down, select the table containing the record you wish to exclude.  Note that tables in the list marked with an asterisk are look-up tables referenced by other tables: records from these tables cannot be excluded, as doing so might invalidate data in related tables.</p>
@@ -93,7 +93,7 @@
                         <a role="button" data-toggle="collapse" href="#consolidate-help-contents" aria-expanded="false" aria-controls="consolidate-help-contents">DATA CLEANUP: CONSOLIDATING RECORDS</a>
                     </div>
                     <div id="consolidate-help-contents" class="collapse">
-                        <iframe src="http://player.vimeo.com/video/181713494" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        <iframe src="https://player.vimeo.com/video/181713494" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                         <p>After you upload data, you might discover that some of the custom records you created for crops, livestock types, units of measurement and other data might already be represented in the database.</p>
                         <p>In these cases, it might be useful to consolidate the records, so that - for example - someone searching for data on &ldquo;yaks&rdquo;, &ldquo;cavies&rdquo; or &ldquo;reindeer&rdquo; based on someone else’s custom livestock types will be able to see your data for those types of animals as well.</p>
                         <p>To consolidate records, sign in and navigate to the &ldquo;Manage My Data&rdquo; tab on the &ldquo;My Data&rdquo; page.</p>
@@ -113,7 +113,7 @@
                         <a role="button" data-toggle="collapse" href="#report-help-contents" aria-expanded="false" aria-controls="report-help-contents">VIEWING REPORTS</a>
                     </div>
                     <div id="report-help-contents" class="collapse">
-                        <iframe src="http://player.vimeo.com/video/181713506" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        <iframe src="https://player.vimeo.com/video/181713506" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                         <p>On the &ldquo;Reports&rdquo; page, you may view graphs and charts based on data from the repository.  These standard reports were designed to provide quick access to commonly requested data.  If you would like a complete set of repository data to analyze in your preferred software, you can register for an account on the home page then download a zip file of the complete data set from the &ldquo;Downloads&rdquo; page.</p>
                         <p>Returning to our standard reports, use the drop-down menus to select a report, and the relevant graph will then appear below the drop-down menus.</p>
                         <p>You may choose to group the report data by country, world region, gender, project or site.  Once you make a selection, the graph will automatically refresh.</p>

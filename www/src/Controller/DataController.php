@@ -114,9 +114,9 @@ class DataController extends AppController
         if (isset($this->request->getQueryParams()['last'])) {
             $lastID = $this->request->getQueryParams()['last'];
         }
-        $tableAlias = 'Project';
+        $tableAlias = 'ProjectView';
         $table = TableRegistry::get($tableAlias);
-        $query = $table->find('all')->contain(['SystemCountry', 'User', 'Site']);
+        $query = $table->find('all')->contain(['SystemCountry', 'User', 'SiteView']);
         if (!empty($query)) {
             $whereQuery = [];
             if (!$isAdmin || (empty($this->request->getQueryParams()['isAdmin']) || $this->request->getQueryParams()['isAdmin'] != "true")) {
@@ -126,7 +126,7 @@ class DataController extends AppController
             if (!empty($lastID)) {
                 $whereQuery["{$tableAlias}.id >"] = $lastID;
             }
-            $whereQuery['Project.keep_private'] = true;
+            $whereQuery['ProjectView.keep_private'] = true;
             if (count($whereQuery) > 0) {
                 $query->where($whereQuery);
             }
@@ -232,42 +232,42 @@ class DataController extends AppController
         $query = null;
         switch ($tableName) {
             case 'project':
-                $tableAlias = 'Project';
+                $tableAlias = 'ProjectView';
                 $table = TableRegistry::get($tableAlias);
                 $query = $table->find('all')->contain(['SystemCountry', 'User']);
                 break;
             case 'site':
-                $tableAlias = 'Site';
+                $tableAlias = 'SiteView';
                 $table = TableRegistry::get($tableAlias);
-                $query = $table->find('all')->contain(['Project', 'SystemCountry', 'User']);
+                $query = $table->find('all')->contain(['ProjectView', 'SystemCountry', 'User']);
                 break;
             case 'focus_group':
-                $tableAlias = 'FocusGroup';
+                $tableAlias = 'FocusGroupView';
                 $table = TableRegistry::get($tableAlias);
-                $query = $table->find('all')->contain(['Site.Project', 'Gender', 'User']);
+                $query = $table->find('all')->contain(['SiteView.ProjectView', 'Gender', 'User']);
                 break;
             case 'focus_group_monthly_statistics':
                 $tableAlias = 'FocusGroupMonthlyStatistics';
                 $table = TableRegistry::get($tableAlias);
-                $query = $table->find('all')->contain(['FocusGroup.Site.Project', 'Month', 'ScaleZeroFive', 'User']);
+                $query = $table->find('all')->contain(['FocusGroupView.SiteView.ProjectView', 'Month', 'ScaleZeroFive', 'User']);
                 break;
             case 'respondent':
                 $tableAlias = 'Respondent';
                 $table = TableRegistry::get($tableAlias);
-                $query = $table->find('all')->contain(['FocusGroup.Site.Project', 'Gender', 'LandholdingCategory', 'User']);
+                $query = $table->find('all')->contain(['FocusGroupView.SiteView.ProjectView', 'Gender', 'LandholdingCategory', 'User']);
                 break;
             case 'respondent_monthly_statistics':
                 $tableAlias = 'RespondentMonthlyStatistics';
                 $table = TableRegistry::get($tableAlias);
-                $query = $table->find('all')->contain(['Respondent.FocusGroup.Site.Project', 'Month', 'User']);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Month', 'User']);
                 break;
             case 'fodder_crop_cultivation':
                 $tableAlias = 'FodderCropCultivation';
                 $table = TableRegistry::get($tableAlias);
-                $query = $table->find('all')->contain(['Respondent.FocusGroup.Site.Project', 'FodderCropType', 'UnitArea', 'User']);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'FodderCropType', 'UnitArea', 'User']);
                 break;
             case 'focus_group':
-                $tableAlias = 'FocusGroup';
+                $tableAlias = 'FocusGroupView';
                 $table = TableRegistry::get($tableAlias);
                 $query = $table->find('all')->contain(['User']);
                 break;
@@ -279,7 +279,7 @@ class DataController extends AppController
             case 'livestock_holding':
                 $tableAlias = 'LivestockHolding';
                 $table = TableRegistry::get($tableAlias);
-                $query = $table->find('all')->contain(['Respondent.FocusGroup.Site.Project', 'AnimalType', 'User']);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'AnimalType', 'User']);
                 break;
             case 'livestock_sale_category':
                 $tableAlias = 'LivestockSaleCategory';
@@ -289,17 +289,17 @@ class DataController extends AppController
             case 'livestock_sale':
                 $tableAlias = 'LivestockSale';
                 $table = TableRegistry::get($tableAlias);
-                $query = $table->find('all')->contain(['Respondent.FocusGroup.Site.Project', 'LivestockSaleCategory.AnimalSpecies', 'LivestockSaleCategory.Gender', 'User']);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'LivestockSaleCategory.AnimalSpecies', 'LivestockSaleCategory.Gender', 'User']);
                 break;
             case 'labour_activity':
                 $tableAlias = 'LabourActivity';
                 $table = TableRegistry::get($tableAlias);
-                $query = $table->find('all')->contain(['FocusGroup.Site.Project', 'User']);
+                $query = $table->find('all')->contain(['FocusGroupView.SiteView.ProjectView', 'User']);
                 break;
             case 'purchased_feed':
                 $tableAlias = 'PurchasedFeed';
                 $table = TableRegistry::get($tableAlias);
-                $query = $table->find('all')->contain(['Respondent.FocusGroup.Site.Project', 'Respondent.FocusGroup.Site.Currency', 'PurchasedFeedType', 'UnitMassWeight', 'FeedCurrency', 'User']);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Respondent.FocusGroupView.SiteView.Currency', 'PurchasedFeedType', 'UnitMassWeight', 'FeedCurrency', 'User']);
                 break;
             case 'techfit_assessment':
                 $tableAlias = 'TechfitAssessment';
@@ -332,7 +332,7 @@ class DataController extends AppController
             case 'crop_cultivation':
                 $tableAlias = 'CropCultivation';
                 $table = TableRegistry::get($tableAlias);
-                $query = $table->find('all')->contain(['Respondent.FocusGroup.Site.Project', 'CropType', 'UnitArea', 'UnitMassWeight', 'User']);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'CropType', 'UnitArea', 'UnitMassWeight', 'User']);
                 break;
             case 'crop_type':
                 $tableAlias = 'CropType';
@@ -347,7 +347,7 @@ class DataController extends AppController
             case 'feed_source_availability':
                 $tableAlias = "FeedSourceAvailability";
                 $table = TableRegistry::get($tableAlias);
-                $query = $table->find('all')->contain(['Respondent.FocusGroup.Site.Project', 'FeedSource', 'Month', 'User']);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'FeedSource', 'Month', 'User']);
                 break;
             case 'fodder_crop_type':
                 $tableAlias = 'FodderCropType';
@@ -362,7 +362,7 @@ class DataController extends AppController
             case 'income_activity':
                 $tableAlias = 'IncomeActivity';
                 $table = TableRegistry::get($tableAlias);
-                $query = $table->find('all')->contain(['Respondent.FocusGroup.Site.Project', 'IncomeActivityType.IncomeActivityCategory', 'User']);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'IncomeActivityType.IncomeActivityCategory', 'User']);
                 break;
             case 'purchased_feed_type':
                 $tableAlias = 'PurchasedFeedType';
@@ -428,8 +428,8 @@ class DataController extends AppController
                     case 'DecisionType.description':
                     case 'FeedLaborType.description':			    
                     case 'FeedSource.description':
-                    case 'FocusGroup.community':
-                    case 'FocusGroup.venue_name':
+                    case 'FocusGroupView.community':
+                    case 'FocusGroupView.venue_name':
                     case 'FodderCropType.name':
                     case 'IncomeActivity.description':
                     case 'IncomeActivityCategory.description':
@@ -440,14 +440,14 @@ class DataController extends AppController
                     case 'LandholdingCategory.description':
                     case 'LivestockSaleCategory.Gender.description':
                     case 'Month.name':
-                    case 'Project.description':
-                    case 'Project.unique_identifier':
-                    case 'Project.title':
+                    case 'ProjectView.description':
+                    case 'ProjectView.unique_identifier':
+                    case 'ProjectView.title':
                     case 'Respondent.head_of_household_occupation':
                     case 'Respondent.unique_identifier':
                     case 'PurchasedFeedType.name':
                     case 'Season.name':
-                    case 'Site.name':
+                    case 'SiteView.name':
                     case 'SystemCountry.name':
                     case 'UnitArea.name':
                     case 'UnitMassWeight.name':
@@ -485,13 +485,13 @@ class DataController extends AppController
                     case 'FeedSource.uploaded_at':
                     case 'FeedSourceAvailability.contribution':
                     case 'FeedSourceAvailability.uploaded_at':
-                    case 'FocusGroup.id':
-                    case 'FocusGroup.exclude':
-                    case 'FocusGroup.keep_private':
-                    case 'FocusGroup.meeting_date_time':
-                    case 'FocusGroup.uploaded_at':
-                    case 'FocusGroup.Site.Project.id':
-                    case 'FocusGroup.Site.id':
+                    case 'FocusGroupView.id':
+                    case 'FocusGroupView.exclude':
+                    case 'FocusGroupView.keep_private':
+                    case 'FocusGroupView.meeting_date_time':
+                    case 'FocusGroupView.uploaded_at':
+                    case 'FocusGroupView.SiteView.ProjectView.id':
+                    case 'FocusGroupView.SiteView.id':
                     case 'FocusGroupMonthlyStatistics.id':
                     case 'FocusGroupMonthlyStatistics.exclude':
                     case 'FocusGroupMonthlyStatistics.keep_private':
@@ -528,11 +528,11 @@ class DataController extends AppController
                     case 'LivestockSale.number_sold':
                     case 'LivestockSale.uploaded_at':
                     case 'LivestockSaleCategory.uploaded_at':
-                    case 'Project.exclude':
-                    case 'Project.keep_private':
-                    case 'Project.id':
-                    case 'Project.start_date':
-                    case 'Project.uploaded_at':
+                    case 'ProjectView.exclude':
+                    case 'ProjectView.keep_private':
+                    case 'ProjectView.id':
+                    case 'ProjectView.start_date':
+                    case 'ProjectView.uploaded_at':
                     case 'PurchasedFeed.quantity_purchased':
                     case 'PurchasedFeed.exclude':
                     case 'PurchasedFeed.keep_private':
@@ -549,9 +549,9 @@ class DataController extends AppController
                     case 'Respondent.exclude':
                     case 'Respondent.keep_private':
                     case 'Respondent.uploaded_at':
-                    case 'Respondent.FocusGroup.Site.Project.id':
-                    case 'Respondent.FocusGroup.Site.id':
-                    case 'Respondent.FocusGroup.id':
+                    case 'Respondent.FocusGroupView.SiteView.ProjectView.id':
+                    case 'Respondent.FocusGroupView.SiteView.id':
+                    case 'Respondent.FocusGroupView.id':
                     case 'RespondentMonthlyStatistics.keep_private':
                     case 'RespondentMonthlyStatistics.market_price_cattle':
                     case 'RespondentMonthlyStatistics.market_price_goat':
@@ -562,9 +562,9 @@ class DataController extends AppController
                     case 'RespondentMonthlyStatistics.uploaded_at':
                     case 'ScaleZeroFive.number':
                     case 'Season.uploaded_at':
-                    case 'Site.exclude':
-                    case 'Site.id':
-                    case 'Site.uploaded_at':
+                    case 'SiteView.exclude':
+                    case 'SiteView.id':
+                    case 'SiteView.uploaded_at':
                     case 'UnitArea.conversion_ha':
 		    case 'UnitMassWeight.conversion_kg':
                     case 'Decision.uploaded_at':
@@ -615,6 +615,90 @@ class DataController extends AppController
         $tableName = $this->request->getAttribute('params')['table'];
         $records = $this->request->getData()['records'];
         $this->cascadeExclusion($tableName, null, $records, null, null, $this->cascadeTree);
+        $this->set('results', 1);
+        $this->set('_serialize', ['results']);
+    }
+
+    /**
+     * Revert alias values
+     */
+    public function revertAlias()
+    {
+        $this->RequestHandler->renderAs($this, 'json');
+        $tableName = $this->request->getAttribute('params')['table'];
+        $table = str_replace(' ', '', ucwords(str_replace('_', ' ', $tableName)));
+        $table = $this->getTableLocator()->get($table);
+
+        $records = $this->request->getData()['records'];
+        $aliasValueTable = $this->getTableLocator()->get('AliasValue');
+        $results = [];
+        $columns = [];
+
+        foreach ($records as $record) {
+            foreach ($record as $key => $value) {
+                if ($key == 'id') {
+                    $aliasValues = $aliasValueTable->find()->where([
+                        'table_name' => $tableName,
+                        'tableid' => $record['id']
+                    ])->all();
+
+                    $results[$value] = [];
+                    foreach ($aliasValues as $aliasValue) {
+                        $original = $table->find()->where([
+                            'id' => $value
+                        ])->first();
+
+                        if ($original) {
+                            $aliasValue->alias_value = $original->{$aliasValue->actual_column_name};
+                            $aliasValueTable->save($aliasValue);
+                            $results[$value] = array_merge($results[$value], [$aliasValue->actual_column_name => $aliasValue->alias_value]);
+                        }
+                        $columns[$aliasValue->actual_column_name] = ucwords(str_replace('_', ' ', $aliasValue->actual_column_name));
+                    }
+
+                    if (empty($results[$value])) {
+                        unset($results[$value]);
+                    }
+
+                }
+            }
+        }
+
+        $this->set('results', $results);
+        $this->set('columns', $columns);
+        $this->set('_serialize', ['results', 'columns']);
+    }
+
+    /**
+     * Update alias values.
+     */
+    public function updateAliasValue()
+    {
+        $this->RequestHandler->renderAs($this, 'json');
+        $tableName = $this->request->getAttribute('params')['table'];
+        $records = $this->request->getData()['records'];
+        $aliasValueTable = $this->getTableLocator()->get('AliasValue');
+        foreach ($records as $record) {
+            foreach ($record as $key => $value) {
+                if ($key != 'id' && isset($record['id'])) {
+                    $aliasValue = $aliasValueTable->find()->where([
+                        'table_name' => $tableName,
+                        'actual_column_name' => $key,
+                        'tableid' => $record['id']
+                    ])->first();
+
+                    if (!$aliasValue) {
+                        $aliasValue = $aliasValueTable->newEmptyEntity();
+                        $aliasValue->table_name = $tableName;
+                        $aliasValue->actual_column_name = $key;
+                        $aliasValue->tableid = $record['id'];
+                    }
+
+                    $aliasValue->alias_value = $value;
+                    $aliasValueTable->save($aliasValue);
+                }
+            }
+        }
         $this->set('results', 1);
         $this->set('_serialize', ['results']);
     }

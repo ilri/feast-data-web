@@ -19,6 +19,7 @@ namespace App\Controller;
 use Cake\Core\Configure;
 use Cake\Event\EventInterface;
 use Cake\Log\Log;
+use Cake\ORM\TableRegistry;
 use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
 /**
@@ -47,13 +48,20 @@ class PagesController extends AppController
      *   be found or \Cake\View\Exception\MissingTemplateException in debug mode.
      */
     public function display()
-    {
+    {    
+        $statTable = TableRegistry::get('vw_homestats');
+        $stat   =  $statTable->find('all')->first();
+        $this->set(compact('stat'));
+
+        $sites = TableRegistry::get('export_project_site');
+        $query = $sites->find('all', [ 'conditions' => ['site_lat <>' => 0]]);
+        $this->set('geosites',$query);
         // If we're already logged in, don't show the home page - just go back to the logged-in home.
         if ($this->Auth->user()) {
             return $this->redirect($this->Auth->redirectUrl());
         }
         $path = func_get_args();
-        $count = count($path);
+        $count = isset($path);
         if (!$count) {
             return $this->redirect('/');
         }
@@ -73,6 +81,10 @@ class PagesController extends AppController
             }
             throw new NotFoundException();
         }
+
+
+
+
     }
     public function help()
     {
@@ -81,6 +93,21 @@ class PagesController extends AppController
     {
     }
     public function dashboard()
+    {
+    }
+
+    public function feastnews()
+    {
+    }
+
+    public function aboutfeast()
+    {
+    }
+
+    public function loginfeast()
+    {
+    } 
+    public function registerfeast()
     {
     }
 }

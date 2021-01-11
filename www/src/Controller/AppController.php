@@ -66,7 +66,7 @@ class AppController extends Controller
             $this->currentEntity['no_reply_address'] = 'do-not-reply.feast@cgiar.org';
             $this->currentEntity['setting_approval_required'] = 0;
             $this->currentEntity['contact_name'] = 'Administrator';
-            $this->currentEntity['contact_email'] = 'support@sonatalms.com';
+            $this->currentEntity['contact_email'] = 'feast@cgiar.org';
             $this->currentEntity['name'] = 'FEAST Repository';
             $this->currentEntity['description'] = 'FEAST Repository';
             $this->currentEntity['portal_title'] = 'FEAST Repository';
