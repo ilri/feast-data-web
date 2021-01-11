@@ -1,4 +1,7 @@
 #!/usr/local/bin/Rscript
+
+options(warn = -1) #Suppress warnings
+
 library(DBI)
 library(pool)
 library(dplyr)
