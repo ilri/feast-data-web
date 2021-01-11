@@ -137,7 +137,7 @@ class SitesController extends AppController
            $rstdata = $spTable->find('all', [ 'conditions' => ['id_site' => $siteid]])->first();
             
             if (empty($rstdata)) {
-                $rstdata = $spTable->newEntity();
+                $rstdata = $spTable->newEmptyEntity();
             }
 
            $rstdata->id_site = (int)$rst->site_id;
