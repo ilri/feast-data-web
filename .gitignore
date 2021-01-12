@@ -52,3 +52,4 @@ nbproject/*
 # Sass preprocessor
 .sass-cache/
 webroot/rscripts/rdatadownload/*
+webroot/rscripts/feastCred.R
