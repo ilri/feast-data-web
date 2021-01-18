@@ -314,7 +314,7 @@ identical(newDataCheck$sp_site_lastup, data.frame(tbl(pool, "export_project_site
 		assign(paste0(substr(tablesExport[i], 8, nchar(tablesExport[i]))), tmpExportTab, envir = env.export.sub) 		 
 	}
 
-	save(list = ls(env.export.sub), file = paste0(persistDIR, "/FEAST", out_file, ".RDATA"), envir = env.export.sub)
+	save(list = ls(env.export.sub), file = paste0(outDIR, "/FEAST", out_file, ".RDATA"), envir = env.export.sub)
 	
 	} else if(fileType == "csv"){
 		for(i in 1:length(tablesExport)) {
