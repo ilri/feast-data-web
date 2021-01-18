@@ -73,10 +73,10 @@ $this->assign('title', 'Administration | ' . h($currentEntity['portal_title']));
                             <td data-bind='text:contact_email'></td>
                             <td data-bind='text: created_at == null ? "N/A" : moment(created_at).format("L LT")'></td>
                             <td>
-                                <select name='status_change' class="form-control" data-bind="click: function(){}, clickBubble: false, event: {change: $root.changeUserStatus}, options: $root.userStatusOptions, optionsText: 'title', select2: {minimumResultsForSearch: -1}, optionsValue: 'status_id', value: approvalStatus"></select>
+                                <select name='status_change' class="form-control" data-bind="click: function(){}, clickBubble: false, event: {change: $root.changeUserStatus}, options: $root.userStatusOptions, optionsText: 'title', optionsValue: 'status_id', value: approvalStatus"></select>
                             </td>
                             <td>
-                                <select name='role_change' class="form-control" data-bind="click: function(){}, clickBubble: false, event: {change: $root.changeUserRole}, options: $root.userRoleOptions, select2: {minimumResultsForSearch: -1}, optionsText: 'title', optionsValue: 'role_id', value: roleStatus"></select>
+                                <select name='role_change' class="form-control" data-bind="click: function(){}, clickBubble: false, event: {change: $root.changeUserRole}, options: $root.userRoleOptions, optionsText: 'title', optionsValue: 'role_id', value: roleStatus"></select>
                             </td>
                         </tr>
                     </tbody>
