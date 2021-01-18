@@ -407,7 +407,7 @@ class UserController extends AppController
             if (!$canEdit) {
                 $message = array('text' => __("Not authorized to edit this user."), 'type' => 'error');
             } else {
-                $user['modified_by'] = $this->Auth->user()['contact_email'];
+                $user['updated_by'] = $this->Auth->user()['contact_email'];
                 $user['admin'] = $newRole;
                 if ($this->users->save($user)) {
                     $message = array('subject' => __('Updated user role'), 'type' => 'success');
@@ -435,7 +435,7 @@ class UserController extends AppController
             if (!$canEdit) {
                 $message = array('text' => __("Not authorized to edit this user."), 'type' => 'error');
             } else {
-                $user['modified_by'] = $this->Auth->user()['contact_email'];
+                $user['updated_by'] = $this->Auth->user()['contact_email'];
                 $user['user_approval_status_id'] = $newStatus;
                 if ($this->users->save($user)) {
                     $message = array('subject' => __('Updated user approval status.'), 'type' => 'success');
@@ -528,7 +528,7 @@ class UserController extends AppController
             }
             // Only attempt modification if there aren't any errors
             if (empty($errors)) {
-                $user['modified_by'] = $this->Auth->user()['id'];
+                $user['updated_by'] = $this->Auth->user()['contact_email'];
                 if (isset($this->request->getData()['user_edit_password']) && !empty($this->request->getData()['user_edit_password'])) {
                     $hashedPassword = (new DefaultPasswordHasher())->hash($this->request->getData()['user_edit_password']);
                     $user['password'] = $hashedPassword;
