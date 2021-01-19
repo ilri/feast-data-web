@@ -107,7 +107,7 @@ if(length(userID_arg) >0){
 		assign(tablesExport[i], data.frame(tbl(pool, tablesExport[i])))
   ##Exclude data here. Filter out observations with a 1 year embargo. First create a new variable exclDate and then filter
 		#assign(tablesExport[i], `[[<-`(get(tablesExport[i]), 'exclDate', value = as.POSIXct(eval(parse(text = tablesExport[i]))$uploaded_at) + (365*24*60*60))) 
-		#assign(tablesExport[i], filter(eval(parse(text = tablesExport[i])), !(exclDate > Sys.time() & private == 1) & excluded != 1))
+		#assign(tablesExport[i], filter(eval(parse(text = tablesExport[i])), !(exclDate > Sys.time() & !(private %in% c(0, NA))) & excluded %in% c(0, NA)))
 		assign(tablesExport[i], filter_at(eval(parse(text = tablesExport[i])), vars(starts_with("site_country")), all_vars(. != "Antarctica ")))
 		assign(tablesExport[i], select(eval(parse(text = tablesExport[i])), -excluded, -export_time, -private))
 
@@ -350,7 +350,7 @@ identical(newDataCheck$sp_site_lastup, data.frame(tbl(pool, "export_project_site
 		assign(tablesExport[i], data.frame(tbl(pool, tablesExport[i])))
   ##Exclude data here. Filter out observations with a 1 year embargo. First create a new variable exclDate and then filter
 		assign(tablesExport[i], `[[<-`(get(tablesExport[i]), 'exclDate', value = as.POSIXct(eval(parse(text = tablesExport[i]))$uploaded_at) + (365*24*60*60))) 
-		assign(tablesExport[i], filter(eval(parse(text = tablesExport[i])), !(exclDate > Sys.time() & private == 1) & excluded %in% c(0, NA)))
+		assign(tablesExport[i], filter(eval(parse(text = tablesExport[i])), !(exclDate > Sys.time() & !(private %in% c(0, NA))) & excluded %in% c(0, NA)))
 		assign(tablesExport[i], filter_at(eval(parse(text = tablesExport[i])), vars(starts_with("site_country")), all_vars(. != "Antarctica ")))
 		assign(tablesExport[i], select(eval(parse(text = tablesExport[i])), -exclDate, -excluded, -export_time, -private))
 
