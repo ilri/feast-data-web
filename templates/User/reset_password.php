@@ -13,7 +13,10 @@
         <div class='row tab-content inner-tab-content'>
             <div class="col-md-6 col-md-offset-3" id='reset-form-container'>
                 <h2>Reset Your Password</h2>
-                <?php if (!$resetLinkSent) { ?>            
+                <?php if (!$resetLinkSent) { ?>
+                <?php if (isset($noUser)) { ?>
+                    <p class="alert alert-danger">User with this email not found.</p>
+                <?php } ?>
                 <p>To reset your password, enter your email address below.</p>
                 <p>An email will be sent to you with further instructions.</p>
                 <form id='reset-form' role='form' method='POST' action='/user/resetPassword'>

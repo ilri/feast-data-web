@@ -81,7 +81,7 @@
     </aside>
     <div class="column-responsive column-80">
       <div class="message default text-center">
-          <small>NB: Please remember to click the Update Cordinates button after changing the location of the Site point</small>  
+          <small>NB: Please remember to click the Update Coordinates button after changing the location of the Site point</small>  
           <a href="#" data-toggle="modal" data-target="#sitepoint-modal" class="btn btn-sm btn-success pull-right">Update Cordinates</a>
       </div>
         <div class=" view content" style="height:500px;">

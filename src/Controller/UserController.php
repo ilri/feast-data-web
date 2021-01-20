@@ -298,7 +298,7 @@ class UserController extends AppController
         if ($this->request->is('post')) {
             // Figure out if user exists (username is email)
             $userTable = TableRegistry::get('User');
-            $query = $userTable->find('all')->where(['User.contact_email LIKE ' => $this->request->getData()['email'], 'OR' => ['User.deleted' => false, 'User.deleted IS' => null]]);
+            $query = $userTable->find('all')->where(['User.contact_email LIKE ' => trim($this->request->getData()['email']), 'OR' => ['User.deleted' => false, 'User.deleted IS' => null]]);
             // LIKE for case-insensitivity
             $results = $query->toArray();
             if (!empty($results)) {
@@ -313,7 +313,9 @@ class UserController extends AppController
                 Log::debug("Trying reset");
                 Log::debug($user);
             } else {
-                Log::debug("User not found");
+                Log::debug("User <".$this->request->getData()['email']."> not found");
+                $this->set('resetLinkSent', false);
+                $this->set('noUser', true);
             }
         } else {
             // Just show the form.
