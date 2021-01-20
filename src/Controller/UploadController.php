@@ -382,7 +382,7 @@ class UploadController extends AppController
                         }
                         Log::debug(serialize($thisRow));
                         $values[] = $thisRow[0];
-                        $valueParams = '?';
+                        $valueParams = "'?'";
                         $fields = $thisMetaTable[1];
                         for ($i = 1; $i < count($thisRow); $i++) {
                             if (!isset($thisMetaTable[$i + 1])) { continue; }
