@@ -100,7 +100,7 @@
                             <li class="v-line hidden-xs"></li>
                             <?php if (isset($currentEntity['allow_report']) && $currentEntity['allow_report']) { ?>
                             <li>
-                                <a href="/report"><strong>Visualisations</strong></a>
+                                <a href="/reports"><strong>Visualisations</strong></a>
                             </li>
                             <li class="v-line hidden-xs"></li>
                             <?php } } ?>
