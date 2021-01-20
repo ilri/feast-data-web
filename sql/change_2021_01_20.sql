@@ -1,0 +1,3 @@
+ALTER DATABASE feast_2021 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE crop_type CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+ALTER TABLE focus_group CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

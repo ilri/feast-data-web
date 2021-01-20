@@ -613,6 +613,8 @@ class UserController extends AppController
     }
     public function timeout()
     {
+        $this->Flash->info("Session timeout", 'default', [], 'auth');
+        return $this->redirect('/');
         if ($this->request->is('post')) {
             //$this->request->getData()['contact_email'] = $this->request->getData()['username'];
             // avoid exposing internal DB field name, not that it matters much.
