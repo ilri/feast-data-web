@@ -919,8 +919,17 @@ div.container.oversize-container {
     font-family: "Raleway", Helvetica, Arial, sans-serif;   
 }
 
-.need-registration {
+.register-block .need-registration {
     margin-top: 0px;
+}
+
+.home-counter .panel-body {
+    padding-top: 0px;
+}
+
+.message.info {
+    font-weight: bold;
+    padding-bottom: 10px;
 }
 
 .forgot-password:hover,.forgot-password:focus{

@@ -18,7 +18,7 @@
          * mostly redundant.
          */
         echo $this->Html->css('/css/select2.min.css');
-        echo $this->Html->css('/css/style.css?v=2.4');
+        echo $this->Html->css('/css/style.css?v=2.5');
         echo $this->Html->meta('icon','/img/favicon.ico');
         ?>
         <?= $this->fetch('meta') ?>
