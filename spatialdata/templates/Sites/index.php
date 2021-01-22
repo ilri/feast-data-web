@@ -16,7 +16,7 @@
                     <th><?= $this->Paginator->sort('site_major_region') ?></th>
                     <th><?= $this->Paginator->sort('site_country_name') ?></th>
                     <th><?= $this->Paginator->sort('venue_name') ?></th>
-                    <th class="actions"><?= __('Cordinates') ?></th>
+                    <th class="actions"><?= __('Coordinates') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>

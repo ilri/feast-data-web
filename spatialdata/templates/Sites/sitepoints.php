@@ -8,7 +8,7 @@
         //$CountFG = $db->GetOne("select count(*) from focus_group where id_site=$SiteID");
         $CountFG = $val->focus_group_count;;
         $linkTitle = 'View Focus Groups';
-        $linkSiteTitle = 'Manage Site Cordinates';
+        $linkSiteTitle = 'Manage Site Coordinates';
     $contentString = "<p>Project Name : <b>".$val->project_title."</b></p>";
     $contentString .= "<p>Site Name : <b>".$val->site_name."</b></p>";
     $contentString .= "<p>Major Region : <b>".$val->site_major_region."</b></p>";

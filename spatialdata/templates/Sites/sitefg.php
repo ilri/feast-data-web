@@ -12,7 +12,7 @@
                     <th>Community Type</th>
                     <th>Sub Region</th>
                     
-                    <th class="actions"><?= __('Cordinates') ?></th>
+                    <th class="actions"><?= __('Coordinates') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>
