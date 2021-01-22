@@ -82,7 +82,7 @@
     <div class="column-responsive column-80">
       <div class="message default text-center">
           <small>NB: Please remember to click the Update Coordinates button after changing the location of the Site point</small>  
-          <a href="#" data-toggle="modal" data-target="#sitepoint-modal" class="btn btn-sm btn-success pull-right">Update Cordinates</a>
+          <a href="#" data-toggle="modal" data-target="#sitepoint-modal" class="btn btn-sm btn-success pull-right">Update Coordinates</a>
       </div>
         <div class=" view content" style="height:500px;">
         	  
@@ -99,7 +99,7 @@
         <div class="modal-content">            
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h2 class="modal-title">Update Cordinates</h2>
+                <h2 class="modal-title">Update Coordinates</h2>
             </div>
             <div class="modal-body">
                <?php
@@ -109,7 +109,7 @@
                 echo $this->Form->control('site_lat',['label'=>'Site Latitude','value' => floatval($rst->site_lat)]);
                 echo $this->Form->control('site_long',['label'=>'Site Longtitude','value' => floatval($rst->site_lng)]);
               
-                echo $this->Form->button(__('Update Cordinates'),['class'=>'btn btn-success']);
+                echo $this->Form->button(__('Update Coordinates'),['class'=>'btn btn-success']);
                 echo $this->Form->end();
             ?>
             </div><!-- end ModalBody -->

@@ -78,3 +78,4 @@ ALTER TABLE womens_income_activity CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8
 ALTER TABLE world_region CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 ALTER TABLE `focus_group` CHANGE `meeting_date_time` `meeting_date_time` datetime NULL DEFAULT NULL;
+ALTER TABLE labour_activity CHANGE updated_by updated_by varchar(255) NULL DEFAULT NULL;

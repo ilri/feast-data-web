@@ -110,11 +110,11 @@ class SitesController extends AppController
            $rstdata->longitude = floatval($this->request->getData("site_long"));
            
             if ($spTable->save($rstdata)) {
-                $this->Flash->success(__('Cordinates Updated successfully'));
+                $this->Flash->success(__('Coordinates Updated successfully'));
             }
             else
             {
-                $this->Flash->error(__('Error Updating Cordinates'));
+                $this->Flash->error(__('Error Updating Coordinates'));
             }
             
             
@@ -126,12 +126,12 @@ class SitesController extends AppController
          if ($rst->site_lat == 0) {
           $venueName  = $rst->venue_name;
            $site_country_name = $rst->site_country_name != "" ? trim($venueName." ".$rst->site_country_name) : "East Africa";
-           $defCordinates = $this->geocode($site_country_name);
-             if (!$defCordinates) {
-              $defCordinates = $this->geocode($rst->site_country_name);
+           $defCoordinates = $this->geocode($site_country_name);
+             if (!$defCoordinates) {
+              $defCoordinates = $this->geocode($rst->site_country_name);
             }
-           $rst->site_lat = $defCordinates["lati"];
-           $rst->site_lng = $defCordinates["longi"];
+           $rst->site_lat = $defCoordinates["lati"];
+           $rst->site_lng = $defCoordinates["longi"];
 
            $spTable = TableRegistry::get('spatial_data_site');
            $rstdata = $spTable->find('all', [ 'conditions' => ['id_site' => $siteid]])->first();
@@ -141,8 +141,8 @@ class SitesController extends AppController
             }
 
            $rstdata->id_site = (int)$rst->site_id;
-           $rstdata->latitude = floatval($defCordinates["lati"]);
-           $rstdata->longitude = floatval($defCordinates["longi"]);
+           $rstdata->latitude = floatval($defCoordinates["lati"]);
+           $rstdata->longitude = floatval($defCoordinates["longi"]);
            $spTable->save($rstdata);
          }
        $this->set(compact('rst'));
@@ -159,12 +159,12 @@ class SitesController extends AppController
        if ($rst->site_lat == 0) {
           $venueName  = $rst->focus_group_venue_name;
            $site_country_name = $rst->site_country != "" ? trim($venueName." ".$rst->site_country) : "East Africa";
-           $defCordinates = $this->geocode($site_country_name);
-            if (!$defCordinates) {
-              $defCordinates = $this->geocode($rst->site_country);
+           $defCoordinates = $this->geocode($site_country_name);
+            if (!$defCoordinates) {
+              $defCoordinates = $this->geocode($rst->site_country);
             }
-           $rst->site_lat = $defCordinates["lati"];
-           $rst->site_lng = $defCordinates["longi"];
+           $rst->site_lat = $defCoordinates["lati"];
+           $rst->site_lng = $defCoordinates["longi"];
          }
 
        $this->set(compact('rst'));
@@ -178,12 +178,12 @@ class SitesController extends AppController
          if ($rst->site_lat == 0) {
           $venueName  = $rst->focus_group_venue_name;
            $site_country_name = $rst->site_country != "" ? trim($venueName." ".$rst->site_country) : "East Africa";
-           $defCordinates = $this->geocode($site_country_name);
-             if (!$defCordinates) {
-              $defCordinates = $this->geocode($rst->site_country);
+           $defCoordinates = $this->geocode($site_country_name);
+             if (!$defCoordinates) {
+              $defCoordinates = $this->geocode($rst->site_country);
             }
-           $rst->site_lat = $defCordinates["lati"];
-           $rst->site_lng = $defCordinates["longi"];
+           $rst->site_lat = $defCoordinates["lati"];
+           $rst->site_lng = $defCoordinates["longi"];
          }
        $this->set('rst',$rst);
     }
@@ -195,14 +195,14 @@ class SitesController extends AppController
      // echo $_POST['value_to_send'];
       $fgID = $this->request->getData("id_focus_group");
       $pathstr = array();
-      $fgCordinates = TableRegistry::get('focus_group');
-      $rstdata = $fgCordinates->find('all', [ 'conditions' => ['id' => $fgID]])->first();
+      $fgCoordinates = TableRegistry::get('focus_group');
+      $rstdata = $fgCoordinates->find('all', [ 'conditions' => ['id' => $fgID]])->first();
 
       $rstdata->loc_json = null;
       $rstdata->geo_json = null;
-      $fgCordinates->save($rstdata);
-      /*$fgCordinates = TableRegistry::get('spatial_data_focus_group');
-      $fgCordinates->deleteAll(['id_focus_group'=>$fgID]);*/
+      $fgCoordinates->save($rstdata);
+      /*$fgCoordinates = TableRegistry::get('spatial_data_focus_group');
+      $fgCoordinates->deleteAll(['id_focus_group'=>$fgID]);*/
       echo "Success";
       die();
     }
@@ -214,10 +214,10 @@ class SitesController extends AppController
         if( $this->request->is('ajax') ) {
       $fgID = $this->request->getData("id_focus_group");
       $pathstr = $this->request->getData("paths");
-      $fgCordinates = TableRegistry::get('spatial_data_focus_group');
-      $rstdata = $fgCordinates->find('all', [ 'conditions' => ['id_focus_group' => $fgID]])->first();
+      $fgCoordinates = TableRegistry::get('spatial_data_focus_group');
+      $rstdata = $fgCoordinates->find('all', [ 'conditions' => ['id_focus_group' => $fgID]])->first();
        if (empty($rstdata)) {
-                $rstdata = $fgCordinates->newEntity($this->request->getData());
+                $rstdata = $fgCoordinates->newEntity($this->request->getData());
                 $rstdata->id_focus_group = (int)$this->request->getData("id_focus_group");
             }
 
@@ -241,7 +241,7 @@ class SitesController extends AppController
        {
         $rstdata->geo_json = null;
        }
-      $fgCordinates->save($rstdata);
+      $fgCoordinates->save($rstdata);
      
       die();
     }  
