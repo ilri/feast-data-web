@@ -406,14 +406,14 @@ class UploadController extends AppController
                                 }
                                 $valueParams .= ",(SELECT id FROM {$fkTable} WHERE unique_identifier = '{$value}' ORDER BY id DESC LIMIT 1)";
                             } else {
-                                $valueParams .= utf8_encode("$value");//",?";
+                                $valueParams .= utf8_encode(",$value");//",?";
                                 $values[] = utf8_encode("$value");
                             }
                             $fields .= ',' . $field;
                         }
                         // Add user ID for record
                         $fields .= ',id_user';
-                        $valueParams .= $userID;//",?";
+                        $valueParams .= ",$userID";//",?";
                         $values[] = $userID;
                         // Keep private if necessary
                         if (in_array($table, ComUpload::$canKeepPrivate) && $this->request->getData()['keep_private'] == "true") {
