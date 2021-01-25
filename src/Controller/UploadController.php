@@ -407,7 +407,7 @@ class UploadController extends AppController
                                 $valueParams .= ",(SELECT id FROM {$fkTable} WHERE unique_identifier = '{$value}' ORDER BY id DESC LIMIT 1)";
                             } else {
                                 $valueParams .= ",?";
-                                $values[] = $value;
+                                $values[] = utf8_encode($value);
                             }
                             $fields .= ',' . $field;
                         }
@@ -429,13 +429,13 @@ class UploadController extends AppController
                         $insertQuery = "INSERT INTO {$table} ({$fields}) VALUES ({$valueParams})";
                         Log::debug($insertQuery); // Miheretab check
                         Log::debug(serialize($values)); // Miheretab check
-                        $stmt = $this->connection->execute($insertQuery, utf8_encode($values));
+                        $stmt = $this->connection->execute($insertQuery, $values);
                         $newRowID = $stmt->lastInsertId($table, 'id');
                         foreach ($replaceRows as $thisReplaceRow) {
                             if ($thisReplaceRow[1] == $thisRow[0]) {
                                 $updateQuery = "UPDATE {$table} SET replaced_by_id = {$newRowID} WHERE id = " . $thisReplaceRow[0];
                                 Log::debug($updateQuery);
-                                $this->connection->execute(utf8_encode($updateQuery));
+                                $this->connection->execute($updateQuery);
                             }
                         }
                     }
