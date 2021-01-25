@@ -407,7 +407,7 @@ class UploadController extends AppController
                                 $valueParams .= ",(SELECT id FROM {$fkTable} WHERE unique_identifier = '{$value}' ORDER BY id DESC LIMIT 1)";
                             } else {
                                 $valueParams .= ",?";
-                                $values[] = utf8_decode($value);
+                                $values[] = utf8_encode("$value");
                             }
                             $fields .= ',' . $field;
                         }
