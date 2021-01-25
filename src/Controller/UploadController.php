@@ -383,7 +383,7 @@ class UploadController extends AppController
                         }
                         Log::debug(serialize($thisRow));
                         $values[] = $thisRow[0];
-                        $valueParams = "?";
+                        $valueParams = $thisRow[0];//"?";
                         $fields = $thisMetaTable[1];
                         for ($i = 1; $i < count($thisRow); $i++) {
                             if (!isset($thisMetaTable[$i + 1])) { continue; }
@@ -406,14 +406,14 @@ class UploadController extends AppController
                                 }
                                 $valueParams .= ",(SELECT id FROM {$fkTable} WHERE unique_identifier = '{$value}' ORDER BY id DESC LIMIT 1)";
                             } else {
-                                $valueParams .= ",?";
+                                $valueParams .= utf8_encode("$value");//",?";
                                 $values[] = utf8_encode("$value");
                             }
                             $fields .= ',' . $field;
                         }
                         // Add user ID for record
                         $fields .= ',id_user';
-                        $valueParams .= ",?";
+                        $valueParams .= $userID;//",?";
                         $values[] = $userID;
                         // Keep private if necessary
                         if (in_array($table, ComUpload::$canKeepPrivate) && $this->request->getData()['keep_private'] == "true") {
@@ -429,7 +429,7 @@ class UploadController extends AppController
                         $insertQuery = "INSERT INTO {$table} ({$fields}) VALUES ({$valueParams})";
                         Log::debug($insertQuery); // Miheretab check
                         Log::debug(serialize($values)); // Miheretab check
-                        $stmt = $this->connection->execute($insertQuery, $values);
+                        $stmt = $this->connection->execute($insertQuery);//, $values);
                         $newRowID = $stmt->lastInsertId($table, 'id');
                         foreach ($replaceRows as $thisReplaceRow) {
                             if ($thisReplaceRow[1] == $thisRow[0]) {
