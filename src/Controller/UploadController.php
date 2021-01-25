@@ -224,6 +224,7 @@ class UploadController extends AppController
      * @param string $fileName
      */
     private function importFile($filename, $userID) {
+        ini_set('memory_limit', '-1');
         $data = [];
 
         $fsize = filesize($filename);
@@ -384,6 +385,7 @@ class UploadController extends AppController
                         $values[] = $thisRow[0];
                         $valueParams = "?";
                         $fields = $thisMetaTable[1];
+                        $updates = [];
                         for ($i = 1; $i < count($thisRow); $i++) {
                             if (!isset($thisMetaTable[$i + 1])) { continue; }
                             $field = $thisMetaTable[$i + 1];
@@ -398,6 +400,7 @@ class UploadController extends AppController
                             }
                             // Insert foreign keys via subselect if possible.
                             $fkTable = null;
+                            $insert = true;
                             if (explode("_", $field)[0] == "id") {
                                 $fkTable = substr($field, 3);
                                 if ($fkTable == 'gender_head_of_household') {
@@ -405,10 +408,17 @@ class UploadController extends AppController
                                 }
                                 $valueParams .= ",(SELECT id FROM {$fkTable} WHERE unique_identifier = '{$value}' ORDER BY id DESC LIMIT 1)";
                             } else {
-                                $valueParams .= ",?";
-                                $values[] = $value;
+                                if (mb_detect_encoding($value) == 'UTF-8') {
+                                    $updates[] = "$field='$value'";
+                                    $insert = false;
+                                } else {
+                                    $valueParams .= ",?";
+                                    $values[] = $value;
+                                }
                             }
-                            $fields .= ',' . $field;
+                            if ($insert) {
+                                $fields .= ',' . $field;
+                            }
                         }
                         // Add user ID for record
                         $fields .= ',id_user';
@@ -426,10 +436,18 @@ class UploadController extends AppController
                             $valueParams .= ',NOW()';
                         }
                         $insertQuery = "INSERT INTO {$table} ({$fields}) VALUES ({$valueParams})";
-                        Log::debug($insertQuery); // Miheretab check
-                        Log::debug(serialize($values)); // Miheretab check
+                        Log::debug($insertQuery);
+                        Log::debug(serialize($values));
                         $stmt = $this->connection->execute($insertQuery, $values);
                         $newRowID = $stmt->lastInsertId($table, 'id');
+
+                        if (count($updates) > 0 && $newRowID) {
+                            $updateStr = implode(",", $updates);
+                            $updateQuery = "UPDATE {$table} SET {$updateStr} WHERE id = " . $newRowID;
+                            Log::debug($updateQuery);
+                            $this->connection->execute($updateQuery);
+                        }
+
                         foreach ($replaceRows as $thisReplaceRow) {
                             if ($thisReplaceRow[1] == $thisRow[0]) {
                                 $updateQuery = "UPDATE {$table} SET replaced_by_id = {$newRowID} WHERE id = " . $thisReplaceRow[0];
