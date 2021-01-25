@@ -53,7 +53,9 @@ class UploadController extends AppController
         parent::initialize();
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Upload');
-        $this->connection = ConnectionManager::get('default');
+        $this->connection = ConnectionManager::get('default', [
+            'encoding' => 'utf8mb4',
+        ]);
         $this->tmpPath = Configure::read('TempFilePath');
     }
     public function index()
