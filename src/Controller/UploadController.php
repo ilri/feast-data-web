@@ -224,6 +224,7 @@ class UploadController extends AppController
      * @param string $fileName
      */
     private function importFile($filename, $userID) {
+        ini_set('memory_limit', '-1');
         $data = [];
 
         $fsize = filesize($filename);
