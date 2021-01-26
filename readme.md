@@ -22,3 +22,6 @@ This repository hosts the PHP code and database structure for the [FEAST Global 
 - Maria DB 10.2
 - Apache 2.4.41
 
+### Acknowledgement
+
+This research was conducted as part of the [CGIAR](https://www.cgiar.org/) Research Program on Livestock and is supported by contributors to the [CGIAR Trust Fund](https://www.cgiar.org/funders/). CGIAR is a global research partnership for a food-secure future. Its science is carried out by 15 Research Centers in close collaboration with hundreds of partners across the globe.
