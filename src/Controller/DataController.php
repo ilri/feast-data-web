@@ -781,6 +781,7 @@ class DataController extends AppController
         if ($doExclusion) {
             $queryInfo = $this->getBaseQuery($thisTable, $isAdmin);
             $tableAlias = $queryInfo['tableAlias'];
+            Log::debug("Excluding records for $tableAlias: $doExclusion");
             $table = TableRegistry::get($tableAlias);
             $whereQuery = [];
             if (!$isAdmin) {
@@ -793,7 +794,7 @@ class DataController extends AppController
                 $query = $table->query()->update();
                 $expr = $query->newExpr()->add('NOT(COALESCE(exclude,0))');
                 $query->set(['exclude' => $expr])->where($whereQuery);
-                //Log::debug($query);
+                Log::debug($query);
                 $result = $query->execute();
                 //Log::debug($checkRecords);
                 $query = $table->find('all')->where($whereQuery);
