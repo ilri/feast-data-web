@@ -173,6 +173,7 @@ class DataController extends AppController
         $queryInfo = $this->getBaseQuery($tableName, $isAdmin, true);
         $query = $queryInfo['query'];
         $tableAlias = $queryInfo['tableAlias'];
+        Log::debug("Table view $tableAlias");
         if (!empty($query)) {
             $whereQuery = [];
             if ($scope == 'mine') {
