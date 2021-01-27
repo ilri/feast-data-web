@@ -804,7 +804,7 @@ class DataController extends AppController
                 if (!empty($excludedRecords)) {
                     $whereQuery["id_{$parentTable} IN"] = $excludedRecords;
                     $query = $table->query()->update()->set(['exclude' => 1])->where($whereQuery);
-                    //Log::debug($query);
+                    Log::debug($query);
                     $result = $query->execute();
                 }
                 if (!empty($includedRecords)) {
