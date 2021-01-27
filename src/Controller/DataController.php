@@ -170,9 +170,10 @@ class DataController extends AppController
                 }
             }
         }
-        $queryInfo = $this->getBaseQuery($tableName, $isAdmin);
+        $queryInfo = $this->getBaseQuery($tableName, $isAdmin, true);
         $query = $queryInfo['query'];
         $tableAlias = $queryInfo['tableAlias'];
+        Log::debug("Table view $tableAlias");
         if (!empty($query)) {
             $whereQuery = [];
             if ($scope == 'mine') {
@@ -226,23 +227,23 @@ class DataController extends AppController
         $this->set('results', $resultObj);
         $this->set('_serialize', ['results']);
     }
-    function getBaseQuery($tableName, $isAdmin)
+    function getBaseQuery($tableName, $isAdmin, $view = false)
     {
         $tableAlias = null;
         $query = null;
         switch ($tableName) {
             case 'project':
-                $tableAlias = 'ProjectView';
+                $tableAlias = $view ? 'ProjectView' : 'Project';
                 $table = TableRegistry::get($tableAlias);
                 $query = $table->find('all')->contain(['SystemCountry', 'User']);
                 break;
             case 'site':
-                $tableAlias = 'SiteView';
+                $tableAlias = $view ? 'SiteView' : 'Site';
                 $table = TableRegistry::get($tableAlias);
                 $query = $table->find('all')->contain(['ProjectView', 'SystemCountry', 'User']);
                 break;
             case 'focus_group':
-                $tableAlias = 'FocusGroupView';
+                $tableAlias = $view ? 'FocusGroupView' : 'FocusGroup';
                 $table = TableRegistry::get($tableAlias);
                 $query = $table->find('all')->contain(['SiteView.ProjectView', 'Gender', 'User']);
                 break;
@@ -258,6 +259,26 @@ class DataController extends AppController
                 break;
             case 'respondent_monthly_statistics':
                 $tableAlias = 'RespondentMonthlyStatistics';
+                $table = TableRegistry::get($tableAlias);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Month', 'User']);
+                break;
+            case 'coop_membership':
+                $tableAlias = 'CoopMembership';
+                $table = TableRegistry::get($tableAlias);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Month', 'User']);
+                break;
+            case 'decision_making_by_household':
+                $tableAlias = 'DecisionMakingByHousehold';
+                $table = TableRegistry::get($tableAlias);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Month', 'User']);
+                break;
+            case 'feed_labor_division':
+                $tableAlias = 'FeedLaborDivision';
+                $table = TableRegistry::get($tableAlias);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Month', 'User']);
+                break;
+            case 'womens_income_activity':
+                $tableAlias = 'WomensIncomeActivity';
                 $table = TableRegistry::get($tableAlias);
                 $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Month', 'User']);
                 break;
@@ -781,6 +802,7 @@ class DataController extends AppController
         if ($doExclusion) {
             $queryInfo = $this->getBaseQuery($thisTable, $isAdmin);
             $tableAlias = $queryInfo['tableAlias'];
+            Log::debug("Excluding records for $tableAlias: $doExclusion");
             $table = TableRegistry::get($tableAlias);
             $whereQuery = [];
             if (!$isAdmin) {
@@ -793,7 +815,7 @@ class DataController extends AppController
                 $query = $table->query()->update();
                 $expr = $query->newExpr()->add('NOT(COALESCE(exclude,0))');
                 $query->set(['exclude' => $expr])->where($whereQuery);
-                //Log::debug($query);
+                Log::debug($query);
                 $result = $query->execute();
                 //Log::debug($checkRecords);
                 $query = $table->find('all')->where($whereQuery);
@@ -803,7 +825,7 @@ class DataController extends AppController
                 if (!empty($excludedRecords)) {
                     $whereQuery["id_{$parentTable} IN"] = $excludedRecords;
                     $query = $table->query()->update()->set(['exclude' => 1])->where($whereQuery);
-                    //Log::debug($query);
+                    Log::debug($query);
                     $result = $query->execute();
                 }
                 if (!empty($includedRecords)) {
