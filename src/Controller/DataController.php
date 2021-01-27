@@ -261,6 +261,26 @@ class DataController extends AppController
                 $table = TableRegistry::get($tableAlias);
                 $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Month', 'User']);
                 break;
+            case 'coop_membership':
+                $tableAlias = 'CoopMembership';
+                $table = TableRegistry::get($tableAlias);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Month', 'User']);
+                break;
+            case 'decision_making_by_household':
+                $tableAlias = 'DecisionMakingByHousehold';
+                $table = TableRegistry::get($tableAlias);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Month', 'User']);
+                break;
+            case 'feed_labor_division':
+                $tableAlias = 'FeedLaborDivision';
+                $table = TableRegistry::get($tableAlias);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Month', 'User']);
+                break;
+            case 'womens_income_activity':
+                $tableAlias = 'WomensIncomeActivity';
+                $table = TableRegistry::get($tableAlias);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Month', 'User']);
+                break;
             case 'fodder_crop_cultivation':
                 $tableAlias = 'FodderCropCultivation';
                 $table = TableRegistry::get($tableAlias);
