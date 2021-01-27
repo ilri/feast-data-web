@@ -170,7 +170,7 @@ class DataController extends AppController
                 }
             }
         }
-        $queryInfo = $this->getBaseQuery($tableName, $isAdmin);
+        $queryInfo = $this->getBaseQuery($tableName, $isAdmin, true);
         $query = $queryInfo['query'];
         $tableAlias = $queryInfo['tableAlias'];
         if (!empty($query)) {
@@ -226,23 +226,23 @@ class DataController extends AppController
         $this->set('results', $resultObj);
         $this->set('_serialize', ['results']);
     }
-    function getBaseQuery($tableName, $isAdmin)
+    function getBaseQuery($tableName, $isAdmin, $view = false)
     {
         $tableAlias = null;
         $query = null;
         switch ($tableName) {
             case 'project':
-                $tableAlias = 'ProjectView';
+                $tableAlias = $view ? 'ProjectView' : 'Project';
                 $table = TableRegistry::get($tableAlias);
                 $query = $table->find('all')->contain(['SystemCountry', 'User']);
                 break;
             case 'site':
-                $tableAlias = 'SiteView';
+                $tableAlias = $view ? 'SiteView' : 'Site';
                 $table = TableRegistry::get($tableAlias);
                 $query = $table->find('all')->contain(['ProjectView', 'SystemCountry', 'User']);
                 break;
             case 'focus_group':
-                $tableAlias = 'FocusGroupView';
+                $tableAlias = $view ? 'FocusGroupView' : 'FocusGroup';
                 $table = TableRegistry::get($tableAlias);
                 $query = $table->find('all')->contain(['SiteView.ProjectView', 'Gender', 'User']);
                 break;
