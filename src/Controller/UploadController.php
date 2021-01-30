@@ -317,8 +317,8 @@ class UploadController extends AppController
                         $results = $this->connection->execute("SELECT id, unique_identifier, updated_at FROM {$table} WHERE unique_identifier IN (" . implode(',', $uniqueIDList) . ")")->fetchAll('assoc');
                     }
                     $uniqueIDMap = [];
-		    foreach ($thisTable as $thisTableKey => $thisExistRow) {
-			if ($thisExistRow[0] == "") { continue; }
+                    foreach ($thisTable as $thisTableKey => $thisExistRow) {
+                    if ($thisExistRow[0] == "") { continue; }
                         $uniqueIDMap[$thisExistRow[0]] = $thisTableKey;
                     }
                     // Do data checks for uniqueness and handle dupes / missing canonical rows

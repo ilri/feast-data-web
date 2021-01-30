@@ -97,5 +97,6 @@ class UploadComponent extends Component
         ["livestock_sale", "unique_identifier", "id_respondent", "id_livestock_sale_category", "number_sold", "approximate_weight", "created_at", "updated_at", "created_by", "updated_by", "canonical_data"],
         ["purchased_feed_type", "unique_identifier", "name", "content_percent_dry_matter", "content_metabolisable_energy", "content_crude_protein", "canonical_data", "created_at", "updated_at", "user_citation", "created_by", "updated_by"],
         ["purchased_feed", "unique_identifier", "id_respondent", "quantity_purchased", "unit_price", "id_unit_mass_weight", "id_purchased_feed_type", "purchases_per_year", "id_currency", "created_by", "updated_by", "created_at", "updated_at"],
+        ["decision_making_by_household", "unique_identifier", "id_respondent", "id_decision", "id_gender_group", "created_at", "updated_at", "created_by", "updated_by"],
     ];
 }
