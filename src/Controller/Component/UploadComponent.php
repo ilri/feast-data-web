@@ -32,7 +32,7 @@ class UploadComponent extends Component
     /**
      * These tables do not have canonical values.
      */
-    public static $notCanonical = ["app_registration", "project", "site", "focus_group", "focus_group_monthly_statistics", "techfit_assessment", "respondent", "respondent_monthly_statistics", "crop_cultivation", "feed_source_availability", "fodder_crop_cultivation", "income_activity", "labour_activity", "livestock_holding", "purchased_feed"];
+    public static $notCanonical = ["app_registration", "project", "site", "focus_group", "focus_group_monthly_statistics", "techfit_assessment", "respondent", "respondent_monthly_statistics", "crop_cultivation", "feed_source_availability", "fodder_crop_cultivation", "income_activity", "labour_activity", "livestock_holding", "purchased_feed", "decision_making_by_household"];
     /**
      * These tables have an uploaded_at field.
      */
