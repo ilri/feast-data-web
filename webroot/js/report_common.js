@@ -542,11 +542,39 @@ function koReportModel() {
                     specificHeaders = newTable.tableHeaders;
                     keyCols.incomeActivityType = {
                         action: 'tooltip',
-                        key: 'site',
+                        key: 'incomeActivityType',
                         text: thisRow.income_activity_type.id,
                         title: thisRow.income_activity_type.description
                     };
                     thisReportRow = thisReportRow.concat([keyCols.project, keyCols.site, keyCols.focusGroup, keyCols.respondent, keyCols.incomeActivityType, thisRow.pct_womens_income]);
+                    break;
+                case "feed_labor_division":
+                    var keyCols = self.processKeyColumns(thisRow, true, true, true, true);
+                    report.canKeepPrivate = true;
+                    report.canExclude = true;
+                    report.canConsolidate = false;
+                    specificHeaders = newTable.tableHeaders;
+                    keyCols.feedLaborType = {
+                        action: 'tooltip',
+                        key: 'feedLaborType',
+                        text: thisRow.feed_labor_type.id,
+                        title: thisRow.feed_labor_type.description
+                    };
+                    thisReportRow = thisReportRow.concat([keyCols.project, keyCols.site, keyCols.focusGroup, keyCols.respondent, keyCols.feedLaborType, thisRow.labor_division_group.description]);
+                    break;
+                case "decision_making_by_household":
+                    var keyCols = self.processKeyColumns(thisRow, true, true, true, true);
+                    report.canKeepPrivate = true;
+                    report.canExclude = true;
+                    report.canConsolidate = false;
+                    specificHeaders = newTable.tableHeaders;
+                    keyCols.decision = {
+                        action: 'tooltip',
+                        key: 'decision',
+                        text: thisRow.decision.id,
+                        title: thisRow.decision.description
+                    };
+                    thisReportRow = thisReportRow.concat([keyCols.project, keyCols.site, keyCols.focusGroup, keyCols.respondent, keyCols.decision, thisRow.gender_group.description]);
                     break;
                 default:
             }
@@ -602,11 +630,17 @@ function koReportModel() {
     self.processKeyColumns = function(thisRow, hasR, hasF, hasS, hasP) {
         var keyCols = {};
         if (hasR) {
-            keyCols.respondent = {
+            /*keyCols.respondent = {
                 action: 'respondentmodal',
                 key: 'respondent',
                 id: thisRow.respondent.id,
                 uniqueID: thisRow.respondent.unique_identifier
+            };*/
+            keyCols.respondent = {
+                action: 'tooltip',
+                key: 'respondent',
+                text: thisRow.respondent.id,
+                title: thisRow.respondent.name
             };
         }
         if (hasR && hasF) {
