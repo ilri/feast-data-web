@@ -644,6 +644,6 @@ $this->assign('title', 'Administration | ' . h($currentEntity['portal_title']));
 
 <?php $this->Html->script('dropzone.js', array('block' => 'script')) ?>
 <?php $this->Html->script('admin_strings.js', array('block' => 'script')) ?>
-<?php $this->Html->script('report_common.js?v=3.6', array('block' => 'script')) ?>
+<?php $this->Html->script('report_common.js?v=3.7', array('block' => 'script')) ?>
 <?php $this->Html->script('admin.js', array('block' => 'script')) ?>
 <?php $this->Html->script('knockstrap.min.js', array('block' => 'script')) ?>
