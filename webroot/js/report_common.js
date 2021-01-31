@@ -965,6 +965,9 @@ var tableFilters = [
     {tableName: 'Site', dbTableName: 'site', filters: ['User.id', 'SiteView.uploaded_at', 'ProjectView.id', 'SiteView.name', 'SiteView.major_region', 'Country.name', 'SiteView.keep_private', 'SiteView.exclude']},
     {tableName: 'Unit Area', dbTableName: 'unit_area', filters: ['User.id', 'UnitArea.uploaded_at', 'UnitArea.name', 'UnitArea.conversion_ha']},
     {tableName: 'Unit Mass/Weight', dbTableName: 'unit_mass_weight', filters: ['User.id', 'UnitMassWeight.uploaded_at', 'UnitMassWeight.name', 'UnitMassWeight.conversion_kg']},
+    {tableName: 'Decision Making By Household', dbTableName: 'decision_making_by_household', filters: ['User.id', 'DecisionMakingByHousehold.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'Decision.id', 'GenderGroup.description', 'DecisionMakingByHousehold.keep_private', 'DecisionMakingByHousehold.exclude']},
+    {tableName: 'Feed Labor Division', dbTableName: 'feed_labor_division', filters: ['User.id', 'FeedLaborDivision.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'FeedLaborType.id', 'LaborDivisionGroup.description', 'FeedLaborDivision.keep_private', 'FeedLaborDivision.exclude']},
+    {tableName: 'Women Income Activity', dbTableName: 'womens_income_activity', filters: ['User.id', 'WomensIncomeActivity.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'WomensIncomeActivity.pct_womens_income', 'IncomeActivityType.description', 'WomensIncomeActivity.keep_private', 'WomensIncomeActivity.exclude']},
 ];
 
 var baseTableHeaders = ['ID', 'U'];
@@ -1004,7 +1007,12 @@ var tableList = [
         {tableName: 'Season', dbTableName: 'season', tableHeaders: ['Name']},
         {tableName: 'Unit Area', dbTableName: 'unit_area', tableHeaders: ['Name', 'Conversion - ha']},
         {tableName: 'Unit Mass/Weight', dbTableName: 'unit_mass_weight', tableHeaders: ['Name', 'Conversion - kg']},
-    ]}
+    ]},
+    {label: 'Gendered', tables: [
+        {tableName: 'Decision Making By Household', dbTableName: 'decision_making_by_household', tableHeaders: ['P', 'S', 'F', 'R', 'Decision', 'Gender Group']},
+        {tableName: 'Feed Labor Division', dbTableName: 'feed_labor_division', tableHeaders: ['P', 'S', 'F', 'R', 'Feed Labor Type', 'Labor Division Group']},
+        {tableName: 'Women Income Activity', dbTableName: 'womens_income_activity', tableHeaders: ['P', 'S', 'F', 'R', 'Income Activity Type', 'Women Income']},
+    ]},
 ];
 
 /**
