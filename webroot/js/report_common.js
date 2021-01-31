@@ -534,6 +534,20 @@ function koReportModel() {
                     specificHeaders = newTable.tableHeaders;
                     thisReportRow = thisReportRow.concat([thisRow.name, thisRow.conversion_kg]);
                     break;
+                case "womens_income_activity":
+                    var keyCols = self.processKeyColumns(thisRow, true, true, true, true);
+                    report.canKeepPrivate = true;
+                    report.canExclude = true;
+                    report.canConsolidate = false;
+                    specificHeaders = newTable.tableHeaders;
+                    keyCols.incomeActivityType = {
+                        action: 'tooltip',
+                        key: 'site',
+                        text: thisRow.income_activity_type.id,
+                        title: thisRow.income_activity_type.description
+                    };
+                    thisReportRow = thisReportRow.concat([keyCols.project, keyCols.site, keyCols.focusGroup, keyCols.respondent, keyCols.incomeActivityType, thisRow.pct_womens_income]);
+                    break;
                 default:
             }
 
