@@ -140,7 +140,7 @@ if(length(userID_arg) >0){
 
 	export_coop_membership$site_name <- str_to_sentence(export_coop_membership$site_name)                 
 	export_income_activity$site_name <- str_to_sentence(export_income_activity$site_name)
-	export_core_context_attribute_score$site_name  <- str_to_sentence(export_core_context_attribute_score$site_country)   
+	export_core_context_attribute_score$site_name  <- str_to_sentence(export_core_context_attribute_score$site_name)   
 	export_labour_activity$site_name <- str_to_sentence(export_labour_activity$site_name)
 	export_crop_cultivation$site_name <- str_to_sentence(export_crop_cultivation$site_name)      
 	export_livestock_holding$site_name <- str_to_sentence(export_livestock_holding$site_name)
@@ -159,7 +159,7 @@ if(length(userID_arg) >0){
 
 	export_coop_membership$site_name <- trimws(export_coop_membership$site_name)                 
 	export_income_activity$site_name <- trimws(export_income_activity$site_name)
-	export_core_context_attribute_score$site_name  <- trimws(export_core_context_attribute_score$site_country)   
+	export_core_context_attribute_score$site_name  <- trimws(export_core_context_attribute_score$site_name)   
 	export_labour_activity$site_name <- trimws(export_labour_activity$site_name)
 	export_crop_cultivation$site_name <- trimws(export_crop_cultivation$site_name)      
 	export_livestock_holding$site_name <- trimws(export_livestock_holding$site_name)
@@ -383,7 +383,7 @@ identical(newDataCheck$sp_site_lastup, data.frame(tbl(pool, "export_project_site
 
 	export_coop_membership$site_name <- str_to_sentence(export_coop_membership$site_name)                 
 	export_income_activity$site_name <- str_to_sentence(export_income_activity$site_name)
-	export_core_context_attribute_score$site_name  <- str_to_sentence(export_core_context_attribute_score$site_country)   
+	export_core_context_attribute_score$site_name  <- str_to_sentence(export_core_context_attribute_score$site_name)   
 	export_labour_activity$site_name <- str_to_sentence(export_labour_activity$site_name)
 	export_crop_cultivation$site_name <- str_to_sentence(export_crop_cultivation$site_name)      
 	export_livestock_holding$site_name <- str_to_sentence(export_livestock_holding$site_name)
@@ -402,7 +402,7 @@ identical(newDataCheck$sp_site_lastup, data.frame(tbl(pool, "export_project_site
 
 	export_coop_membership$site_name <- trimws(export_coop_membership$site_name)                 
 	export_income_activity$site_name <- trimws(export_income_activity$site_name)
-	export_core_context_attribute_score$site_name  <- trimws(export_core_context_attribute_score$site_country)   
+	export_core_context_attribute_score$site_name  <- trimws(export_core_context_attribute_score$site_name)   
 	export_labour_activity$site_name <- trimws(export_labour_activity$site_name)
 	export_crop_cultivation$site_name <- trimws(export_crop_cultivation$site_name)      
 	export_livestock_holding$site_name <- trimws(export_livestock_holding$site_name)

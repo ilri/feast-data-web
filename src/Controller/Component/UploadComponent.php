@@ -32,11 +32,11 @@ class UploadComponent extends Component
     /**
      * These tables do not have canonical values.
      */
-    public static $notCanonical = ["app_registration", "project", "site", "focus_group", "focus_group_monthly_statistics", "techfit_assessment", "respondent", "respondent_monthly_statistics", "crop_cultivation", "feed_source_availability", "fodder_crop_cultivation", "income_activity", "labour_activity", "livestock_holding", "purchased_feed", "decision_making_by_household", "womens_income_activity", "feed_labor_division"];
+    public static $notCanonical = ["app_registration", "project", "site", "focus_group", "focus_group_monthly_statistics", "techfit_assessment", "respondent", "respondent_monthly_statistics", "crop_cultivation", "feed_source_availability", "fodder_crop_cultivation", "income_activity", "labour_activity", "livestock_holding", "purchased_feed", "decision_making_by_household", "womens_income_activity", "feed_labor_division", "coop_membership"];
     /**
      * These tables have an uploaded_at field.
      */
-    public static $trackUploadTime = ["agriculture_system_type", "animal_category", "animal_species", "animal_type", "app_registration", "community_type", "core_commodity", "core_context_attribute", "core_context_attribute_score", "core_context_attribute_score_calc_method", "crop_cultivation", "crop_type", "feed_source", "feed_source_availability", "focus_group", "focus_group_monthly_statistics", "fodder_crop_cultivation", "fodder_crop_type", "income_activity", "income_activity_category", "income_activity_type", "intervention", "labour_activity", "livestock_holding", "livestock_sale", "livestock_sale_category", "organization_type", "project", "purchased_feed", "purchased_feed_type", "respondent", "respondent_monthly_statistics", "season", "site", "techfit_assessment", "unit_area", "unit_mass_weight", "decision_making_by_household", "womens_income_activity", "feed_labor_division"];
+    public static $trackUploadTime = ["agriculture_system_type", "animal_category", "animal_species", "animal_type", "app_registration", "community_type", "core_commodity", "core_context_attribute", "core_context_attribute_score", "core_context_attribute_score_calc_method", "crop_cultivation", "crop_type", "feed_source", "feed_source_availability", "focus_group", "focus_group_monthly_statistics", "fodder_crop_cultivation", "fodder_crop_type", "income_activity", "income_activity_category", "income_activity_type", "intervention", "labour_activity", "livestock_holding", "livestock_sale", "livestock_sale_category", "organization_type", "project", "purchased_feed", "purchased_feed_type", "respondent", "respondent_monthly_statistics", "season", "site", "techfit_assessment", "unit_area", "unit_mass_weight", "decision_making_by_household", "womens_income_activity", "feed_labor_division", "coop_membership"];
     /**
      * These tables are currently assumed not to change and are thus excluded from import.
      */
@@ -100,5 +100,6 @@ class UploadComponent extends Component
         ["decision_making_by_household", "unique_identifier", "id_decision", "id_gender_group", "created_at", "updated_at", "created_by", "updated_by", "id_respondent"],
         ["womens_income_activity", "unique_identifier", "id_respondent", "id_income_activity_type", "pct_womens_income", "created_at", "updated_at", "created_by", "updated_by"],
         ["feed_labor_division", "unique_identifier", "id_respondent", "id_feed_labor_type", "id_labor_division_group", "created_by", "updated_by", "created_at", "updated_at"],
+		["coop_membership", "unique_identifier", "id_respondent", "name_free_entry", "membership_count_male", "membership_count_female", "created_at", "updated_at", "created_by", "updated_by"],
     ];
 }
