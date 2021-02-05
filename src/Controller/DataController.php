@@ -262,25 +262,25 @@ class DataController extends AppController
                 $table = TableRegistry::get($tableAlias);
                 $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Month', 'User']);
                 break;
-            case 'coop_membership':
-                $tableAlias = 'CoopMembership';
-                $table = TableRegistry::get($tableAlias);
-                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Month', 'User']);
-                break;
             case 'decision_making_by_household':
                 $tableAlias = 'DecisionMakingByHousehold';
                 $table = TableRegistry::get($tableAlias);
-                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Month', 'User']);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Decision', 'GenderGroup', 'User']);
                 break;
             case 'feed_labor_division':
                 $tableAlias = 'FeedLaborDivision';
                 $table = TableRegistry::get($tableAlias);
-                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Month', 'User']);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'FeedLaborType', 'LaborDivisionGroup', 'User']);
                 break;
             case 'womens_income_activity':
                 $tableAlias = 'WomensIncomeActivity';
                 $table = TableRegistry::get($tableAlias);
-                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Month', 'User']);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'IncomeActivityType', 'User']);
+                break;
+            case 'coop_membership':
+                $tableAlias = 'CoopMembership';
+                $table = TableRegistry::get($tableAlias);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView']);
                 break;
             case 'fodder_crop_cultivation':
                 $tableAlias = 'FodderCropCultivation';
@@ -428,7 +428,7 @@ class DataController extends AppController
                         $where[] = ["OR" => [["Currency.name LIKE" => '%' . $thisValue . '%'], ["FeedCurrency.name LIKE" => '%' . $thisValue . '%']]];
                         break;
                     case 'GenderGroup.description':
-		    case 'Gender.description':
+                    case 'Gender.description':
                         if (strtolower($thisValue) == 'male') {
                             $where[$thisTerm] = $thisValue;
                         } else {
@@ -444,7 +444,7 @@ class DataController extends AppController
                     case 'CommunityType.description':
                     case 'CoreContextAttributeType.description':
                     case 'CoreContextAttribute.prompt':
-		    case 'CropType.name':
+                    case 'CropType.name':
                     case 'Decision.description':
                     case 'DecisionType.description':
                     case 'FeedLaborType.description':			    
@@ -456,8 +456,8 @@ class DataController extends AppController
                     case 'IncomeActivityCategory.description':
                     case 'IncomeActivityType.description':
                     case 'Intervention.description':
-		    case 'LabourActivity.description':
-		    case 'LaborDivisionGroup.description':
+                    case 'LabourActivity.description':
+                    case 'LaborDivisionGroup.description':
                     case 'LandholdingCategory.description':
                     case 'LivestockSaleCategory.Gender.description':
                     case 'Month.name':
@@ -587,7 +587,7 @@ class DataController extends AppController
                     case 'SiteView.id':
                     case 'SiteView.uploaded_at':
                     case 'UnitArea.conversion_ha':
-		    case 'UnitMassWeight.conversion_kg':
+                    case 'UnitMassWeight.conversion_kg':
                     case 'Decision.uploaded_at':
                     case 'DecisionType.uploaded_at':
                     case 'FeedLaborType.uploaded_at':
@@ -600,6 +600,8 @@ class DataController extends AppController
                     case 'CoopMembership.exclude':
                     case 'CoopMembership.keep_private':
                     case 'CoopMembership.name_free_entry':
+                    case 'CoopMembership.membership_count_male':
+                    case 'CoopMembership.membership_count_female':
                     case 'CoopMembership.uploaded_at':
                     case 'WomensIncomeActivity.exclude':
                     case 'WomensIncomeActivity.keep_private':

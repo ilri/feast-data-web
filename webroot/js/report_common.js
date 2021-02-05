@@ -534,6 +534,56 @@ function koReportModel() {
                     specificHeaders = newTable.tableHeaders;
                     thisReportRow = thisReportRow.concat([thisRow.name, thisRow.conversion_kg]);
                     break;
+                case "womens_income_activity":
+                    var keyCols = self.processKeyColumns(thisRow, true, true, true, true);
+                    report.canKeepPrivate = true;
+                    report.canExclude = true;
+                    report.canConsolidate = false;
+                    specificHeaders = newTable.tableHeaders;
+                    keyCols.incomeActivityType = {
+                        action: 'tooltip',
+                        key: 'incomeActivityType',
+                        text: thisRow.income_activity_type.id,
+                        title: thisRow.income_activity_type.description
+                    };
+                    thisReportRow = thisReportRow.concat([keyCols.project, keyCols.site, keyCols.focusGroup, keyCols.respondent, keyCols.incomeActivityType, thisRow.pct_womens_income]);
+                    break;
+                case "feed_labor_division":
+                    var keyCols = self.processKeyColumns(thisRow, true, true, true, true);
+                    report.canKeepPrivate = true;
+                    report.canExclude = true;
+                    report.canConsolidate = false;
+                    specificHeaders = newTable.tableHeaders;
+                    keyCols.feedLaborType = {
+                        action: 'tooltip',
+                        key: 'feedLaborType',
+                        text: thisRow.feed_labor_type.id,
+                        title: thisRow.feed_labor_type.description
+                    };
+                    thisReportRow = thisReportRow.concat([keyCols.project, keyCols.site, keyCols.focusGroup, keyCols.respondent, keyCols.feedLaborType, thisRow.labor_division_group.description]);
+                    break;
+                case "decision_making_by_household":
+                    var keyCols = self.processKeyColumns(thisRow, true, true, true, true);
+                    report.canKeepPrivate = true;
+                    report.canExclude = true;
+                    report.canConsolidate = false;
+                    specificHeaders = newTable.tableHeaders;
+                    keyCols.decision = {
+                        action: 'tooltip',
+                        key: 'decision',
+                        text: thisRow.decision.id,
+                        title: thisRow.decision.description
+                    };
+                    thisReportRow = thisReportRow.concat([keyCols.project, keyCols.site, keyCols.focusGroup, keyCols.respondent, keyCols.decision, thisRow.gender_group.description]);
+                    break;
+                case "coop_membership":
+                    var keyCols = self.processKeyColumns(thisRow, true, true, true, true);
+                    report.canKeepPrivate = true;
+                    report.canExclude = true;
+                    report.canConsolidate = false;
+                    specificHeaders = newTable.tableHeaders;
+                    thisReportRow = thisReportRow.concat([keyCols.project, keyCols.site, keyCols.focusGroup, keyCols.respondent, thisRow.name_free_entry, thisRow.membership_count_male, thisRow.membership_count_female]);
+                    break;
                 default:
             }
 
@@ -588,11 +638,18 @@ function koReportModel() {
     self.processKeyColumns = function(thisRow, hasR, hasF, hasS, hasP) {
         var keyCols = {};
         if (hasR) {
-            keyCols.respondent = {
+            /*keyCols.respondent = {
                 action: 'respondentmodal',
                 key: 'respondent',
                 id: thisRow.respondent.id,
                 uniqueID: thisRow.respondent.unique_identifier
+            };*/
+            console.log(thisRow);
+            keyCols.respondent = {
+                action: 'tooltip',
+                key: 'respondent',
+                text: thisRow.respondent.id,
+                title: thisRow.respondent.name
             };
         }
         if (hasR && hasF) {
@@ -965,6 +1022,10 @@ var tableFilters = [
     {tableName: 'Site', dbTableName: 'site', filters: ['User.id', 'SiteView.uploaded_at', 'ProjectView.id', 'SiteView.name', 'SiteView.major_region', 'Country.name', 'SiteView.keep_private', 'SiteView.exclude']},
     {tableName: 'Unit Area', dbTableName: 'unit_area', filters: ['User.id', 'UnitArea.uploaded_at', 'UnitArea.name', 'UnitArea.conversion_ha']},
     {tableName: 'Unit Mass/Weight', dbTableName: 'unit_mass_weight', filters: ['User.id', 'UnitMassWeight.uploaded_at', 'UnitMassWeight.name', 'UnitMassWeight.conversion_kg']},
+    {tableName: 'Decision Making By Household', dbTableName: 'decision_making_by_household', filters: ['User.id', 'DecisionMakingByHousehold.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'Decision.id', 'GenderGroup.description', 'DecisionMakingByHousehold.keep_private', 'DecisionMakingByHousehold.exclude']},
+    {tableName: 'Feed Labor Division', dbTableName: 'feed_labor_division', filters: ['User.id', 'FeedLaborDivision.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'FeedLaborType.id', 'LaborDivisionGroup.description', 'FeedLaborDivision.keep_private', 'FeedLaborDivision.exclude']},
+    {tableName: 'Women Income Activity', dbTableName: 'womens_income_activity', filters: ['User.id', 'WomensIncomeActivity.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'WomensIncomeActivity.pct_womens_income', 'IncomeActivityType.description', 'WomensIncomeActivity.keep_private', 'WomensIncomeActivity.exclude']},
+    {tableName: 'Coop Membership', dbTableName: 'coop_membership', filters: ['User.id', 'CoopMembership.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'CoopMembership.name_free_entry', 'CoopMembership.membership_count_male', 'CoopMembership.membership_count_female', 'CoopMembership.keep_private', 'CoopMembership.exclude']},
 ];
 
 var baseTableHeaders = ['ID', 'U'];
@@ -1004,7 +1065,13 @@ var tableList = [
         {tableName: 'Season', dbTableName: 'season', tableHeaders: ['Name']},
         {tableName: 'Unit Area', dbTableName: 'unit_area', tableHeaders: ['Name', 'Conversion - ha']},
         {tableName: 'Unit Mass/Weight', dbTableName: 'unit_mass_weight', tableHeaders: ['Name', 'Conversion - kg']},
-    ]}
+    ]},
+    {label: 'Gendered', tables: [
+        {tableName: 'Decision Making By Household', dbTableName: 'decision_making_by_household', tableHeaders: ['P', 'S', 'F', 'R', 'Decision', 'Gender Group']},
+        {tableName: 'Feed Labor Division', dbTableName: 'feed_labor_division', tableHeaders: ['P', 'S', 'F', 'R', 'Feed Labor Type', 'Labor Division Group']},
+        {tableName: 'Women Income Activity', dbTableName: 'womens_income_activity', tableHeaders: ['P', 'S', 'F', 'R', 'Income Activity Type', 'Women Income']},
+        {tableName: 'Coop Membership', dbTableName: 'coop_membership', tableHeaders: ['P', 'S', 'F', 'R', 'Name', 'Male Count', 'Female Count']},
+    ]},
 ];
 
 /**
