@@ -576,6 +576,14 @@ function koReportModel() {
                     };
                     thisReportRow = thisReportRow.concat([keyCols.project, keyCols.site, keyCols.focusGroup, keyCols.respondent, keyCols.decision, thisRow.gender_group.description]);
                     break;
+                case "coop_membership":
+                    var keyCols = self.processKeyColumns(thisRow, true, true, true, true);
+                    report.canKeepPrivate = true;
+                    report.canExclude = true;
+                    report.canConsolidate = false;
+                    specificHeaders = newTable.tableHeaders;
+                    thisReportRow = thisReportRow.concat([keyCols.project, keyCols.site, keyCols.focusGroup, keyCols.respondent, thisRow.name_free_entry, thisRow.membership_count_male, thisRow.membership_count_female]);
+                    break;
                 default:
             }
 
@@ -636,6 +644,7 @@ function koReportModel() {
                 id: thisRow.respondent.id,
                 uniqueID: thisRow.respondent.unique_identifier
             };*/
+            console.log(thisRow);
             keyCols.respondent = {
                 action: 'tooltip',
                 key: 'respondent',
@@ -1016,6 +1025,7 @@ var tableFilters = [
     {tableName: 'Decision Making By Household', dbTableName: 'decision_making_by_household', filters: ['User.id', 'DecisionMakingByHousehold.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'Decision.id', 'GenderGroup.description', 'DecisionMakingByHousehold.keep_private', 'DecisionMakingByHousehold.exclude']},
     {tableName: 'Feed Labor Division', dbTableName: 'feed_labor_division', filters: ['User.id', 'FeedLaborDivision.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'FeedLaborType.id', 'LaborDivisionGroup.description', 'FeedLaborDivision.keep_private', 'FeedLaborDivision.exclude']},
     {tableName: 'Women Income Activity', dbTableName: 'womens_income_activity', filters: ['User.id', 'WomensIncomeActivity.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'WomensIncomeActivity.pct_womens_income', 'IncomeActivityType.description', 'WomensIncomeActivity.keep_private', 'WomensIncomeActivity.exclude']},
+    {tableName: 'Coop Membership', dbTableName: 'coop_membership', filters: ['User.id', 'CoopMembership.uploaded_at', 'ProjectView.id', 'SiteView.id', 'FocusGroupView.id', 'Respondent.id', 'CoopMembership.name_free_entry', 'CoopMembership.membership_count_male', 'CoopMembership.membership_count_female', 'CoopMembership.keep_private', 'CoopMembership.exclude']},
 ];
 
 var baseTableHeaders = ['ID', 'U'];
@@ -1060,6 +1070,7 @@ var tableList = [
         {tableName: 'Decision Making By Household', dbTableName: 'decision_making_by_household', tableHeaders: ['P', 'S', 'F', 'R', 'Decision', 'Gender Group']},
         {tableName: 'Feed Labor Division', dbTableName: 'feed_labor_division', tableHeaders: ['P', 'S', 'F', 'R', 'Feed Labor Type', 'Labor Division Group']},
         {tableName: 'Women Income Activity', dbTableName: 'womens_income_activity', tableHeaders: ['P', 'S', 'F', 'R', 'Income Activity Type', 'Women Income']},
+        {tableName: 'Coop Membership', dbTableName: 'coop_membership', tableHeaders: ['P', 'S', 'F', 'R', 'Name', 'Male Count', 'Female Count']},
     ]},
 ];
 

@@ -262,11 +262,6 @@ class DataController extends AppController
                 $table = TableRegistry::get($tableAlias);
                 $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Month', 'User']);
                 break;
-            case 'coop_membership':
-                $tableAlias = 'CoopMembership';
-                $table = TableRegistry::get($tableAlias);
-                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'Month', 'User']);
-                break;
             case 'decision_making_by_household':
                 $tableAlias = 'DecisionMakingByHousehold';
                 $table = TableRegistry::get($tableAlias);
@@ -281,6 +276,11 @@ class DataController extends AppController
                 $tableAlias = 'WomensIncomeActivity';
                 $table = TableRegistry::get($tableAlias);
                 $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView', 'IncomeActivityType', 'User']);
+                break;
+            case 'coop_membership':
+                $tableAlias = 'CoopMembership';
+                $table = TableRegistry::get($tableAlias);
+                $query = $table->find('all')->contain(['Respondent.FocusGroupView.SiteView.ProjectView']);
                 break;
             case 'fodder_crop_cultivation':
                 $tableAlias = 'FodderCropCultivation';
@@ -600,6 +600,8 @@ class DataController extends AppController
                     case 'CoopMembership.exclude':
                     case 'CoopMembership.keep_private':
                     case 'CoopMembership.name_free_entry':
+                    case 'CoopMembership.membership_count_male':
+                    case 'CoopMembership.membership_count_female':
                     case 'CoopMembership.uploaded_at':
                     case 'WomensIncomeActivity.exclude':
                     case 'WomensIncomeActivity.keep_private':
