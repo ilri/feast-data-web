@@ -404,6 +404,6 @@
 
 <?php $this->Html->script('dropzone.js?v=1', array('block' => 'script')) ?>
 <?php $this->Html->script('upload_strings.js', array('block' => 'script')) ?>
-<?php $this->Html->script('report_common.js?v=4', array('block' => 'script')) ?>
+<?php $this->Html->script('report_common.js?v=4.1', array('block' => 'script')) ?>
 <?php $this->Html->script('upload.js?v=1.1', array('block' => 'script')) ?>
 <?php $this->Html->script('knockstrap.min.js', array('block' => 'script')) ?>
