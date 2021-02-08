@@ -1045,6 +1045,12 @@ var tableList = [
 		{tableName: 'Purchased Feed', dbTableName: 'purchased_feed', tableHeaders: ['P', 'S', 'F', 'R', 'Type', 'Quantity Purchased', 'Weight/Mass Unit', 'Purchases / Year', 'Unit Price', 'Currency']},
 		{tableName: 'Respondent', dbTableName: 'respondent', tableHeaders: ['P', 'S', 'F', 'Gender', 'Landholding Category', 'Head of Household Occupation', 'Diet % Grazing', 'Diet % Collected Fodder']},
     ]},
+    {label: 'Gendered', tables: [
+        {tableName: 'Decision Making By Household', dbTableName: 'decision_making_by_household', tableHeaders: ['P', 'S', 'F', 'R', 'Decision', 'Gender Group']},
+        {tableName: 'Feed Labor Division', dbTableName: 'feed_labor_division', tableHeaders: ['P', 'S', 'F', 'R', 'Feed Labor Type', 'Labor Division Group']},
+        {tableName: 'Women Income Activity', dbTableName: 'womens_income_activity', tableHeaders: ['P', 'S', 'F', 'R', 'Income Activity Type', 'Women Income']},
+        {tableName: 'Coop Membership', dbTableName: 'coop_membership', tableHeaders: ['P', 'S', 'F', 'R', 'Name', 'Male Count', 'Female Count']},
+    ]},
     {label: 'Lookup', tables: [
         {tableName: 'Animal Category', dbTableName: 'animal_category', tableHeaders: ['Species', 'Category']},
         {tableName: 'Animal Species', dbTableName: 'animal_species', tableHeaders: ['Species']},
@@ -1065,12 +1071,6 @@ var tableList = [
         {tableName: 'Season', dbTableName: 'season', tableHeaders: ['Name']},
         {tableName: 'Unit Area', dbTableName: 'unit_area', tableHeaders: ['Name', 'Conversion - ha']},
         {tableName: 'Unit Mass/Weight', dbTableName: 'unit_mass_weight', tableHeaders: ['Name', 'Conversion - kg']},
-    ]},
-    {label: 'Gendered', tables: [
-        {tableName: 'Decision Making By Household', dbTableName: 'decision_making_by_household', tableHeaders: ['P', 'S', 'F', 'R', 'Decision', 'Gender Group']},
-        {tableName: 'Feed Labor Division', dbTableName: 'feed_labor_division', tableHeaders: ['P', 'S', 'F', 'R', 'Feed Labor Type', 'Labor Division Group']},
-        {tableName: 'Women Income Activity', dbTableName: 'womens_income_activity', tableHeaders: ['P', 'S', 'F', 'R', 'Income Activity Type', 'Women Income']},
-        {tableName: 'Coop Membership', dbTableName: 'coop_membership', tableHeaders: ['P', 'S', 'F', 'R', 'Name', 'Male Count', 'Female Count']},
     ]},
 ];
 
