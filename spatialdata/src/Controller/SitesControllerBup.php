@@ -15,15 +15,7 @@ use Cake\I18n\Time;
 class SitesController extends AppController
 {   
 
-  public function initialize(): void
-  {
-    parent::initialize();
-    $this->rScriptPath = Configure::read('RScriptPath');
-  }
-
   function geocode($address){
-  
-
  
     // url encode the address
     $address = urlencode($address); 
@@ -152,8 +144,6 @@ class SitesController extends AppController
            $rstdata->latitude = floatval($defCoordinates["lati"]);
            $rstdata->longitude = floatval($defCoordinates["longi"]);
            $spTable->save($rstdata);
-           
-           shell_exec("Rscript " . $this->rScriptPath . "feastSpatial2MySQL_site.R " . " '[$siteid]'")
          }
        $this->set(compact('rst'));
         
@@ -210,7 +200,6 @@ class SitesController extends AppController
 
       $rstdata->loc_json = null;
       $rstdata->geo_json = null;
-      $rstdata->sp_TLU_ha_2010_Aw = null;
       $fgCoordinates->save($rstdata);
       /*$fgCoordinates = TableRegistry::get('spatial_data_focus_group');
       $fgCoordinates->deleteAll(['id_focus_group'=>$fgID]);*/
@@ -231,13 +220,6 @@ class SitesController extends AppController
                 $rstdata = $fgCoordinates->newEntity($this->request->getData());
                 $rstdata->id_focus_group = (int)$this->request->getData("id_focus_group");
             }
-            
-      $arlist = json_decode($pathstr);
-      if(count($arlist) > 0)
-      {
-      	$arlist[] = $arlist[0];
-      }
-      $pathstr = json_encode($arlist);
 
       $rstdata->loc_json = $pathstr;
       if ($rstdata->loc_json) {
@@ -260,9 +242,6 @@ class SitesController extends AppController
         $rstdata->geo_json = null;
        }
       $fgCoordinates->save($rstdata);
-      
-      $id = $rstdata->id_site; 
-      shell_exec("Rscript " . $this->rScriptPath . "feastSpatial2MySQL_FG.R " . " '[$id]'")
      
       die();
     }  
