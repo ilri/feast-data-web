@@ -182,14 +182,14 @@ class SettingController extends AppController
          $this->set('logName',  $logDir);
       /*$this->RequestHandler->renderAs($this, 'json');
        $logName = $this->request->getAttribute('params')['logName'];
-      
-      
-         
+
+
+
         $status = "$logName Downloaded";
-          
-        
+
+
         $this->set('_serialize', ['result']); 
-          
+
         Log::debug("Downloaded Logs {$logName}");*/
 
         
