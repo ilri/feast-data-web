@@ -650,10 +650,10 @@ class DataController extends AppController
         $this->RequestHandler->renderAs($this, 'json');
         $tableName = $this->request->getAttribute('params')['table'];
         $table = str_replace(' ', '', ucwords(str_replace('_', ' ', $tableName)));
-        $table = $this->getTableLocator()->get($table);
+        $table = $this->fetchTable($table);
 
         $records = $this->request->getData()['records'];
-        $aliasValueTable = $this->getTableLocator()->get('AliasValue');
+        $aliasValueTable = $this->fetchTable('AliasValue');
         $results = [];
         $columns = [];
 
@@ -700,7 +700,7 @@ class DataController extends AppController
         $this->RequestHandler->renderAs($this, 'json');
         $tableName = $this->request->getAttribute('params')['table'];
         $records = $this->request->getData()['records'];
-        $aliasValueTable = $this->getTableLocator()->get('AliasValue');
+        $aliasValueTable = $this->fetchTable('AliasValue');
         foreach ($records as $record) {
             foreach ($record as $key => $value) {
                 if ($key != 'id' && isset($record['id'])) {
