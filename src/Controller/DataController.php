@@ -815,7 +815,7 @@ class DataController extends AppController
                 // If we're at the top, just toggle this table's records...
                 $whereQuery["id IN"] = $checkRecords;
                 $query = $table->query()->update();
-                $expr = $query->newExpr()->add('NOT(COALESCE(exclude,0))');
+                $expr = $query->expr()->add('NOT(COALESCE(exclude,0))');
                 $query->set(['exclude' => $expr])->where($whereQuery);
                 Log::debug($query);
                 $result = $query->execute();
