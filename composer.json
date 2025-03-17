@@ -13,7 +13,7 @@
         "aws/aws-sdk-php": "2.*",
         "google/apiclient": "1.*",
         "nicolus/picofeed": "@stable",
-	"symfony/event-dispatcher" : "~4.4"
+	    "symfony/event-dispatcher" : "~4.4"
     },
     "require-dev": {
         "psy/psysh": "@stable",
