@@ -11,9 +11,9 @@
     <div class="container">
         <div class="row tab-content inner-tab-content">
             <div class="col-md-12" id="news">
-                <h2><strong>About Feast</strong>  </h2>
+                <h2><strong>About Feast</strong></h2>
     <article class="col-sm-12 col-md-12 col-lg-12">
-        <h2 class="pane-title"><a href='http://www.ilri.org/feast' target='_blank'>Feed Assessment Tool (FEAST)  </a></h2>
+        <h2 class="pane-title"><a href='http://www.ilri.org/feast' target='_blank'>Feed Assessment Tool (FEAST)</a></h2>
   <div class="text-container"><p>The Feed Assessment Tool (FEAST) is a systematic method to assess local feed resource availability and use. It helps in the design of intervention strategies aiming to optimize feed utilization and animal production. The tool comprises two main elements:</p>
 
 <ul>
