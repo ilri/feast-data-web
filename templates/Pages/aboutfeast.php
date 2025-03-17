@@ -27,8 +27,6 @@
 <p>In 2019 we developed a gendered version of FEAST which we call G-FEAST. You can download the <a href="https://cgspace.cgiar.org/handle/10568/100243" target="_blank"><b>G-FEAST group discussion guide here</b></a> and the <a href="https://cgspace.cgiar.org/handle/10568/100244" target="_blank"><b>G-FEAST individual farmer questionnaire</b></a> here. G-FEAST uses the same data application as FEAST.</p>
 <p>All reports, documents and other information materials related to FEAST are accessible at <strong><a href="https://cgspace.cgiar.org/handle/10568/16490">https://cgspace.cgiar.org/handle/10568/16490</a></strong>.</p>
 
-<p>ILRI and partner work on feeds is reported and shared at <strong><a href="http://feeding-innovation.ilri.org/">http://feeding-innovation.ilri.org</a></strong>. See especially the many news items and updates on the development of FEAST at <strong><a href="http://feeding-innovation.ilri.org/tag/feast">http://feeding-innovation.ilri.org/tag/feast</a></strong>.</p>
-
 <p><strong><a href="https://cgspace.cgiar.org/handle/10568/16539" target="_blank">View a short brochure</a></strong>.</p>
 
 <p>Watch a video introducing FEAST:<br><iframe allowfullscreen="" frameborder="0" height="415" src="https://www.youtube.com/embed/HbyCiXiTlbU" width="760"></iframe></p>
